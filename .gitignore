@@ -1,0 +1,12 @@
+.project
+.metadata
+.classpath
+.settings/
+.loadpath
+target/
+bin/
+*~
+# ================================================================================
+# Dont track the emacs backup files
+*\#*
+# ====
