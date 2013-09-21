@@ -1,6 +1,6 @@
 package earth.xor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -54,6 +54,14 @@ public class TestEmbeddedMongo {
 	col.insert(new BasicDBObject("name", "pete"));
 	
 	assertEquals(1, col.getCount());
+    }
+    
+    @Test
+    public void testAddingUrl() {
+	DBOperations dbOperations = new DBOperations();
+	dbOperations.addUrl("foo", "http://www.foo.org", "testuser");
+	
+	assertEquals(1, dbOperations.getUrls().size());
     }
 
     @AfterClass
