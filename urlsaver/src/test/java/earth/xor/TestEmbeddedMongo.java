@@ -1,6 +1,6 @@
 package earth.xor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -27,6 +27,7 @@ public class TestEmbeddedMongo {
 
     private static DB db;
     private static MongodExecutable mongodExecutable;
+    private static MongoClient mongo;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -44,7 +45,7 @@ public class TestEmbeddedMongo {
 	mongodExecutable = runtime.prepare(mongodConfig);
 	MongodProcess mongod = mongodExecutable.start();
 
-	MongoClient mongo = new MongoClient("localhost", port);
+	mongo = new MongoClient("localhost", port);
 	db = mongo.getDB("testdb");
     }
 
@@ -54,6 +55,13 @@ public class TestEmbeddedMongo {
 	col.insert(new BasicDBObject("name", "pete"));
 	
 	assertEquals(1, col.getCount());
+    }
+    
+    @Test
+    public void testAccessingUrlDB() {
+	UrlDB urlDB = new UrlDB(mongo);
+	
+	assertNotNull(urlDB.getMongoClient());
     }
 
     @AfterClass
