@@ -55,14 +55,6 @@ public class TestEmbeddedMongo {
 	
 	assertEquals(1, col.getCount());
     }
-    
-    @Test
-    public void testAddingUrl() {
-	UrlDB dbOperations = new UrlDB();
-	dbOperations.addUrl("foo", "http://www.foo.org", "testuser");
-	
-	assertEquals(1, dbOperations.getUrls().size());
-    }
 
     @AfterClass
     public static void stopEmbeddedMongo() {
