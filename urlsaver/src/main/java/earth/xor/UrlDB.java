@@ -6,8 +6,10 @@ import com.mongodb.MongoClient;
 
 public class UrlDB {
 
+    private MongoClient mongo;
+    
     public UrlDB(MongoClient mongo) {
-	// TODO Auto-generated constructor stub
+	this.mongo = mongo;
     }
 
     public void addUrl(String string, String string2, String string3) {
@@ -21,8 +23,7 @@ public class UrlDB {
     }
 
     public Object getMongoClient() {
-	// TODO Auto-generated method stub
-	return null;
+	return this.mongo;
     }
 
 }
