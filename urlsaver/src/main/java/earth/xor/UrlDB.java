@@ -2,7 +2,7 @@ package earth.xor;
 
 import java.util.ArrayList;
 
-public class DBOperations {
+public class UrlDB {
 
     public void addUrl(String string, String string2, String string3) {
 	// TODO Auto-generated method stub
