@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>earth.xor</groupId>
-	<artifactId>urlsaver</artifactId>
+	<artifactId>freezing-octo-hipster</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>urlsaver</name>
+	<name>freezing-octo-hipster</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
