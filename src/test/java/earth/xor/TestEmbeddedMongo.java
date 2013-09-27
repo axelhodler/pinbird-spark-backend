@@ -17,7 +17,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
@@ -42,35 +41,38 @@ public class TestEmbeddedMongo {
 
 	MongodStarter runtime = MongodStarter.getDefaultInstance();
 
-	MongodExecutable mongodExecutable = null;
-
-	mongodExecutable = runtime.prepare(mongodConfig);
-	MongodProcess mongod = mongodExecutable.start();
+	startMongoExecutable(runtime, mongodConfig);
 
 	mongo = new MongoClient("localhost", port);
 	db = mongo.getDB("testdb");
+    }
+
+    private static void startMongoExecutable(MongodStarter runtime,
+	    IMongodConfig mongodConfig) throws IOException {
+	MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
+	mongodExecutable.start();
     }
 
     @Test
     public void testGettingCount() {
 	DBCollection col = db.getCollection("test");
 	col.insert(new BasicDBObject("name", "pete"));
-	
+
 	assertEquals(1, col.getCount());
     }
-    
+
     @Test
     public void testAccessingUrlDB() {
 	UrlDB urlDB = new UrlDB(mongo, "test");
-	
+
 	assertNotNull(urlDB.getMongoClient());
 	assertTrue(urlDB.getMongoClient() instanceof MongoClient);
     }
-    
+
     @Test
     public void testAddingAUrl() {
 	UrlDB urlDB = new UrlDB(mongo, "test");
-	
+
 	urlDB.addUrl("http://www.foo.org", "foo", "user");
 	assertEquals(1, urlDB.getUrls().size());
     }
@@ -79,7 +81,7 @@ public class TestEmbeddedMongo {
     public static void stopEmbeddedMongo() {
 	if (mongodExecutable != null) {
 	    mongodExecutable.stop();
-	}	    
+	}
     }
 
 }
