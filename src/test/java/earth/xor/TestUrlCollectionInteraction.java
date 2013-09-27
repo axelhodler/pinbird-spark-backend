@@ -12,45 +12,46 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
-public class TestEmbeddedMongo {
+public class TestUrlCollectionInteraction {
 
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
-    
+
     private MongoClient mongo;
     private UrlDB urlDb;
     
-
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
 	    IOException {
 	embeddedMongo = new EmbeddedMongo();
 	embeddedMongo.launchEmbeddedMongo(port);
     }
-
+    
     @Before
     public void setUpTests() throws UnknownHostException {
 	this.mongo = new MongoClient("localhost", port);
-
+	
 	this.urlDb = new UrlDB(mongo, "test");
+    }
+    
+    @Test
+    public void testAccessingUrlDB() {
+	assertNotNull(urlDb.getMongoClient());
+	assertTrue(urlDb.getMongoClient() instanceof MongoClient);
     }
 
     @Test
-    public void testGettingCount() {
-	
-	DBCollection col = mongo.getDB("test").getCollection("test");
-	col.insert(new BasicDBObject("name", "pete"));
+    public void testAddingAUrl() {
+	UrlDB urlDB = new UrlDB(mongo, "test");
 
-	assertEquals(1, col.getCount());
+	urlDB.addUrl("http://www.foo.org", "foo", "user");
+	assertEquals(1, urlDB.getUrls().size());
     }
-
+    
     @AfterClass
     public static void stopEmbeddedMongo() {
 	embeddedMongo.stopEmbeddedMongo();
     }
-
 }
