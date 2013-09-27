@@ -24,9 +24,11 @@ public class UrlDB {
 		"user", user));
     }
 
-    public ArrayList<UrlInfo> getUrls() {
-	// TODO Auto-generated method stub
-	return null;
+    public DBCursor getUrls() {
+	DB database = mongo.getDB(databasename);
+	DBCollection col = database.getCollection("urls");
+	
+	return col.find();
     }
 
     public Object getMongoClient() {
