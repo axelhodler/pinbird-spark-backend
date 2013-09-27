@@ -13,57 +13,36 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.runtime.Network;
-
 public class TestEmbeddedMongo {
 
-    private static DB db;
-    private static MongodExecutable mongodExecutable;
-    private static MongoClient mongo;
+    private static int port = 12345;
+    private static EmbeddedMongo embeddedMongo;
     
+    private MongoClient mongo;
     private UrlDB urlDb;
+    
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
 	    IOException {
-	int port = 12345;
-
-	IMongodConfig mongodConfig = new MongodConfigBuilder()
-		.version(Version.V2_4_5)
-		.net(new Net(port, Network.localhostIsIPv6())).build();
-
-	MongodStarter runtime = MongodStarter.getDefaultInstance();
-
-	startMongoExecutable(runtime, mongodConfig);
-
-	mongo = new MongoClient("localhost", port);
-	db = mongo.getDB("testdb");
+	embeddedMongo = new EmbeddedMongo();
+	embeddedMongo.launchEmbeddedMongo(port);
     }
 
-    private static void startMongoExecutable(MongodStarter runtime,
-	    IMongodConfig mongodConfig) throws IOException {
-	MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
-	mongodExecutable.start();
-    }
-    
     @Before
-    public void setUpTests() {
+    public void setUpTests() throws UnknownHostException {
+	this.mongo = new MongoClient("localhost", port);
+
 	this.urlDb = new UrlDB(mongo, "test");
     }
 
     @Test
     public void testGettingCount() {
-	DBCollection col = db.getCollection("test");
+	
+	DBCollection col = mongo.getDB("test").getCollection("test");
 	col.insert(new BasicDBObject("name", "pete"));
 
 	assertEquals(1, col.getCount());
@@ -85,9 +64,7 @@ public class TestEmbeddedMongo {
 
     @AfterClass
     public static void stopEmbeddedMongo() {
-	if (mongodExecutable != null) {
-	    mongodExecutable.stop();
-	}
+	embeddedMongo.stopEmbeddedMongo();
     }
 
 }
