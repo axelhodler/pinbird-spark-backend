@@ -16,9 +16,12 @@ public class UrlDB {
 	this.databasename = dbname;
     }
 
-    public void addUrl(String string, String string2, String string3) {
-	// TODO Auto-generated method stub
-	
+    public void addUrl(String url, String title, String user) {
+	DB database = mongo.getDB(databasename);
+	DBCollection col = database.getCollection("urls");
+
+	col.insert(new BasicDBObject("url", url).append("title", title).append(
+		"user", user));
     }
 
     public ArrayList<UrlInfo> getUrls() {
