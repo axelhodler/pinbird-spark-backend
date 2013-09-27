@@ -1,6 +1,8 @@
 package earth.xor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -59,7 +61,7 @@ public class TestEmbeddedMongo {
     
     @Test
     public void testAccessingUrlDB() {
-	UrlDB urlDB = new UrlDB(mongo);
+	UrlDB urlDB = new UrlDB(mongo, "test");
 	
 	assertNotNull(urlDB.getMongoClient());
 	assertTrue(urlDB.getMongoClient() instanceof MongoClient);
@@ -67,7 +69,7 @@ public class TestEmbeddedMongo {
     
     @Test
     public void testAddingAUrl() {
-	UrlDB urlDB = new UrlDB(mongo);
+	UrlDB urlDB = new UrlDB(mongo, "test");
 	
 	urlDB.addUrl("http://www.foo.org", "foo", "user");
 	assertEquals(1, urlDB.getUrls().size());
