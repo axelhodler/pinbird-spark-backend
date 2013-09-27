@@ -64,6 +64,14 @@ public class TestEmbeddedMongo {
 	assertNotNull(urlDB.getMongoClient());
 	assertTrue(urlDB.getMongoClient() instanceof MongoClient);
     }
+    
+    @Test
+    public void testAddingAUrl() {
+	UrlDB urlDB = new UrlDB(mongo);
+	
+	urlDB.addUrl("http://www.foo.org", "foo", "user");
+	assertEquals(1, urlDB.getUrls().size());
+    }
 
     @AfterClass
     public static void stopEmbeddedMongo() {
