@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -29,6 +30,8 @@ public class TestEmbeddedMongo {
     private static DB db;
     private static MongodExecutable mongodExecutable;
     private static MongoClient mongo;
+    
+    private UrlDB urlDb;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -52,6 +55,11 @@ public class TestEmbeddedMongo {
 	MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
 	mongodExecutable.start();
     }
+    
+    @Before
+    public void setUpTests() {
+	this.urlDb = new UrlDB(mongo, "test");
+    }
 
     @Test
     public void testGettingCount() {
@@ -63,10 +71,8 @@ public class TestEmbeddedMongo {
 
     @Test
     public void testAccessingUrlDB() {
-	UrlDB urlDB = new UrlDB(mongo, "test");
-
-	assertNotNull(urlDB.getMongoClient());
-	assertTrue(urlDB.getMongoClient() instanceof MongoClient);
+	assertNotNull(urlDb.getMongoClient());
+	assertTrue(urlDb.getMongoClient() instanceof MongoClient);
     }
 
     @Test
