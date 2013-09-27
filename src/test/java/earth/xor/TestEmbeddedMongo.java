@@ -62,6 +62,7 @@ public class TestEmbeddedMongo {
 	UrlDB urlDB = new UrlDB(mongo);
 	
 	assertNotNull(urlDB.getMongoClient());
+	assertTrue(urlDB.getMongoClient() instanceof MongoClient);
     }
 
     @AfterClass
