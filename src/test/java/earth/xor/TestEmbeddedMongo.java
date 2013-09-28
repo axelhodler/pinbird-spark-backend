@@ -22,7 +22,7 @@ public class TestEmbeddedMongo {
     private static EmbeddedMongo embeddedMongo;
     
     private MongoClient mongo;
-    private UrlDB urlDb;
+    private UrlsCollection urlDb;
     
 
     @BeforeClass
@@ -36,7 +36,7 @@ public class TestEmbeddedMongo {
     public void setUpTests() throws UnknownHostException {
 	this.mongo = new MongoClient("localhost", port);
 
-	this.urlDb = new UrlDB(mongo, "test");
+	this.urlDb = new UrlsCollection(mongo, "test");
     }
 
     @Test

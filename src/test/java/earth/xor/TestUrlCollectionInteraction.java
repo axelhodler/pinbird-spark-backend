@@ -20,7 +20,7 @@ public class TestUrlCollectionInteraction {
     private static EmbeddedMongo embeddedMongo;
 
     private MongoClient mongo;
-    private UrlDB urlDb;
+    private UrlsCollection urlDb;
     
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -33,7 +33,7 @@ public class TestUrlCollectionInteraction {
     public void setUpTests() throws UnknownHostException {
 	this.mongo = new MongoClient("localhost", port);
 	
-	this.urlDb = new UrlDB(mongo, "test");
+	this.urlDb = new UrlsCollection(mongo, "test");
     }
     
     @Test
@@ -44,7 +44,7 @@ public class TestUrlCollectionInteraction {
 
     @Test
     public void testAddingAUrl() {
-	UrlDB urlDB = new UrlDB(mongo, "test");
+	UrlsCollection urlDB = new UrlsCollection(mongo, "test");
 
 	urlDB.addUrl("http://www.foo.org", "foo", "user");
 	assertEquals(1, urlDB.getUrls().size());
