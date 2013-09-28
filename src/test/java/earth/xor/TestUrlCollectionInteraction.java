@@ -19,8 +19,8 @@ public class TestUrlCollectionInteraction {
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
 
-    private MongoClient mongo;
-    private UrlsCollection urlDb;
+    private MongoClient mongoClient;
+    private UrlsCollection urlsCollection;
     
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -31,23 +31,23 @@ public class TestUrlCollectionInteraction {
     
     @Before
     public void setUpTests() throws UnknownHostException {
-	this.mongo = new MongoClient("localhost", port);
+	this.mongoClient = new MongoClient("localhost", port);
 	
-	this.urlDb = new UrlsCollection(mongo, "test");
+	this.urlsCollection = new UrlsCollection(mongoClient, "test");
     }
     
     @Test
     public void testAccessingUrlDB() {
-	assertNotNull(urlDb.getMongoClient());
-	assertTrue(urlDb.getMongoClient() instanceof MongoClient);
+	assertNotNull(urlsCollection.getMongoClient());
+	assertTrue(urlsCollection.getMongoClient() instanceof MongoClient);
     }
 
     @Test
     public void testAddingAUrl() {
-	UrlsCollection urlDB = new UrlsCollection(mongo, "test");
+	urlsCollection = new UrlsCollection(mongoClient, "test");
 
-	urlDB.addUrl("http://www.foo.org", "foo", "user");
-	assertEquals(1, urlDB.getUrls().size());
+	urlsCollection.addUrl("http://www.foo.org", "foo", "user");
+	assertEquals(1, urlsCollection.getUrls().size());
     }
     
     @AfterClass
