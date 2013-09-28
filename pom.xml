@@ -15,6 +15,17 @@
 	</properties>
 
 	<dependencies>
+
+		<!-- Java DSL for easy testing of REST services -->
+		<!-- Should place before JUnit in order to make sure that the correct version 
+			of Hamcrest is used -->
+		<dependency>
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>1.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
