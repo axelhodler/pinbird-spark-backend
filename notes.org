@@ -1,0 +1,5 @@
+* TODO Deal with the verbose output of EmbeddedMongo
+** testing some stuff
+* TODO Don't like the name testurlcollectioninteraction
+* TODO only launch the EmbeddedMongo once to make the testrun faster
+
