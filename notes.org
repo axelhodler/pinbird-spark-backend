@@ -1,5 +1,9 @@
 * TODO Deal with the verbose output of EmbeddedMongo
-** testing some stuff
 * TODO Don't like the name testurlcollectioninteraction
 * TODO only launch the EmbeddedMongo once to make the testrun faster
+* TODO urlsCollection is not really a collection
 
+* Sparkpart
+** TODO rest call to add a url
+** TODO info on how to use the api
+** TODO adding urls shall only be possible with identification
