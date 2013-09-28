@@ -17,6 +17,7 @@ import org.junit.Test;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 public class TestUrlCollectionInteraction {
@@ -58,8 +59,6 @@ public class TestUrlCollectionInteraction {
     @Test
     public void testAddingAndGettingMultipleUrls() {
 	urlsCollection.addUrl("http://www.foo.org", "foo", "user");
-	assertEquals(1, urlsCollection.getUrls().size());
-	
 	urlsCollection.addUrl("http://www.bar.org", "bar", "user2");
 	urlsCollection.addUrl("http://www.baz.org", "baz", "user3");
 
@@ -68,15 +67,16 @@ public class TestUrlCollectionInteraction {
 	ArrayList<Url> urlList = new ArrayList<Url>();
 
 	while (urlsCursor.hasNext()) {
-	    Url currentUrl = new Url(urlsCursor.next().get("url").toString(), urlsCursor
-		    .next().get("title").toString(), urlsCursor.next().get("user").toString());
+	    DBObject dbo = urlsCursor.next();
+	    Url currentUrl = new Url(dbo.get("url").toString(), dbo
+		    .get("title").toString(), dbo.get("user").toString());
 	    urlList.add(currentUrl);
 	}
-	
+
 	assertEquals("bar", urlList.get(1).getTitle());
 	assertEquals("user3", urlList.get(2).getUser());
     }
-    
+
     @After
     public void clearTheCollection() {
 	DB database = mongoClient.getDB("test");
