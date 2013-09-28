@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
@@ -56,6 +58,8 @@ public class TestUrlCollectionInteraction {
     @Test
     public void testAddingAndGettingMultipleUrls() {
 	urlsCollection.addUrl("http://www.foo.org", "foo", "user");
+	assertEquals(1, urlsCollection.getUrls().size());
+	
 	urlsCollection.addUrl("http://www.bar.org", "bar", "user2");
 	urlsCollection.addUrl("http://www.baz.org", "baz", "user3");
 
@@ -71,6 +75,13 @@ public class TestUrlCollectionInteraction {
 	
 	assertEquals("bar", urlList.get(1).getTitle());
 	assertEquals("user3", urlList.get(2).getUser());
+    }
+    
+    @After
+    public void clearTheCollection() {
+	DB database = mongoClient.getDB("test");
+	DBCollection col = database.getCollection("urls");
+	col.drop();
     }
 
     @AfterClass
