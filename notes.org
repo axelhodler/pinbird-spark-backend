@@ -7,3 +7,12 @@
 ** TODO rest call to add a url
 ** TODO info on how to use the api
 ** TODO adding urls shall only be possible with identification
+
+* ISSUE
+the rest assured tests need to also add data to the embedded mongo and then try
+to get them via the rest api. we can't use data created by other tests or the
+atomic restraint wont work
+
+CURRENT
+add request body bei restassured
+
