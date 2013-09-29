@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.parsing.Parser;
 
 import earth.xor.rest.SparkRestApi;
 
@@ -27,8 +29,9 @@ public class TestRestApi {
     public void testAddingAUrlThroughTheRestApi() {
 	
 	RestAssured.port = 4567;
-	given().body(jsonTestString).expect()
-		.body("urls.title", equalTo("foo")).when().post("/urls");
+		
+	given().body(jsonTestString).expect().contentType("application/json")
+		.body("title", equalTo("foo")).when().post("/urls");
     }
     
     @After
