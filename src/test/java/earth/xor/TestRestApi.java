@@ -15,6 +15,8 @@ public class TestRestApi {
 
     private SparkRestApi restapi;
     
+    private String jsonTestString = "{\"title\":\"foo\"}"; 
+    
     @Before
     public void setUpRestApi() {
 	restapi = new SparkRestApi();
@@ -25,8 +27,7 @@ public class TestRestApi {
     public void testAddingAUrlThroughTheRestApi() {
 	
 	RestAssured.port = 4567;
-	given().parameters("url", "http://www.foo.org", "title", "foo",
-			"user", "user").expect()
+	given().body(jsonTestString).expect()
 		.body("urls.title", equalTo("foo")).when().post("/urls");
     }
     
