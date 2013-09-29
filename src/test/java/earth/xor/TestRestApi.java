@@ -2,7 +2,7 @@ package earth.xor;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -17,6 +17,7 @@ import com.jayway.restassured.RestAssured;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
 import earth.xor.rest.SparkRestApi;
@@ -57,7 +58,7 @@ public class TestRestApi {
 	DB urlsDb = mongoClient.getDB("test");
 	DBCollection col = urlsDb.getCollection("urls");
 
-	assertEquals("foo", col.find(new BasicDBObject("title", "foo")));
+	assertEquals("foo", col.findOne(new BasicDBObject("title", "foo")).get("title"));
     }
     
     @After
