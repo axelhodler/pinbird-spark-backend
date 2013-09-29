@@ -2,6 +2,9 @@ package earth.xor.learning;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.junit.Test;
@@ -25,5 +28,14 @@ public class TestJsonSimple {
 	url.put("title", "foo");
 	
 	assertEquals("{\"title\":\"foo\"}", url.toJSONString());
+    }
+    
+    @Test
+    public void testMapToJsonString() {
+	Map<String, String> url = new HashMap<String, String>();
+	
+	url.put("title", "foo");
+
+	assertEquals("{\"title\":\"foo\"}", JSONObject.toJSONString(url));
     }
 }
