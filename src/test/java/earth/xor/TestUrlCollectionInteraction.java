@@ -52,15 +52,15 @@ public class TestUrlCollectionInteraction {
     public void testAddingAUrl() {
 	urlsCollection = new UrlsCollection(mongoClient, "test");
 
-	urlsCollection.addUrl("http://www.foo.org", "foo", "user");
+	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
 	assertEquals(1, urlsCollection.getUrls().size());
     }
 
     @Test
     public void testAddingAndGettingMultipleUrls() {
-	urlsCollection.addUrl("http://www.foo.org", "foo", "user");
-	urlsCollection.addUrl("http://www.bar.org", "bar", "user2");
-	urlsCollection.addUrl("http://www.baz.org", "baz", "user3");
+	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
+	urlsCollection.addUrl(new Url("http://www.bar.org", "bar", "user2"));
+	urlsCollection.addUrl(new Url("http://www.baz.org", "baz", "user3"));
 
 	DBCursor urlsCursor = urlsCollection.getUrls();
 

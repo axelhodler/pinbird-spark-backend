@@ -14,6 +14,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
+import earth.xor.Url;
 import earth.xor.UrlsCollection;
 
 public class SparkRestApi {
@@ -32,7 +33,7 @@ public class SparkRestApi {
 	       
 	       JSONObject obj = (JSONObject) JSONValue.parse(request.body());
 	       
-	       urls.addUrl(null, obj.get("title").toString(), null);
+	       urls.addUrl(new Url(null, obj.get("title").toString(), null));
 	       
 	       return request.body();
 	   }

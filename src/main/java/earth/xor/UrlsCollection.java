@@ -16,12 +16,12 @@ public class UrlsCollection {
 	this.databasename = dbname;
     }
 
-    public void addUrl(String url, String title, String user) {
+    public void addUrl(Url url) {
 	DB database = mongo.getDB(databasename);
 	DBCollection col = database.getCollection("urls");
 
-	col.insert(new BasicDBObject("url", url).append("title", title).append(
-		"user", user));
+	col.insert(new BasicDBObject("url", url.getUrl()).append("title", url.getTitle()).append(
+		"user", url.getUser()));
     }
 
     public DBCursor getUrls() {
