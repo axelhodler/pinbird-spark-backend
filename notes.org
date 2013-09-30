@@ -1,7 +1,7 @@
 * TODO Deal with the verbose output of EmbeddedMongo
-* TODO Don't like the name testurlcollectioninteraction
+* DONE Don't like the name testurlcollectioninteraction
 * TODO only launch the EmbeddedMongo once to make the testrun faster
-* TODO urlsCollection is not really a collection
+* DONE urlsCollection is not really a collection
 
 * TODO dont use test as databasename, dont use hardcoded at all
 * Sparkpart
