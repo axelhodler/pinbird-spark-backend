@@ -29,7 +29,7 @@ public class SparkRestApi {
 	post(new Route("/urls") {
 	   @Override
 	   public Object handle(Request request, Response response) {
-	       UrlsDatastore urls = new UrlsDatastore(mongoClient, "test");
+	       UrlsDatastore urls = new UrlsDatastore(mongoClient);
 	       
 	       JSONObject obj = (JSONObject) JSONValue.parse(request.body());
 	       

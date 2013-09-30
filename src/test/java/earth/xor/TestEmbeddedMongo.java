@@ -16,6 +16,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
+import earth.xor.db.DbProperties;
 import earth.xor.db.UrlsDatastore;
 
 public class TestEmbeddedMongo {
@@ -38,13 +39,13 @@ public class TestEmbeddedMongo {
     public void setUpTests() throws UnknownHostException {
 	this.mongo = new MongoClient("localhost", port);
 
-	this.urlDb = new UrlsDatastore(mongo, "test");
+	this.urlDb = new UrlsDatastore(mongo);
     }
 
     @Test
     public void testGettingCount() {
 	
-	DBCollection col = mongo.getDB("test").getCollection("test");
+	DBCollection col = mongo.getDB(DbProperties.DATABASE_NAME).getCollection("test");
 	col.insert(new BasicDBObject("name", "pete"));
 
 	assertEquals(1, col.getCount());

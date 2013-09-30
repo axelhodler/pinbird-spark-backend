@@ -20,6 +20,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import earth.xor.db.DbProperties;
 import earth.xor.db.Url;
 import earth.xor.db.UrlsDatastore;
 
@@ -42,7 +43,7 @@ public class TestUrlsDatastore {
     public void setUpTests() throws UnknownHostException {
 	this.mongoClient = new MongoClient("localhost", port);
 
-	this.urlsCollection = new UrlsDatastore(mongoClient, "test");
+	this.urlsCollection = new UrlsDatastore(mongoClient);
     }
 
     @Test
@@ -53,7 +54,7 @@ public class TestUrlsDatastore {
 
     @Test
     public void testAddingAUrl() {
-	urlsCollection = new UrlsDatastore(mongoClient, "test");
+	urlsCollection = new UrlsDatastore(mongoClient);
 
 	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
 	assertEquals(1, urlsCollection.getUrls().size());
@@ -82,7 +83,7 @@ public class TestUrlsDatastore {
 
     @After
     public void clearTheCollection() {
-	DB database = mongoClient.getDB("test");
+	DB database = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = database.getCollection("urls");
 	col.drop();
     }

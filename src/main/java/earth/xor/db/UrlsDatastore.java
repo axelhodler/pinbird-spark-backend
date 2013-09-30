@@ -17,7 +17,7 @@ public class UrlsDatastore {
     }
 
     public void addUrl(Url url) {
-	DBCollection col = database
+	DBCollection col = this.database
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
 	col.insert(new BasicDBObject(DbProperties.URLSCOLLECTION_URL, 
@@ -27,7 +27,7 @@ public class UrlsDatastore {
     }
 
     public DBCursor getUrls() {
-	DBCollection col = database
+	DBCollection col = this.database
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
 	return col.find();

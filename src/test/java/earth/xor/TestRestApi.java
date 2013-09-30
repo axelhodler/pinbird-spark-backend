@@ -20,6 +20,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
+import earth.xor.db.DbProperties;
 import earth.xor.rest.SparkRestApi;
 
 public class TestRestApi {
@@ -55,7 +56,7 @@ public class TestRestApi {
 	given().body(jsonTestString).expect().contentType("application/json")
 		.body("title", equalTo("foo")).when().post("/urls");
 	
-	DB urlsDb = mongoClient.getDB("test");
+	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = urlsDb.getCollection("urls");
 
 	assertEquals("foo", col.findOne(new BasicDBObject("title", "foo")).get("title"));
