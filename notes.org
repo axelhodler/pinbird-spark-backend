@@ -3,6 +3,7 @@
 * TODO only launch the EmbeddedMongo once to make the testrun faster
 * TODO urlsCollection is not really a collection
 
+* TODO dont use test as databasename, dont use hardcoded at all
 * Sparkpart
 ** TODO rest call to add a url
 ** TODO info on how to use the api
