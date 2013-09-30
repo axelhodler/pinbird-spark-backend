@@ -10,12 +10,6 @@ public class UrlsDatastore {
 
     private MongoClient mongo;
     private String databasename;
-    
-    private String collectionName = "urls";
-    
-    private String urlKey = "url";
-    private String titleKey = "title";
-    private String userKey = "user";
 
     public UrlsDatastore(MongoClient mongo, String dbname) {
 	this.mongo = mongo;
@@ -24,16 +18,20 @@ public class UrlsDatastore {
 
     public void addUrl(Url url) {
 	DB database = mongo.getDB(databasename);
-	DBCollection col = database.getCollection(collectionName);
+	DBCollection col = database
+		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
-	col.insert(new BasicDBObject(urlKey, url.getUrl()).append(titleKey, url.getTitle()).append(
-		userKey, url.getUser()));
+	col.insert(new BasicDBObject(DbProperties.URLSCOLLECTION_URL, 
+		url.getUrl()).append(DbProperties.URLSCOLLECTION_TITLE,
+		url.getTitle()).append(DbProperties.URLSCOLLECTION_USER,
+		url.getUser()));
     }
 
     public DBCursor getUrls() {
 	DB database = mongo.getDB(databasename);
-	DBCollection col = database.getCollection(collectionName);
-	
+	DBCollection col = database
+		.getCollection(DbProperties.URLSCOLLECTION_NAME);
+
 	return col.find();
     }
 
