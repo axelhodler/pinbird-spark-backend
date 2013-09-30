@@ -16,6 +16,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
+import earth.xor.db.UrlsDatastore;
+
 public class TestEmbeddedMongo {
 
     private static int port = 12345;

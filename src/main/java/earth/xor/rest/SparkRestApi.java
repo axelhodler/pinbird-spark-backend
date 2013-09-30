@@ -14,8 +14,8 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
-import earth.xor.Url;
-import earth.xor.UrlsDatastore;
+import earth.xor.db.Url;
+import earth.xor.db.UrlsDatastore;
 
 public class SparkRestApi {
 

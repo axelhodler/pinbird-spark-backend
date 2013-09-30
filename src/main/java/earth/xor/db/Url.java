@@ -1,4 +1,4 @@
-package earth.xor;
+package earth.xor.db;
 
 public class Url {
     

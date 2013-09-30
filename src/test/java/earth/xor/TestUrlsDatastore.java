@@ -20,6 +20,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import earth.xor.db.Url;
+import earth.xor.db.UrlsDatastore;
+
 public class TestUrlsDatastore {
 
     private static int port = 12345;

@@ -1,4 +1,4 @@
-package earth.xor;
+package earth.xor.db;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
