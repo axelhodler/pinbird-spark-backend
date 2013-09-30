@@ -20,29 +20,30 @@ import earth.xor.db.UrlsDatastore;
 public class SparkRestApi {
 
     private MongoClient mongoClient;
-    
+
     public SparkRestApi(MongoClient mongoClient) {
 	this.mongoClient = mongoClient;
     }
 
     public void launchServer() {
 	post(new Route("/urls") {
-	   @Override
-	   public Object handle(Request request, Response response) {
-	       UrlsDatastore urls = new UrlsDatastore(mongoClient);
-	       
-	       JSONObject obj = (JSONObject) JSONValue.parse(request.body());
-	       
-	       urls.addUrl(new Url(null, obj.get("title").toString(), null));
-	       
-	       return request.body();
-	   }
-	});	
+	    @Override
+	    public Object handle(Request request, Response response) {
+		UrlsDatastore urls = new UrlsDatastore(mongoClient);
+
+		JSONObject obj = (JSONObject) JSONValue.parse(request.body());
+
+		urls.addUrl(new Url(obj.get("url").toString(), obj.get("title")
+			.toString(), obj.get("user").toString()));
+
+		return request.body();
+	    }
+	});
     }
 
     public void stopServer() {
 	// TODO Auto-generated method stub
-	
+
     }
 
 }
