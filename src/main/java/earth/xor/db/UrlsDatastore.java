@@ -9,15 +9,14 @@ import com.mongodb.MongoClient;
 public class UrlsDatastore {
 
     private MongoClient mongo;
-    private String databasename;
+    private DB database;
 
-    public UrlsDatastore(MongoClient mongo, String dbname) {
+    public UrlsDatastore(MongoClient mongo) {
 	this.mongo = mongo;
-	this.databasename = dbname;
+	this.database = mongo.getDB(DbProperties.DATABASE_NAME);
     }
 
     public void addUrl(Url url) {
-	DB database = mongo.getDB(databasename);
 	DBCollection col = database
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
@@ -28,7 +27,6 @@ public class UrlsDatastore {
     }
 
     public DBCursor getUrls() {
-	DB database = mongo.getDB(databasename);
 	DBCollection col = database
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
