@@ -20,13 +20,13 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public class TestUrlCollectionInteraction {
+public class TestUrlsDatastore {
 
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
 
     private MongoClient mongoClient;
-    private UrlsCollection urlsCollection;
+    private UrlsDatastore urlsCollection;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -39,7 +39,7 @@ public class TestUrlCollectionInteraction {
     public void setUpTests() throws UnknownHostException {
 	this.mongoClient = new MongoClient("localhost", port);
 
-	this.urlsCollection = new UrlsCollection(mongoClient, "test");
+	this.urlsCollection = new UrlsDatastore(mongoClient, "test");
     }
 
     @Test
@@ -50,7 +50,7 @@ public class TestUrlCollectionInteraction {
 
     @Test
     public void testAddingAUrl() {
-	urlsCollection = new UrlsCollection(mongoClient, "test");
+	urlsCollection = new UrlsDatastore(mongoClient, "test");
 
 	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
 	assertEquals(1, urlsCollection.getUrls().size());

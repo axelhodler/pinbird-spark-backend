@@ -15,7 +15,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
 import earth.xor.Url;
-import earth.xor.UrlsCollection;
+import earth.xor.UrlsDatastore;
 
 public class SparkRestApi {
 
@@ -29,7 +29,7 @@ public class SparkRestApi {
 	post(new Route("/urls") {
 	   @Override
 	   public Object handle(Request request, Response response) {
-	       UrlsCollection urls = new UrlsCollection(mongoClient, "test");
+	       UrlsDatastore urls = new UrlsDatastore(mongoClient, "test");
 	       
 	       JSONObject obj = (JSONObject) JSONValue.parse(request.body());
 	       

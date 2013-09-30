@@ -6,12 +6,12 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
-public class UrlsCollection {
+public class UrlsDatastore {
 
     private MongoClient mongo;
     private String databasename;
 
-    public UrlsCollection(MongoClient mongo, String dbname) {
+    public UrlsDatastore(MongoClient mongo, String dbname) {
 	this.mongo = mongo;
 	this.databasename = dbname;
     }
