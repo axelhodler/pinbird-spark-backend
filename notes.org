@@ -5,6 +5,7 @@
 
 * TODO dont use test as databasename, dont use hardcoded at all
 * TODO use gson for json serialising
+** i can't really compare strings if the key:values in a json object are not ordered
 * Sparkpart
 ** TODO rest call to add a url
 ** TODO info on how to use the api
