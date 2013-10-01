@@ -1,6 +1,6 @@
 package earth.xor.learning;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,5 +31,14 @@ public class TestGson {
 	String urlAsJson = this.gson.toJson(this.urlExample);
 	
 	assertEquals(jsonExample, urlAsJson);
+    }
+    
+    @Test
+    public void testJsonToJavaObjectConversion() {
+	Url url = gson.fromJson(jsonExample, Url.class);
+	
+	assertEquals(urlExample.getTitle(), url.getTitle());
+	assertEquals(urlExample.getUrl(), url.getUrl());
+	assertEquals(urlExample.getUser(), url.getUser());
     }
 }
