@@ -91,8 +91,13 @@ public class TestRestApi {
 
     }
 
+    /**
+     * Drop the collection and stop the server with the Rest API
+     */
     @After
     public void stopRestApi() {
+	mongoClient.getDB(DbProperties.DATABASE_NAME)
+		.getCollection(DbProperties.URLSCOLLECTION_NAME).drop();
 	restapi.stopServer();
     }
 
