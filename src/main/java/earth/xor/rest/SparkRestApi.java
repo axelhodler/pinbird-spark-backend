@@ -27,7 +27,13 @@ public class SparkRestApi {
     }
 
     public void launchServer() {
+	createUrlsPostRoute();
+	createUrlsGetRoute();
+    }
+    
+    public void createUrlsPostRoute() {
 	post(new Route("/urls") {
+	    
 	    @Override
 	    public Object handle(Request request, Response response) {
 		UrlsDatastore urls = new UrlsDatastore(mongoClient);
@@ -40,7 +46,9 @@ public class SparkRestApi {
 		return request.body();
 	    }
 	});
-	
+    }
+    
+    public void createUrlsGetRoute() {
 	get(new Route("/urls") {
 
 	    @Override
