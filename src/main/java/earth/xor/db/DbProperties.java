@@ -1,8 +1,10 @@
 package earth.xor.db;
 
+import earth.xor.ConfigAccessor;
+
 public class DbProperties {
     
-    public static final String DATABASE_NAME = "botarchive";
+    public static String DATABASE_NAME = new ConfigAccessor().getDatabaseName();
     
     public static final String URLSCOLLECTION_NAME = "urls";
     public static final String URLSCOLLECTION_URL = "url";
