@@ -21,9 +21,11 @@ import earth.xor.db.UrlsDatastore;
 public class SparkRestApi {
 
     private MongoClient mongoClient;
+    private UrlsDatastore urlsData;
 
     public SparkRestApi(MongoClient mongoClient) {
 	this.mongoClient = mongoClient;
+	this.urlsData = new UrlsDatastore(mongoClient);
     }
 
     public void launchServer() {
@@ -36,11 +38,10 @@ public class SparkRestApi {
 	    
 	    @Override
 	    public Object handle(Request request, Response response) {
-		UrlsDatastore urls = new UrlsDatastore(mongoClient);
 
 		JSONObject obj = (JSONObject) JSONValue.parse(request.body());
 
-		urls.addUrl(new Url(obj.get("url").toString(), obj.get("title")
+		urlsData.addUrl(new Url(obj.get("url").toString(), obj.get("title")
 			.toString(), obj.get("user").toString()));
 
 		return request.body();
@@ -55,9 +56,7 @@ public class SparkRestApi {
 	    public Object handle(Request request, Response response) {
 		JSONArray array = new JSONArray();
 		
-		UrlsDatastore urls = new UrlsDatastore(mongoClient);
-		
-		DBCursor curs = urls.getUrls();
+		DBCursor curs = urlsData.getUrls();
 		
 		while (curs.hasNext()) {
 		    JSONObject obj = new JSONObject();
