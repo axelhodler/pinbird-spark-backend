@@ -1,8 +1,10 @@
 package earth.xor;
 
+import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static com.jayway.restassured.RestAssured.*;
 import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -21,6 +23,8 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.db.DbProperties;
+import earth.xor.db.Url;
+import earth.xor.db.UrlsDatastore;
 import earth.xor.rest.SparkRestApi;
 
 public class TestRestApi {
@@ -64,11 +68,27 @@ public class TestRestApi {
 	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = urlsDb.getCollection("urls");
 
-	DBObject foundEntry = col.findOne(new BasicDBObject("url", "http://www.foo.org"));
-	
+	DBObject foundEntry = col.findOne(new BasicDBObject("url",
+		"http://www.foo.org"));
+
 	assertEquals("http://www.foo.org", foundEntry.get("url"));
 	assertEquals("foo", foundEntry.get("title"));
 	assertEquals("test", foundEntry.get("user"));
+    }
+
+    @Test
+    public void testGettingAListOfAllSavedUrls() {
+	RestAssured.port = 4567;
+
+	UrlsDatastore ds = new UrlsDatastore(mongoClient);
+
+	ds.addUrl(new Url("http://www.foo.org", "foo", "user1"));
+	ds.addUrl(new Url("http://www.bar.org", "bar", "user2"));
+	ds.addUrl(new Url("http://www.baz.org", "baz", "user3"));
+
+	expect().body(containsString("foo")).body(containsString("bar"))
+		.body(containsString("baz")).get("/urls");
+
     }
 
     @After
