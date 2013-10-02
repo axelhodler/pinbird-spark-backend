@@ -63,6 +63,7 @@ public class SparkRestApi {
 		    
 		    DBObject dbobj = curs.next();
 		    
+		    obj.put("_id", dbobj.get("_id"));
 		    obj.put("url", dbobj.get("url"));
 		    obj.put("title", dbobj.get("title"));
 		    obj.put("user", dbobj.get("user"));
