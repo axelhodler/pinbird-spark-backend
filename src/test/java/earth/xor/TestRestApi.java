@@ -50,14 +50,14 @@ public class TestRestApi {
     public void setUpRestApi() throws UnknownHostException {
 	this.mongoClient = new MongoClient("localhost", port);
 
+	RestAssured.port = 4567;
+	
 	restapi = new SparkRestApi(mongoClient);
 	restapi.launchServer();
     }
 
     @Test
     public void testAddingAUrlThroughTheRestApi() {
-
-	RestAssured.port = 4567;
 
 	given().body(jsonTestString)
 		.expect()
@@ -79,7 +79,6 @@ public class TestRestApi {
 
     @Test
     public void testGettingAListOfAllSavedUrls() {
-	RestAssured.port = 4567;
 
 	UrlsDatastore ds = new UrlsDatastore(mongoClient);
 
