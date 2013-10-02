@@ -2,9 +2,10 @@ package earth.xor;
 
 import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -87,7 +88,8 @@ public class TestRestApi {
 	ds.addUrl(new Url("http://www.baz.org", "baz", "user3"));
 
 	expect().body(containsString("foo")).body(containsString("bar"))
-		.body(containsString("baz")).get("/urls");
+		.body(containsString("baz")).body(containsString("_id"))
+		.get("/urls");
 
     }
 
