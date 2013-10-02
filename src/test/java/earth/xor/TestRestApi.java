@@ -5,7 +5,7 @@ import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -90,6 +90,26 @@ public class TestRestApi {
 		.body(containsString("baz")).body(containsString("_id"))
 		.get("/urls");
 
+    }
+    
+    @Test
+    public void testGettingASavedUrlById() {
+	
+	UrlsDatastore ds = new UrlsDatastore(mongoClient);
+	
+	ds.addUrl(new Url("http://www.foo.org", "foo", "user1"));
+	
+	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
+	DBCollection col = urlsDb.getCollection("urls");
+
+	DBObject foundEntry = col.findOne(new BasicDBObject("url",
+		"http://www.foo.org"));
+	
+	String id = foundEntry.get("_id").toString();
+	
+	expect().body(containsString(id)).get("/urls/" + id);
+	
+	assertTrue(expect().get("/urls/" + id).getStatusCode() != 404);
     }
 
     /**
