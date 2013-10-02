@@ -1,9 +1,12 @@
 package earth.xor.db;
 
+import org.bson.types.ObjectId;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 public class UrlsDatastore {
@@ -20,8 +23,8 @@ public class UrlsDatastore {
 	DBCollection col = this.database
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
-	col.insert(new BasicDBObject(DbProperties.URLSCOLLECTION_URL, 
-		url.getUrl()).append(DbProperties.URLSCOLLECTION_TITLE,
+	col.insert(new BasicDBObject(DbProperties.URLSCOLLECTION_URL, url
+		.getUrl()).append(DbProperties.URLSCOLLECTION_TITLE,
 		url.getTitle()).append(DbProperties.URLSCOLLECTION_USER,
 		url.getUser()));
     }
@@ -35,6 +38,17 @@ public class UrlsDatastore {
 
     public Object getMongoClient() {
 	return this.mongo;
+    }
+
+    public DBObject getUrlById(String id) {
+
+	DBCollection col = this.database
+		.getCollection(DbProperties.URLSCOLLECTION_NAME);
+
+	DBObject foundUrl = col.findOne(new BasicDBObject("_id", new ObjectId(
+		id)));
+
+	return foundUrl;
     }
 
 }
