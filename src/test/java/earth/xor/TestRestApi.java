@@ -3,7 +3,6 @@ package earth.xor;
 import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,6 +15,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.gson.Gson;
 import com.jayway.restassured.RestAssured;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -59,13 +59,20 @@ public class TestRestApi {
     @Test
     public void testAddingAUrlThroughTheRestApi() {
 
-	given().body(jsonTestString)
+	Gson gson = new Gson();
+	
+	String jsonString = given().body(jsonTestString)
 		.expect()
 		.contentType("application/json")
-		.body("url", equalTo("http://www.foo.org"), "title",
-			equalTo("foo"), "user", equalTo("test")).when()
-		.post("/urls");
+		.post("/urls").asString();
+	
+	Url savedUrl = gson.fromJson(jsonString, Url.class);
+	
+	assertEquals("http://www.foo.org", savedUrl.getUrl());
+	assertEquals("foo", savedUrl.getTitle());
+	assertEquals("test", savedUrl.getUser());
 
+	// Doublecheck if it really has been added to the Collection
 	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = urlsDb.getCollection("urls");
 
