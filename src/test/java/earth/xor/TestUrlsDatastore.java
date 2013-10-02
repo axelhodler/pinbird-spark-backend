@@ -81,6 +81,21 @@ public class TestUrlsDatastore {
 	assertEquals("user3", urlList.get(2).getUser());
     }
 
+    @Test
+    public void testGettingAUrlById() {
+	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
+
+	DBCollection col = mongoClient.getDB(DbProperties.DATABASE_NAME)
+		.getCollection(DbProperties.URLSCOLLECTION_NAME);
+
+	DBObject savedUrl = col.findOne();
+	
+	DBObject obj = urlsCollection.getUrlById(savedUrl.get("_id").toString());
+
+	assertEquals("foo", obj.get("title"));
+	assertEquals(savedUrl.get("_id"), obj.get("_id"));
+    }
+
     @After
     public void clearTheCollection() {
 	DB database = mongoClient.getDB(DbProperties.DATABASE_NAME);
