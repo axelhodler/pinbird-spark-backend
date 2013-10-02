@@ -47,13 +47,13 @@ public class TestUrlsDatastore {
 	this.urlsCollection = new UrlsDatastore(mongoClient);
     }
 
-    @Ignore
+    @Test
     public void testAccessingUrlDB() {
 	assertNotNull(urlsCollection.getMongoClient());
 	assertTrue(urlsCollection.getMongoClient() instanceof MongoClient);
     }
 
-    @Ignore
+    @Test
     public void testAddingAUrl() {
 	urlsCollection = new UrlsDatastore(mongoClient);
 
@@ -61,7 +61,7 @@ public class TestUrlsDatastore {
 	assertEquals(1, urlsCollection.getUrls().size());
     }
 
-    @Ignore
+    @Test
     public void testAddingAndGettingMultipleUrls() {
 	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
 	urlsCollection.addUrl(new Url("http://www.bar.org", "bar", "user2"));
