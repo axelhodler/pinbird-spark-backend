@@ -31,8 +31,9 @@ public class SparkRestApi {
     public void launchServer() {
 	createUrlsPostRoute();
 	createUrlsGetRoute();
+	createUrlsGetRouteForId();
     }
-    
+
     public void createUrlsPostRoute() {
 	post(new Route("/urls") {
 	    
@@ -71,6 +72,26 @@ public class SparkRestApi {
 		    array.add(obj);
 		}
 		return array.toJSONString();
+	    }
+	});
+    }
+    
+    private void createUrlsGetRouteForId() {
+	
+	get(new Route("/urls/:id") {
+
+	    @Override
+	    public Object handle(Request request, Response response) {
+		JSONObject obj = new JSONObject();
+		
+		DBObject foundUrl = urlsData.getUrlById(request.params(":id"));
+		
+		obj.put("_id", foundUrl.get("_id").toString());
+		obj.put("url", foundUrl.get("url"));
+		obj.put("title", foundUrl.get("title"));
+		obj.put("user", foundUrl.get("user"));
+		
+		return foundUrl;
 	    }
 	});
     }
