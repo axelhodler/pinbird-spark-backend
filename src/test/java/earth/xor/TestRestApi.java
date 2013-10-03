@@ -7,7 +7,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,6 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jayway.restassured.RestAssured;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -35,11 +39,11 @@ public class TestRestApi {
 
     private String jsonTestString = "{\"url\":\"http://www.foo.org\","
 	    + "\"title\":\"foo\", \"user\":\"test\"}";
-    
+
     private final Url testUrl1 = new Url("http://www.foo.org", "foo", "user1");
     private final Url testUrl2 = new Url("http://www.bar.org", "bar", "user2");
     private final Url testUrl3 = new Url("http://www.baz.org", "baz", "user3");
-    
+
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
     private MongoClient mongoClient;
@@ -53,13 +57,13 @@ public class TestRestApi {
 
     @Before
     public void setUpRestApi() throws UnknownHostException {
-	
+
 	this.gson = new Gson();
-	
+
 	this.mongoClient = new MongoClient("localhost", port);
 
 	RestAssured.port = 4567;
-	
+
 	restapi = new SparkRestApi(mongoClient);
 	restapi.launchServer();
 
@@ -68,13 +72,11 @@ public class TestRestApi {
     @Test
     public void testAddingAUrlThroughTheRestApi() {
 
-	String jsonString = given().body(jsonTestString)
-		.expect()
-		.contentType("application/json")
-		.post("/urls").asString();
-	
+	String jsonString = given().body(jsonTestString).expect()
+		.contentType("application/json").post("/urls").asString();
+
 	Url savedUrl = gson.fromJson(jsonString, Url.class);
-	
+
 	assertEquals("http://www.foo.org", savedUrl.getUrl());
 	assertEquals("foo", savedUrl.getTitle());
 	assertEquals("test", savedUrl.getUser());
@@ -100,29 +102,43 @@ public class TestRestApi {
 	ds.addUrl(testUrl2);
 	ds.addUrl(testUrl3);
 
-	expect().body(containsString("foo")).body(containsString("bar"))
-		.body(containsString("baz")).body(containsString("_id"))
-		.get("/urls");
-
+	String jsonString = expect().contentType("application/json")
+		.get("/urls").asString();
+	
+	Type type = new TypeToken<List<Url>>(){}.getType();
+	
+	ArrayList<Url> allUrls = gson.fromJson(jsonString, type);
+	
+	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
+	assertEquals("foo", allUrls.get(0).getTitle());
+	assertEquals("user1", allUrls.get(0).getUser());
+	
+	assertEquals("http://www.bar.org", allUrls.get(1).getUrl());
+	assertEquals("bar", allUrls.get(1).getTitle());
+	assertEquals("user2", allUrls.get(1).getUser());
+	
+	assertEquals("http://www.baz.org", allUrls.get(2).getUrl());
+	assertEquals("baz", allUrls.get(2).getTitle());
+	assertEquals("user3", allUrls.get(2).getUser());
     }
-    
+
     @Test
     public void testGettingASavedUrlById() {
-	
+
 	UrlsDatastore ds = new UrlsDatastore(mongoClient);
-	
+
 	ds.addUrl(testUrl1);
-	
+
 	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = urlsDb.getCollection("urls");
 
 	DBObject foundEntry = col.findOne(new BasicDBObject("url",
 		"http://www.foo.org"));
-	
+
 	String id = foundEntry.get("_id").toString();
-	
+
 	expect().body(containsString(id)).get("/urls/" + id);
-	
+
 	assertTrue(expect().get("/urls/" + id).getStatusCode() != 404);
     }
 
