@@ -36,9 +36,9 @@ public class TestRestApi {
     private String jsonTestString = "{\"url\":\"http://www.foo.org\","
 	    + "\"title\":\"foo\", \"user\":\"test\"}";
     
-    private Url testUrl1 = new Url("http://www.foo.org", "foo", "user1");
-    private Url testUrl2 = new Url("http://www.bar.org", "bar", "user2");
-    private Url testUrl3 = new Url("http://www.baz.org", "baz", "user3");
+    private final Url testUrl1 = new Url("http://www.foo.org", "foo", "user1");
+    private final Url testUrl2 = new Url("http://www.bar.org", "bar", "user2");
+    private final Url testUrl3 = new Url("http://www.baz.org", "baz", "user3");
     
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
