@@ -1,5 +1,7 @@
 package earth.xor.db;
 
+import com.google.gson.annotations.SerializedName;
+
 
 public class Url {
     
@@ -7,6 +9,7 @@ public class Url {
     private String title;
     private String user;
     
+    @SerializedName(value = "_id")
     private String objectId;
     
     public Url(String url, String title, String user) {
