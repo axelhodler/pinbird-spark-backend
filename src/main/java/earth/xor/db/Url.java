@@ -35,4 +35,9 @@ public class Url {
     public void setUser(String user) {
 	this.user = user;
     }
+
+    public Object getObjectId() {
+	// TODO Auto-generated method stub
+	return null;
+    }
 }

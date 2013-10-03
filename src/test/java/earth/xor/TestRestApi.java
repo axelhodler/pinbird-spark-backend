@@ -104,19 +104,20 @@ public class TestRestApi {
 
 	String jsonString = expect().contentType("application/json")
 		.get("/urls").asString();
-	
-	Type type = new TypeToken<List<Url>>(){}.getType();
-	
+
+	Type type = new TypeToken<List<Url>>() {
+	}.getType();
+
 	ArrayList<Url> allUrls = gson.fromJson(jsonString, type);
-	
+
 	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
 	assertEquals("foo", allUrls.get(0).getTitle());
 	assertEquals("user1", allUrls.get(0).getUser());
-	
+
 	assertEquals("http://www.bar.org", allUrls.get(1).getUrl());
 	assertEquals("bar", allUrls.get(1).getTitle());
 	assertEquals("user2", allUrls.get(1).getUser());
-	
+
 	assertEquals("http://www.baz.org", allUrls.get(2).getUrl());
 	assertEquals("baz", allUrls.get(2).getTitle());
 	assertEquals("user3", allUrls.get(2).getUser());
@@ -137,9 +138,12 @@ public class TestRestApi {
 
 	String id = foundEntry.get("_id").toString();
 
-	expect().body(containsString(id)).get("/urls/" + id);
-
-	assertTrue(expect().get("/urls/" + id).getStatusCode() != 404);
+	String jsonString = expect().contentType("application/json")
+		.get("/urls/" + id).asString();
+	
+	Url foundUrl = gson.fromJson(jsonString, Url.class);
+	
+	assertEquals(id, foundUrl.getObjectId());
     }
 
     /**
