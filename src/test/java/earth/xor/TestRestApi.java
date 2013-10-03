@@ -144,6 +144,9 @@ public class TestRestApi {
 	Url foundUrl = gson.fromJson(jsonString, Url.class);
 	
 	assertEquals(id, foundUrl.getObjectId());
+	assertEquals("http://www.foo.org", foundUrl.getUrl());
+	assertEquals("foo", foundUrl.getTitle());
+	assertEquals("user1", foundUrl.getUser());
     }
 
     /**
