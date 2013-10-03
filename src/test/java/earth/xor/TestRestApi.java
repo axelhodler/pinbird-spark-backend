@@ -31,6 +31,7 @@ import earth.xor.rest.SparkRestApi;
 public class TestRestApi {
 
     private SparkRestApi restapi;
+    private Gson gson;
 
     private String jsonTestString = "{\"url\":\"http://www.foo.org\","
 	    + "\"title\":\"foo\", \"user\":\"test\"}";
@@ -48,6 +49,9 @@ public class TestRestApi {
 
     @Before
     public void setUpRestApi() throws UnknownHostException {
+	
+	this.gson = new Gson();
+	
 	this.mongoClient = new MongoClient("localhost", port);
 
 	RestAssured.port = 4567;
@@ -59,8 +63,6 @@ public class TestRestApi {
     @Test
     public void testAddingAUrlThroughTheRestApi() {
 
-	Gson gson = new Gson();
-	
 	String jsonString = given().body(jsonTestString)
 		.expect()
 		.contentType("application/json")
