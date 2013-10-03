@@ -31,7 +31,7 @@ public class TestUrlsDatastore {
     private static EmbeddedMongo embeddedMongo;
 
     private MongoClient mongoClient;
-    private UrlsDatastore urlsCollection;
+    private UrlsDatastore urlsData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -44,30 +44,30 @@ public class TestUrlsDatastore {
     public void setUpTests() throws UnknownHostException {
 	this.mongoClient = new MongoClient("localhost", port);
 
-	this.urlsCollection = new UrlsDatastore(mongoClient);
+	this.urlsData = new UrlsDatastore(mongoClient);
     }
 
     @Test
     public void testAccessingUrlDB() {
-	assertNotNull(urlsCollection.getMongoClient());
-	assertTrue(urlsCollection.getMongoClient() instanceof MongoClient);
+	assertNotNull(urlsData.getMongoClient());
+	assertTrue(urlsData.getMongoClient() instanceof MongoClient);
     }
 
     @Test
     public void testAddingAUrl() {
-	urlsCollection = new UrlsDatastore(mongoClient);
+	urlsData = new UrlsDatastore(mongoClient);
 
-	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
-	assertEquals(1, urlsCollection.getUrls().size());
+	urlsData.addUrl(new Url("http://www.foo.org", "foo", "user"));
+	assertEquals(1, urlsData.getUrls().size());
     }
 
     @Test
     public void testAddingAndGettingMultipleUrls() {
-	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
-	urlsCollection.addUrl(new Url("http://www.bar.org", "bar", "user2"));
-	urlsCollection.addUrl(new Url("http://www.baz.org", "baz", "user3"));
+	urlsData.addUrl(new Url("http://www.foo.org", "foo", "user"));
+	urlsData.addUrl(new Url("http://www.bar.org", "bar", "user2"));
+	urlsData.addUrl(new Url("http://www.baz.org", "baz", "user3"));
 
-	DBCursor urlsCursor = urlsCollection.getUrls();
+	DBCursor urlsCursor = urlsData.getUrls();
 
 	ArrayList<Url> urlList = new ArrayList<Url>();
 
@@ -84,14 +84,14 @@ public class TestUrlsDatastore {
 
     @Test
     public void testGettingAUrlById() {
-	urlsCollection.addUrl(new Url("http://www.foo.org", "foo", "user"));
+	urlsData.addUrl(new Url("http://www.foo.org", "foo", "user"));
 
 	DBCollection col = mongoClient.getDB(DbProperties.DATABASE_NAME)
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
 	DBObject savedUrl = col.findOne();
 	
-	DBObject obj = urlsCollection.getUrlById(savedUrl.get("_id").toString());
+	DBObject obj = urlsData.getUrlById(savedUrl.get("_id").toString());
 
 	assertNotNull(obj);
 	assertEquals("foo", obj.get("title").toString());
