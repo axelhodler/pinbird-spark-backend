@@ -91,7 +91,7 @@ public class SparkRestApi {
 		obj.put("title", foundUrl.get("title"));
 		obj.put("user", foundUrl.get("user"));
 		
-		return foundUrl;
+		return obj.toJSONString();
 	    }
 	});
     }
