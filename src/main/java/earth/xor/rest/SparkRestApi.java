@@ -60,16 +60,9 @@ public class SparkRestApi {
 		DBCursor curs = urlsData.getUrls();
 		
 		while (curs.hasNext()) {
-		    JSONObject obj = new JSONObject();
-		    
 		    DBObject dbobj = curs.next();
 		    
-		    obj.put("_id", dbobj.get("_id").toString());
-		    obj.put("url", dbobj.get("url"));
-		    obj.put("title", dbobj.get("title"));
-		    obj.put("user", dbobj.get("user"));
-		    
-		    array.add(obj);
+		    array.add(addDBObjectKeysToJsonObject(dbobj));
 		}
 		return array.toJSONString();
 	    }
@@ -82,18 +75,24 @@ public class SparkRestApi {
 
 	    @Override
 	    public Object handle(Request request, Response response) {
-		JSONObject obj = new JSONObject();
+		
 		
 		DBObject foundUrl = urlsData.getUrlById(request.params(":id"));
-		
-		obj.put("_id", foundUrl.get("_id").toString());
-		obj.put("url", foundUrl.get("url"));
-		obj.put("title", foundUrl.get("title"));
-		obj.put("user", foundUrl.get("user"));
-		
-		return obj.toJSONString();
+
+		return addDBObjectKeysToJsonObject(foundUrl).toJSONString();
 	    }
 	});
+    }
+    
+    private JSONObject addDBObjectKeysToJsonObject(DBObject dbObject) {
+	JSONObject jsonObject = new JSONObject();
+	
+	jsonObject.put("_id", dbObject.get("_id").toString());
+	jsonObject.put("url", dbObject.get("url"));
+	jsonObject.put("title", dbObject.get("title"));
+	jsonObject.put("user", dbObject.get("user"));
+	
+	return jsonObject;	
     }
 
     public void stopServer() {
