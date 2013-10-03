@@ -111,7 +111,7 @@ public class TestRestApi {
 	
 	UrlsDatastore ds = new UrlsDatastore(mongoClient);
 	
-	ds.addUrl(new Url("http://www.foo.org", "foo", "user1"));
+	ds.addUrl(testUrl1);
 	
 	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = urlsDb.getCollection("urls");
