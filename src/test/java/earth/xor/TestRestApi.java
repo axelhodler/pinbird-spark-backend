@@ -35,7 +35,11 @@ public class TestRestApi {
 
     private String jsonTestString = "{\"url\":\"http://www.foo.org\","
 	    + "\"title\":\"foo\", \"user\":\"test\"}";
-
+    
+    private Url testUrl1 = new Url("http://www.foo.org", "foo", "user1");
+    private Url testUrl2 = new Url("http://www.bar.org", "bar", "user2");
+    private Url testUrl3 = new Url("http://www.baz.org", "baz", "user3");
+    
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
     private MongoClient mongoClient;
@@ -58,6 +62,7 @@ public class TestRestApi {
 	
 	restapi = new SparkRestApi(mongoClient);
 	restapi.launchServer();
+
     }
 
     @Test
@@ -91,9 +96,9 @@ public class TestRestApi {
 
 	UrlsDatastore ds = new UrlsDatastore(mongoClient);
 
-	ds.addUrl(new Url("http://www.foo.org", "foo", "user1"));
-	ds.addUrl(new Url("http://www.bar.org", "bar", "user2"));
-	ds.addUrl(new Url("http://www.baz.org", "baz", "user3"));
+	ds.addUrl(testUrl1);
+	ds.addUrl(testUrl2);
+	ds.addUrl(testUrl3);
 
 	expect().body(containsString("foo")).body(containsString("bar"))
 		.body(containsString("baz")).body(containsString("_id"))
