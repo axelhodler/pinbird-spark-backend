@@ -1,10 +1,13 @@
 package earth.xor.db;
 
+
 public class Url {
     
     private String url;
     private String title;
     private String user;
+    
+    private String objectId;
     
     public Url(String url, String title, String user) {
 	this.setUrl(url);
@@ -36,8 +39,11 @@ public class Url {
 	this.user = user;
     }
 
-    public Object getObjectId() {
-	// TODO Auto-generated method stub
-	return null;
+    public String getObjectId() {
+	return this.objectId;
+    }
+    
+    public void setObjectId(String objectId) {
+	this.objectId = objectId;
     }
 }
