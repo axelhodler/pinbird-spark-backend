@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -103,11 +105,15 @@ public class TestRestApi {
 	String jsonString = expect().contentType("application/json")
 		.get("/urls").asString();
 
-	Type type = new TypeToken<List<Url>>() {
+	Type type = new TypeToken<Map<String, List<Url>>>() {
 	}.getType();
 
-	ArrayList<Url> allUrls = gson.fromJson(jsonString, type);
+	Map<String, List<Url>> map = new HashMap<String, List<Url>>();
+	
+	map = gson.fromJson(jsonString, type);
 
+	ArrayList<Url> allUrls = (ArrayList<Url>) map.get("urls");
+	
 	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
 	assertEquals("foo", allUrls.get(0).getTitle());
 	assertEquals("user1", allUrls.get(0).getUser());
