@@ -68,8 +68,12 @@ public class SparkRestApi {
 		JSONObject object = new JSONObject();
 		object.put("urls", array);
 		
+		addAccessControlAllowOriginHeader(response);
+		
 		return object.toJSONString();
 	    }
+
+	    
 	});
     }
     
@@ -79,7 +83,6 @@ public class SparkRestApi {
 
 	    @Override
 	    public Object handle(Request request, Response response) {
-		
 		
 		DBObject foundUrl = urlsData.getUrlById(request.params(":id"));
 
@@ -103,6 +106,10 @@ public class SparkRestApi {
 	jsonObject.put("user", dbObject.get("user"));
 	
 	return jsonObject;	
+    }
+    
+    private void addAccessControlAllowOriginHeader(Response response) {
+	response.header("Access-Control-Allow-Origin", "*");
     }
 
     public void stopServer() {
