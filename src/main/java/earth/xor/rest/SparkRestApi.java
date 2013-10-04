@@ -94,6 +94,8 @@ public class SparkRestApi {
 		
 		mainObject.put("url", innerObject);
 		
+		addAccessControlAllowOriginHeader(response);
+		
 		return mainObject.toJSONString();			
 	    }
 	});
