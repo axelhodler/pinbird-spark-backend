@@ -45,6 +45,8 @@ public class SparkRestApi {
 		urlsData.addUrl(new Url(obj.get("url").toString(), obj.get("title")
 			.toString(), obj.get("user").toString()));
 
+		addAccessControlAllowOriginHeader(response);
+		
 		return request.body();
 	    }
 	});
