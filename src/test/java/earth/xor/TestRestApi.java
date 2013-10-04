@@ -2,7 +2,7 @@ package earth.xor;
 
 import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -153,6 +153,10 @@ public class TestRestApi {
 	map = gson.fromJson(jsonString, type);
 	
 	Url foundUrl = map.get("url");
+	
+	// id has to be surrounded with double quotes,
+	// otherwise its not valid JSON
+	assertTrue(jsonString.contains("\"" + id +"\"" ));
 	
 	assertEquals(id, foundUrl.getObjectId());
 	assertEquals("http://www.foo.org", foundUrl.getUrl());
