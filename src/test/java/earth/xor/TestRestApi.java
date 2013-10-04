@@ -145,7 +145,14 @@ public class TestRestApi {
 	String jsonString = expect().contentType("application/json")
 		.get("/urls/" + id).asString();
 	
-	Url foundUrl = gson.fromJson(jsonString, Url.class);
+	Type type = new TypeToken<Map<String, Url>>() {
+	}.getType();
+	
+	Map<String, Url> map = new HashMap<String, Url>();
+	
+	map = gson.fromJson(jsonString, type);
+	
+	Url foundUrl = map.get("url");
 	
 	assertEquals(id, foundUrl.getObjectId());
 	assertEquals("http://www.foo.org", foundUrl.getUrl());
