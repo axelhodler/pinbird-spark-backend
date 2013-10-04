@@ -147,7 +147,8 @@ public class TestRestApi {
 
 	String id = foundEntry.get("_id").toString();
 
-	String jsonString = expect().contentType("application/json")
+	String jsonString = expect().contentType("application/json").and()
+		.header("Access-Control-Allow-Origin", equalTo("*")).when()
 		.get("/urls/" + id).asString();
 
 	Type type = new TypeToken<Map<String, Url>>() {
