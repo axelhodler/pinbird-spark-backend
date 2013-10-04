@@ -83,7 +83,13 @@ public class SparkRestApi {
 		
 		DBObject foundUrl = urlsData.getUrlById(request.params(":id"));
 
-		return addDBObjectKeysToJsonObject(foundUrl).toJSONString();
+		JSONObject innerObject = new JSONObject();
+		
+		addDBObjectKeysToJsonObject(foundUrl).toJSONString();
+		
+		innerObject.put("url", foundUrl);
+		
+		return innerObject.toJSONString();			
 	    }
 	});
     }
