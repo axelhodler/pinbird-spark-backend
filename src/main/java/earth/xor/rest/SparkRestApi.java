@@ -64,7 +64,11 @@ public class SparkRestApi {
 		    
 		    array.add(addDBObjectKeysToJsonObject(dbobj));
 		}
-		return array.toJSONString();
+		
+		JSONObject object = new JSONObject();
+		object.put("urls", array);
+		
+		return object.toJSONString();
 	    }
 	});
     }
