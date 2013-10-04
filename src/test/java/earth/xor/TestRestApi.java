@@ -75,7 +75,9 @@ public class TestRestApi {
     public void testAddingAUrlThroughTheRestApi() {
 
 	String jsonString = given().body(jsonTestString).expect()
-		.contentType("application/json").post("/urls").asString();
+		.contentType("application/json").and()
+		.header("Access-Control-Allow-Origin", equalTo("*")).when()
+		.post("/urls").asString();
 
 	Url savedUrl = gson.fromJson(jsonString, Url.class);
 
