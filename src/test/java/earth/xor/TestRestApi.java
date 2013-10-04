@@ -4,6 +4,8 @@ import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
 import static org.junit.Assert.*;
 
+import static org.hamcrest.Matchers.*;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.UnknownHostException;
@@ -102,18 +104,19 @@ public class TestRestApi {
 	ds.addUrl(testUrl2);
 	ds.addUrl(testUrl3);
 
-	String jsonString = expect().contentType("application/json")
+	String jsonString = expect().contentType("application/json").and()
+		.header("Access-Control-Allow-Origin", equalTo("*")).when()
 		.get("/urls").asString();
 
 	Type type = new TypeToken<Map<String, List<Url>>>() {
 	}.getType();
 
 	Map<String, List<Url>> map = new HashMap<String, List<Url>>();
-	
+
 	map = gson.fromJson(jsonString, type);
 
 	ArrayList<Url> allUrls = (ArrayList<Url>) map.get("urls");
-	
+
 	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
 	assertEquals("foo", allUrls.get(0).getTitle());
 	assertEquals("user1", allUrls.get(0).getUser());
@@ -144,20 +147,20 @@ public class TestRestApi {
 
 	String jsonString = expect().contentType("application/json")
 		.get("/urls/" + id).asString();
-	
+
 	Type type = new TypeToken<Map<String, Url>>() {
 	}.getType();
-	
+
 	Map<String, Url> map = new HashMap<String, Url>();
-	
+
 	map = gson.fromJson(jsonString, type);
-	
+
 	Url foundUrl = map.get("url");
-	
+
 	// id has to be surrounded with double quotes,
 	// otherwise its not valid JSON
-	assertTrue(jsonString.contains("\"" + id +"\"" ));
-	
+	assertTrue(jsonString.contains("\"" + id + "\""));
+
 	assertEquals(id, foundUrl.getObjectId());
 	assertEquals("http://www.foo.org", foundUrl.getUrl());
 	assertEquals("foo", foundUrl.getTitle());
