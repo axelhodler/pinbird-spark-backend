@@ -30,6 +30,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.EmbeddedMongo;
+import earth.xor.ExampleUrls;
 import earth.xor.db.DbProperties;
 import earth.xor.db.Url;
 import earth.xor.db.UrlsDatastore;
@@ -41,10 +42,6 @@ public class TestRestApi {
 
     private String jsonTestString = "{\"url\":\"http://www.foo.org\","
 	    + "\"title\":\"foo\", \"user\":\"test\"}";
-
-    private final Url testUrl1 = new Url("http://www.foo.org", "foo", "user1");
-    private final Url testUrl2 = new Url("http://www.bar.org", "bar", "user2");
-    private final Url testUrl3 = new Url("http://www.baz.org", "baz", "user3");
 
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
@@ -102,9 +99,9 @@ public class TestRestApi {
 
 	UrlsDatastore ds = new UrlsDatastore(mongoClient);
 
-	ds.addUrl(testUrl1);
-	ds.addUrl(testUrl2);
-	ds.addUrl(testUrl3);
+	ds.addUrl(ExampleUrls.testUrl1);
+	ds.addUrl(ExampleUrls.testUrl2);
+	ds.addUrl(ExampleUrls.testUrl3);
 
 	String jsonString = expect().contentType("application/json").and()
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
@@ -137,7 +134,7 @@ public class TestRestApi {
 
 	UrlsDatastore ds = new UrlsDatastore(mongoClient);
 
-	ds.addUrl(testUrl1);
+	ds.addUrl(ExampleUrls.testUrl1);
 
 	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = urlsDb.getCollection("urls");
