@@ -1,4 +1,4 @@
-package earth.xor;
+package earth.xor.db;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,7 +12,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mongodb.DB;
@@ -21,9 +20,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import earth.xor.db.DbProperties;
-import earth.xor.db.Url;
-import earth.xor.db.UrlsDatastore;
+import earth.xor.EmbeddedMongo;
 
 public class TestUrlsDatastore {
 
