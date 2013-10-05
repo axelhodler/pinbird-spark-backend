@@ -1,10 +1,10 @@
-package earth.xor;
+package earth.xor.rest;
 
 import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
-import static org.junit.Assert.*;
-
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -29,10 +29,10 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import earth.xor.EmbeddedMongo;
 import earth.xor.db.DbProperties;
 import earth.xor.db.Url;
 import earth.xor.db.UrlsDatastore;
-import earth.xor.rest.SparkRestApi;
 
 public class TestRestApi {
 
