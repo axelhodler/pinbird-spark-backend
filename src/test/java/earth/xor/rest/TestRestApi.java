@@ -102,39 +102,26 @@ public class TestRestApi {
     @Test
     public void testGettingASavedUrlById() {
 
-	urlsData.addUrl(ExampleUrls.testUrl1);
-
-	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = urlsDb.getCollection("urls");
-
-	DBObject foundEntry = col.findOne(new BasicDBObject("url",
-		"http://www.foo.org"));
-
-	String id = foundEntry.get("_id").toString();
+	String id = addUrlAndGetItsId();
 
 	String jsonString = expect().contentType("application/json").and()
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
 		.get("/urls/" + id).asString();
 
-	Type type = new TypeToken<Map<String, Url>>() {
-	}.getType();
-
-	Map<String, Url> map = new HashMap<String, Url>();
-
-	map = gson.fromJson(jsonString, type);
-
-	Url foundUrl = map.get("url");
-
 	// id has to be surrounded with double quotes,
 	// otherwise its not valid JSON
 	assertTrue(jsonString.contains("\"" + id + "\""));
 
-	assertEquals(id, foundUrl.getObjectId());
-	assertEquals("http://www.foo.org", foundUrl.getUrl());
-	assertEquals("foo", foundUrl.getTitle());
-	assertEquals("user1", foundUrl.getUser());
+	Type type = new TypeToken<Map<String, Url>>() {
+	}.getType();
+
+	Map<String, Url> returnedUrlRepresentation = new HashMap<String, Url>();
+
+	returnedUrlRepresentation = gson.fromJson(jsonString, type);
+
+	checkIfItsTheCorrectUrl(returnedUrlRepresentation);
     }
-    
+
     private void addAUrlThroughTheRestApi() {
 	String jsonString = given().body(getUrlsPostJsonString()).expect()
 		.contentType("application/json").and()
@@ -147,7 +134,7 @@ public class TestRestApi {
 	assertEquals("foo", savedUrl.getTitle());
 	assertEquals("test", savedUrl.getUser());
     }
-    
+
     private void checkIfUrlWasAddedToDatabase() {
 	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = urlsDb.getCollection("urls");
@@ -174,9 +161,10 @@ public class TestRestApi {
 	}
 	return jsonString;
     }
-    
-    private void checkIfPreviouslyAddedUrlsAreShown(Map<String, List<Url>> returnedUrls) {
-	
+
+    private void checkIfPreviouslyAddedUrlsAreShown(
+	    Map<String, List<Url>> returnedUrls) {
+
 	ArrayList<Url> allUrls = (ArrayList<Url>) returnedUrls.get("urls");
 
 	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
@@ -191,7 +179,28 @@ public class TestRestApi {
 	assertEquals("baz", allUrls.get(2).getTitle());
 	assertEquals("user3", allUrls.get(2).getUser());
     }
-    
+
+    private String addUrlAndGetItsId() {
+	urlsData.addUrl(ExampleUrls.testUrl1);
+
+	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
+	DBCollection col = urlsDb.getCollection("urls");
+
+	DBObject foundEntry = col.findOne(new BasicDBObject("url",
+		"http://www.foo.org"));
+
+	return foundEntry.get("_id").toString();
+    }
+
+    private void checkIfItsTheCorrectUrl(
+	    Map<String, Url> returnedUrlRepresentation) {
+	Url foundUrl = returnedUrlRepresentation.get("url");
+
+	assertEquals("http://www.foo.org", foundUrl.getUrl());
+	assertEquals("foo", foundUrl.getTitle());
+	assertEquals("user1", foundUrl.getUser());
+    }
+
     /**
      * Drop the collection and stop the server with the Rest API
      */
