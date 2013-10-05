@@ -47,6 +47,7 @@ public class TestRestApi {
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
     private MongoClient mongoClient;
+    private UrlsDatastore urlsData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -61,6 +62,7 @@ public class TestRestApi {
 	this.gson = new Gson();
 
 	this.mongoClient = new MongoClient("localhost", port);
+	this.urlsData = new UrlsDatastore(mongoClient);
 
 	RestAssured.port = 4567;
 
@@ -98,11 +100,9 @@ public class TestRestApi {
     @Test
     public void testGettingAListOfAllSavedUrls() {
 
-	UrlsDatastore ds = new UrlsDatastore(mongoClient);
-
-	ds.addUrl(ExampleUrls.testUrl1);
-	ds.addUrl(ExampleUrls.testUrl2);
-	ds.addUrl(ExampleUrls.testUrl3);
+	urlsData.addUrl(ExampleUrls.testUrl1);
+	urlsData.addUrl(ExampleUrls.testUrl2);
+	urlsData.addUrl(ExampleUrls.testUrl3);
 
 	String jsonString = expect().contentType("application/json").and()
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
@@ -133,9 +133,7 @@ public class TestRestApi {
     @Test
     public void testGettingASavedUrlById() {
 
-	UrlsDatastore ds = new UrlsDatastore(mongoClient);
-
-	ds.addUrl(ExampleUrls.testUrl1);
+	urlsData.addUrl(ExampleUrls.testUrl1);
 
 	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
 	DBCollection col = urlsDb.getCollection("urls");
