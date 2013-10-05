@@ -85,30 +85,18 @@ public class TestRestApi {
 	urlsData.addUrl(ExampleUrls.testUrl2);
 	urlsData.addUrl(ExampleUrls.testUrl3);
 
-	String jsonString = expect().contentType("application/json").and()
+	String jsonResponse = expect().contentType("application/json").and()
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
 		.get("/urls").asString();
 
 	Type type = new TypeToken<Map<String, List<Url>>>() {
 	}.getType();
 
-	Map<String, List<Url>> map = new HashMap<String, List<Url>>();
+	Map<String, List<Url>> returnedUrls = new HashMap<String, List<Url>>();
 
-	map = gson.fromJson(jsonString, type);
+	returnedUrls = gson.fromJson(jsonResponse, type);
 
-	ArrayList<Url> allUrls = (ArrayList<Url>) map.get("urls");
-
-	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
-	assertEquals("foo", allUrls.get(0).getTitle());
-	assertEquals("user1", allUrls.get(0).getUser());
-
-	assertEquals("http://www.bar.org", allUrls.get(1).getUrl());
-	assertEquals("bar", allUrls.get(1).getTitle());
-	assertEquals("user2", allUrls.get(1).getUser());
-
-	assertEquals("http://www.baz.org", allUrls.get(2).getUrl());
-	assertEquals("baz", allUrls.get(2).getTitle());
-	assertEquals("user3", allUrls.get(2).getUser());
+	checkIfPreviouslyAddedUrlsAreShown(returnedUrls);
     }
 
     @Test
@@ -186,6 +174,24 @@ public class TestRestApi {
 	}
 	return jsonString;
     }
+    
+    private void checkIfPreviouslyAddedUrlsAreShown(Map<String, List<Url>> returnedUrls) {
+	
+	ArrayList<Url> allUrls = (ArrayList<Url>) returnedUrls.get("urls");
+
+	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
+	assertEquals("foo", allUrls.get(0).getTitle());
+	assertEquals("user1", allUrls.get(0).getUser());
+
+	assertEquals("http://www.bar.org", allUrls.get(1).getUrl());
+	assertEquals("bar", allUrls.get(1).getTitle());
+	assertEquals("user2", allUrls.get(1).getUser());
+
+	assertEquals("http://www.baz.org", allUrls.get(2).getUrl());
+	assertEquals("baz", allUrls.get(2).getTitle());
+	assertEquals("user3", allUrls.get(2).getUser());
+    }
+    
     /**
      * Drop the collection and stop the server with the Rest API
      */
