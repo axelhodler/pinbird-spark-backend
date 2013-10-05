@@ -74,27 +74,8 @@ public class TestRestApi {
     @Test
     public void testAddingAUrlThroughTheRestApi() {
 
-	String jsonString = given().body(getUrlsPostJsonString()).expect()
-		.contentType("application/json").and()
-		.header("Access-Control-Allow-Origin", equalTo("*")).when()
-		.post("/urls").asString();
-
-	Url savedUrl = gson.fromJson(jsonString, Url.class);
-
-	assertEquals("http://www.foo.org", savedUrl.getUrl());
-	assertEquals("foo", savedUrl.getTitle());
-	assertEquals("test", savedUrl.getUser());
-
-	// Doublecheck if it really has been added to the Collection
-	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = urlsDb.getCollection("urls");
-
-	DBObject foundEntry = col.findOne(new BasicDBObject("url",
-		"http://www.foo.org"));
-
-	assertEquals("http://www.foo.org", foundEntry.get("url"));
-	assertEquals("foo", foundEntry.get("title"));
-	assertEquals("test", foundEntry.get("user"));
+	addAUrlThroughTheRestApi();
+	checkIfUrlWasAddedToDatabase();
     }
 
     @Test
@@ -165,6 +146,31 @@ public class TestRestApi {
 	assertEquals("foo", foundUrl.getTitle());
 	assertEquals("user1", foundUrl.getUser());
     }
+    
+    private void addAUrlThroughTheRestApi() {
+	String jsonString = given().body(getUrlsPostJsonString()).expect()
+		.contentType("application/json").and()
+		.header("Access-Control-Allow-Origin", equalTo("*")).when()
+		.post("/urls").asString();
+
+	Url savedUrl = gson.fromJson(jsonString, Url.class);
+
+	assertEquals("http://www.foo.org", savedUrl.getUrl());
+	assertEquals("foo", savedUrl.getTitle());
+	assertEquals("test", savedUrl.getUser());
+    }
+    
+    private void checkIfUrlWasAddedToDatabase() {
+	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
+	DBCollection col = urlsDb.getCollection("urls");
+
+	DBObject foundEntry = col.findOne(new BasicDBObject("url",
+		"http://www.foo.org"));
+
+	assertEquals("http://www.foo.org", foundEntry.get("url"));
+	assertEquals("foo", foundEntry.get("title"));
+	assertEquals("test", foundEntry.get("user"));
+    }
 
     private String getUrlsPostJsonString() {
 
@@ -180,7 +186,6 @@ public class TestRestApi {
 	}
 	return jsonString;
     }
-
     /**
      * Drop the collection and stop the server with the Rest API
      */
