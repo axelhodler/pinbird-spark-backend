@@ -21,6 +21,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.EmbeddedMongo;
+import earth.xor.ExampleUrls;
 
 public class TestUrlsDatastore {
 
@@ -54,15 +55,15 @@ public class TestUrlsDatastore {
     public void testAddingAUrl() {
 	urlsData = new UrlsDatastore(mongoClient);
 
-	urlsData.addUrl(new Url("http://www.foo.org", "foo", "user"));
+	urlsData.addUrl(ExampleUrls.testUrl1);
 	assertEquals(1, urlsData.getUrls().size());
     }
 
     @Test
     public void testAddingAndGettingMultipleUrls() {
-	urlsData.addUrl(new Url("http://www.foo.org", "foo", "user"));
-	urlsData.addUrl(new Url("http://www.bar.org", "bar", "user2"));
-	urlsData.addUrl(new Url("http://www.baz.org", "baz", "user3"));
+	urlsData.addUrl(ExampleUrls.testUrl1);
+	urlsData.addUrl(ExampleUrls.testUrl2);
+	urlsData.addUrl(ExampleUrls.testUrl3);
 
 	DBCursor urlsCursor = urlsData.getUrls();
 
@@ -81,7 +82,7 @@ public class TestUrlsDatastore {
 
     @Test
     public void testGettingAUrlById() {
-	urlsData.addUrl(new Url("http://www.foo.org", "foo", "user"));
+	urlsData.addUrl(ExampleUrls.testUrl1);
 
 	DBCollection col = mongoClient.getDB(DbProperties.DATABASE_NAME)
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
