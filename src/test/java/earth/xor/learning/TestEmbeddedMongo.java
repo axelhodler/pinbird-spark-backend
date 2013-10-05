@@ -1,4 +1,4 @@
-package earth.xor;
+package earth.xor.learning;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -16,6 +16,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
+import earth.xor.EmbeddedMongo;
 import earth.xor.db.DbProperties;
 import earth.xor.db.UrlsDatastore;
 
