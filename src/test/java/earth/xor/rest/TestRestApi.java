@@ -6,14 +6,19 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -39,9 +44,6 @@ public class TestRestApi {
 
     private SparkRestApi restapi;
     private Gson gson;
-
-    private String jsonTestString = "{\"url\":\"http://www.foo.org\","
-	    + "\"title\":\"foo\", \"user\":\"test\"}";
 
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
@@ -71,7 +73,7 @@ public class TestRestApi {
     @Test
     public void testAddingAUrlThroughTheRestApi() {
 
-	String jsonString = given().body(jsonTestString).expect()
+	String jsonString = given().body(getUrlsPostJsonString()).expect()
 		.contentType("application/json").and()
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
 		.post("/urls").asString();
@@ -165,6 +167,21 @@ public class TestRestApi {
 	assertEquals("http://www.foo.org", foundUrl.getUrl());
 	assertEquals("foo", foundUrl.getTitle());
 	assertEquals("user1", foundUrl.getUser());
+    }
+
+    private String getUrlsPostJsonString() {
+
+	String jsonString = null;
+	try {
+	    File testFile = new File(TestRestApi.class.getResource(
+		    "/urlsPost.JSON").toURI());
+	    jsonString = IOUtils.toString(new FileInputStream(testFile));
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} catch (URISyntaxException e1) {
+	    e1.printStackTrace();
+	}
+	return jsonString;
     }
 
     /**
