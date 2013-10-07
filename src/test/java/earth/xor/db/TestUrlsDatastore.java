@@ -78,6 +78,8 @@ public class TestUrlsDatastore {
 
 	assertEquals("bar", urlList.get(1).getTitle());
 	assertEquals("user3", urlList.get(2).getUser());
+	
+	assertNotNull(urlList.get(1).getTimestamp());
     }
 
     @Test

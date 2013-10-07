@@ -49,4 +49,9 @@ public class Url {
     public void setObjectId(String objectId) {
 	this.objectId = objectId;
     }
+
+    public Object getTimestamp() {
+	// TODO Auto-generated method stub
+	return null;
+    }
 }
