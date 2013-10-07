@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -72,14 +73,15 @@ public class TestUrlsDatastore {
 	while (urlsCursor.hasNext()) {
 	    DBObject dbo = urlsCursor.next();
 	    Url currentUrl = new Url(dbo.get("url").toString(), dbo
-		    .get("title").toString(), dbo.get("user").toString());
+		    .get("title").toString(), dbo.get("user").toString(), (Date) dbo
+		    .get(DbProperties.URLSCOLLECTION_TIMESTAMP));
 	    urlList.add(currentUrl);
 	}
 
 	assertEquals("bar", urlList.get(1).getTitle());
 	assertEquals("user3", urlList.get(2).getUser());
-	
-	assertNotNull(urlList.get(1).getTimestamp());
+
+	assertNotNull(urlList.get(1).getTimeStamp());
     }
 
     @Test
@@ -90,7 +92,7 @@ public class TestUrlsDatastore {
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
 	DBObject savedUrl = col.findOne();
-	
+
 	DBObject obj = urlsData.getUrlById(savedUrl.get("_id").toString());
 
 	assertNotNull(obj);

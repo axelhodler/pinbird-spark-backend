@@ -1,5 +1,7 @@
 package earth.xor.db;
 
+import java.util.Date;
+
 import com.google.gson.annotations.SerializedName;
 
 
@@ -8,9 +10,17 @@ public class Url {
     private String url;
     private String title;
     private String user;
+    private Date timestamp;
     
     @SerializedName(value = "_id")
     private String objectId;
+    
+    public Url(String url, String title, String user, Date date) {
+	this.setUrl(url);
+	this.setTitle(title);
+	this.setUser(user);
+	this.timestamp = date;
+    }
     
     public Url(String url, String title, String user) {
 	this.setUrl(url);
@@ -50,8 +60,7 @@ public class Url {
 	this.objectId = objectId;
     }
 
-    public Object getTimestamp() {
-	// TODO Auto-generated method stub
-	return null;
+    public Date getTimeStamp() {
+	return this.timestamp;
     }
 }

@@ -10,4 +10,5 @@ public class DbProperties {
     public static final String URLSCOLLECTION_URL = "url";
     public static final String URLSCOLLECTION_TITLE = "title";
     public static final String URLSCOLLECTION_USER = "user";
+    public static final String URLSCOLLECTION_TIMESTAMP = "timestamp";
 }

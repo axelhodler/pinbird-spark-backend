@@ -1,5 +1,7 @@
 package earth.xor.db;
 
+import java.util.Date;
+
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
@@ -26,7 +28,7 @@ public class UrlsDatastore {
 	col.insert(new BasicDBObject(DbProperties.URLSCOLLECTION_URL, url
 		.getUrl()).append(DbProperties.URLSCOLLECTION_TITLE,
 		url.getTitle()).append(DbProperties.URLSCOLLECTION_USER,
-		url.getUser()));
+		url.getUser()).append(DbProperties.URLSCOLLECTION_TIMESTAMP, new Date()));
     }
 
     public DBCursor getUrls() {
