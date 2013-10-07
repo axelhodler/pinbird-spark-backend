@@ -26,9 +26,10 @@ public class UrlsDatastore {
 		.getCollection(DbProperties.URLSCOLLECTION_NAME);
 
 	col.insert(new BasicDBObject(DbProperties.URLSCOLLECTION_URL, url
-		.getUrl()).append(DbProperties.URLSCOLLECTION_TITLE,
-		url.getTitle()).append(DbProperties.URLSCOLLECTION_USER,
-		url.getUser()).append(DbProperties.URLSCOLLECTION_TIMESTAMP, new Date()));
+		.getUrl())
+		.append(DbProperties.URLSCOLLECTION_TITLE, url.getTitle())
+		.append(DbProperties.URLSCOLLECTION_USER, url.getUser())
+		.append(DbProperties.URLSCOLLECTION_TIMESTAMP, new Date()));
     }
 
     public DBCursor getUrls() {
@@ -49,12 +50,15 @@ public class UrlsDatastore {
 
 	DBObject foundUrl = col.findOne(new BasicDBObject("_id", new ObjectId(
 		id)));
-	
+
 	String objectIdStringRepresentation = foundUrl.get("_id").toString();
-	
+	String dateStringRepresentation = foundUrl.get(
+		DbProperties.URLSCOLLECTION_TIMESTAMP).toString();
+
 	foundUrl.put("_id", objectIdStringRepresentation);
-	
+	foundUrl.put(DbProperties.URLSCOLLECTION_TIMESTAMP,
+		dateStringRepresentation);
+
 	return foundUrl;
     }
-
 }
