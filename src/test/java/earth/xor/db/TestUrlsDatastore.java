@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -67,18 +68,8 @@ public class TestUrlsDatastore {
 	urlsData.addUrl(ExampleUrls.testUrl3);
 
 	DBCursor urlsCursor = urlsData.getUrls();
-
-	ArrayList<Url> urlList = new ArrayList<Url>();
-
-	while (urlsCursor.hasNext()) {
-	    DBObject dbo = urlsCursor.next();
-	    Url currentUrl = new Url(dbo.get(DbProperties.URLSCOLLECTION_URL)
-		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_TITLE)
-		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_USER)
-		    .toString(),
-		    (Date) dbo.get(DbProperties.URLSCOLLECTION_TIMESTAMP));
-	    urlList.add(currentUrl);
-	}
+	
+	List<Url> urlList = createUrlsArrayFromUrlDataInCursor(urlsCursor);
 
 	assertEquals("bar", urlList.get(1).getTitle());
 	assertEquals("user3", urlList.get(2).getUser());
@@ -100,6 +91,24 @@ public class TestUrlsDatastore {
 	assertNotNull(obj);
 	assertEquals("foo", obj.get("title").toString());
 	assertEquals(savedUrl.get("_id"), obj.get("_id"));
+    }
+    
+    private List<Url> createUrlsArrayFromUrlDataInCursor(
+	    DBCursor urlsCursor) {
+	
+	List<Url> urlList = new ArrayList<Url>();
+	
+	while (urlsCursor.hasNext()) {
+	    DBObject dbo = urlsCursor.next();
+	    Url currentUrl = new Url(dbo.get(DbProperties.URLSCOLLECTION_URL)
+		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_TITLE)
+		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_USER)
+		    .toString(),
+		    (Date) dbo.get(DbProperties.URLSCOLLECTION_TIMESTAMP));
+	    urlList.add(currentUrl);
+	}
+	
+	return urlList;
     }
 
     @After
