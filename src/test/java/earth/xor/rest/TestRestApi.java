@@ -177,10 +177,14 @@ public class TestRestApi {
 	assertEquals("http://www.bar.org", allUrls.get(1).getUrl());
 	assertEquals("bar", allUrls.get(1).getTitle());
 	assertEquals("user2", allUrls.get(1).getUser());
+	
+	assertNotNull(allUrls.get(1).getTimeStamp());
 
 	assertEquals("http://www.baz.org", allUrls.get(2).getUrl());
 	assertEquals("baz", allUrls.get(2).getTitle());
 	assertEquals("user3", allUrls.get(2).getUser());
+	
+	assertNotNull(allUrls.get(2).getTimeStamp());
     }
 
     private String addUrlAndGetItsId() {
