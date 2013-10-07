@@ -103,8 +103,7 @@ public class TestUrlsDatastore {
 	    Url currentUrl = new Url(dbo.get(DbProperties.URLSCOLLECTION_URL)
 		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_TITLE)
 		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_USER)
-		    .toString(),
-		    (Date) dbo.get(DbProperties.URLSCOLLECTION_TIMESTAMP));
+		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_TIMESTAMP).toString());
 	    urlList.add(currentUrl);
 	}
 	

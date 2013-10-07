@@ -9,14 +9,14 @@ public class Url {
     private String url;
     private String title;
     private String user;
-    private Date timestamp;
+    private String timestamp;
 
     @SerializedName(value = "_id")
     private String objectId;
 
-    public Url(String url, String title, String user, Date date) {
+    public Url(String url, String title, String user, String string) {
 	setEveryThingButTimeAndId(url, title, user);
-	this.timestamp = date;
+	this.timestamp = string;
     }
 
     public Url(String url, String title, String user) {
@@ -55,7 +55,7 @@ public class Url {
 	this.objectId = objectId;
     }
 
-    public Date getTimeStamp() {
+    public String getTimeStamp() {
 	return this.timestamp;
     }
 
