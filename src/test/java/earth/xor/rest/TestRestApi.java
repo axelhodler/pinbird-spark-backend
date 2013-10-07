@@ -4,6 +4,7 @@ import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -170,6 +171,8 @@ public class TestRestApi {
 	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
 	assertEquals("foo", allUrls.get(0).getTitle());
 	assertEquals("user1", allUrls.get(0).getUser());
+	
+	assertNotNull(allUrls.get(0).getTimeStamp());
 
 	assertEquals("http://www.bar.org", allUrls.get(1).getUrl());
 	assertEquals("bar", allUrls.get(1).getTitle());
