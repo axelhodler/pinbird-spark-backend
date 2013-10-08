@@ -48,12 +48,6 @@ public class TestUrlsDatastore {
     }
 
     @Test
-    public void testAccessingUrlDB() {
-	assertNotNull(urlsData.getMongoClient());
-	assertTrue(urlsData.getMongoClient() instanceof MongoClient);
-    }
-
-    @Test
     public void testAddingAUrl() {
 	urlsData = new UrlsDatastore(mongoClient);
 
