@@ -48,14 +48,6 @@ public class TestUrlsDatastore {
     }
 
     @Test
-    public void testAddingAUrl() {
-	urlsData = new UrlsDatastore(mongoClient);
-
-	urlsData.addUrl(ExampleUrls.testUrl1);
-	assertEquals(1, urlsData.getUrls().size());
-    }
-
-    @Test
     public void testAddingAndGettingMultipleUrls() {
 	urlsData.addUrl(ExampleUrls.testUrl1);
 	urlsData.addUrl(ExampleUrls.testUrl2);
