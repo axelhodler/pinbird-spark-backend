@@ -75,7 +75,7 @@ public class TestUrlsDatastore {
 	DBObject obj = urlsData.getUrlById(savedUrl.get("_id").toString());
 
 	assertNotNull(obj);
-	assertEquals("foo", obj.get("title").toString());
+	assertEquals("foo", obj.get(DbProperties.URLS_TITLE).toString());
 	assertEquals(savedUrl.get("_id"), obj.get("_id"));
     }
     
@@ -99,7 +99,7 @@ public class TestUrlsDatastore {
     @After
     public void clearTheCollection() {
 	DB database = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = database.getCollection("urls");
+	DBCollection col = database.getCollection(DbProperties.URLS_NAME);
 	col.drop();
     }
 
