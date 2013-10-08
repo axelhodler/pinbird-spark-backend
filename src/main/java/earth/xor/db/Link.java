@@ -1,10 +1,8 @@
 package earth.xor.db;
 
-import java.util.Date;
-
 import com.google.gson.annotations.SerializedName;
 
-public class Url {
+public class Link {
 
     private String url;
     private String title;
@@ -14,12 +12,12 @@ public class Url {
     @SerializedName(value = "_id")
     private String objectId;
 
-    public Url(String url, String title, String user, String string) {
+    public Link(String url, String title, String user, String string) {
 	setEveryThingButTimeAndId(url, title, user);
 	this.timestamp = string;
     }
 
-    public Url(String url, String title, String user) {
+    public Link(String url, String title, String user) {
 	setEveryThingButTimeAndId(url, title, user);
     }
 

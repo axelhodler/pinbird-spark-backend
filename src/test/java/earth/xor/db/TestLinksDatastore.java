@@ -25,13 +25,13 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbeddedMongo;
 import earth.xor.ExampleUrls;
 
-public class TestUrlsDatastore {
+public class TestLinksDatastore {
 
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
 
     private MongoClient mongoClient;
-    private UrlsDatastore urlsData;
+    private LinksDatastore urlsData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -44,7 +44,7 @@ public class TestUrlsDatastore {
     public void setUpTests() throws UnknownHostException {
 	this.mongoClient = new MongoClient("localhost", port);
 
-	this.urlsData = new UrlsDatastore(mongoClient);
+	this.urlsData = new LinksDatastore(mongoClient);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class TestUrlsDatastore {
 
 	DBCursor urlsCursor = urlsData.getUrls();
 	
-	List<Url> urlList = createUrlsArrayFromUrlDataInCursor(urlsCursor);
+	List<Link> urlList = createUrlsArrayFromUrlDataInCursor(urlsCursor);
 
 	assertEquals("bar", urlList.get(1).getTitle());
 	assertEquals("user3", urlList.get(2).getUser());
@@ -78,14 +78,14 @@ public class TestUrlsDatastore {
 	assertEquals(savedUrl.get("_id"), obj.get("_id"));
     }
     
-    private List<Url> createUrlsArrayFromUrlDataInCursor(
+    private List<Link> createUrlsArrayFromUrlDataInCursor(
 	    DBCursor urlsCursor) {
 	
-	List<Url> urlList = new ArrayList<Url>();
+	List<Link> urlList = new ArrayList<Link>();
 	
 	while (urlsCursor.hasNext()) {
 	    DBObject dbo = urlsCursor.next();
-	    Url currentUrl = new Url(dbo.get(DbProperties.URLS_URL)
+	    Link currentUrl = new Link(dbo.get(DbProperties.URLS_URL)
 		    .toString(), dbo.get(DbProperties.URLS_TITLE)
 		    .toString(), dbo.get(DbProperties.URLS_USER)
 		    .toString(), dbo.get(DbProperties.URLS_TIMESTAMP).toString());

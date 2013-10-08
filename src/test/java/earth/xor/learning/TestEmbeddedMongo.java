@@ -18,7 +18,7 @@ import com.mongodb.MongoClient;
 
 import earth.xor.EmbeddedMongo;
 import earth.xor.db.DbProperties;
-import earth.xor.db.UrlsDatastore;
+import earth.xor.db.LinksDatastore;
 
 public class TestEmbeddedMongo {
 
@@ -26,7 +26,7 @@ public class TestEmbeddedMongo {
     private static EmbeddedMongo embeddedMongo;
     
     private MongoClient mongo;
-    private UrlsDatastore urlDb;
+    private LinksDatastore urlDb;
     
 
     @BeforeClass
@@ -40,7 +40,7 @@ public class TestEmbeddedMongo {
     public void setUpTests() throws UnknownHostException {
 	this.mongo = new MongoClient("localhost", port);
 
-	this.urlDb = new UrlsDatastore(mongo);
+	this.urlDb = new LinksDatastore(mongo);
     }
 
     @Test

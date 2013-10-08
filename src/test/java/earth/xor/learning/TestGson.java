@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import earth.xor.db.Url;
+import earth.xor.db.Link;
 
 public class TestGson {
 
@@ -15,14 +15,14 @@ public class TestGson {
     	+ "\"title\":\"testtitle\","
     	+ "\"user\":\"testuser\"}";
     
-    private Url urlExample;
+    private Link urlExample;
 
     private Gson gson;
     
     @Before
     public void setUpTests() {
 	this.gson = new Gson();
-	this.urlExample = new Url("testurl", "testtitle", "testuser");
+	this.urlExample = new Link("testurl", "testtitle", "testuser");
     }
     
     @Test
@@ -35,7 +35,7 @@ public class TestGson {
     
     @Test
     public void testJsonToJavaObjectConversion() {
-	Url url = gson.fromJson(jsonExample, Url.class);
+	Link url = gson.fromJson(jsonExample, Link.class);
 	
 	assertEquals(urlExample.getTitle(), url.getTitle());
 	assertEquals(urlExample.getUrl(), url.getUrl());

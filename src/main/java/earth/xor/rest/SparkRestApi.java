@@ -19,17 +19,17 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.db.DbProperties;
-import earth.xor.db.Url;
-import earth.xor.db.UrlsDatastore;
+import earth.xor.db.Link;
+import earth.xor.db.LinksDatastore;
 
 public class SparkRestApi {
 
     private MongoClient mongoClient;
-    private UrlsDatastore urlsData;
+    private LinksDatastore urlsData;
 
     public SparkRestApi(MongoClient mongoClient) {
 	this.mongoClient = mongoClient;
-	this.urlsData = new UrlsDatastore(mongoClient);
+	this.urlsData = new LinksDatastore(mongoClient);
     }
 
     public void launchServer() {
@@ -46,7 +46,7 @@ public class SparkRestApi {
 
 		JSONObject obj = (JSONObject) JSONValue.parse(request.body());
 
-		urlsData.addUrl(new Url(obj.get("url").toString(), obj.get(
+		urlsData.addUrl(new Link(obj.get("url").toString(), obj.get(
 			"title").toString(), obj.get("user").toString()));
 
 		addAccessControlAllowOriginHeader(response);

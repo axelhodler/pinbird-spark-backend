@@ -37,8 +37,8 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbeddedMongo;
 import earth.xor.ExampleUrls;
 import earth.xor.db.DbProperties;
-import earth.xor.db.Url;
-import earth.xor.db.UrlsDatastore;
+import earth.xor.db.Link;
+import earth.xor.db.LinksDatastore;
 
 public class TestRestApi {
 
@@ -48,7 +48,7 @@ public class TestRestApi {
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
     private MongoClient mongoClient;
-    private UrlsDatastore urlsData;
+    private LinksDatastore urlsData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -63,7 +63,7 @@ public class TestRestApi {
 	this.gson = new Gson();
 
 	this.mongoClient = new MongoClient("localhost", port);
-	this.urlsData = new UrlsDatastore(mongoClient);
+	this.urlsData = new LinksDatastore(mongoClient);
 
 	RestAssured.port = 4567;
 
@@ -90,10 +90,10 @@ public class TestRestApi {
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
 		.get("/urls").asString();
 
-	Type type = new TypeToken<Map<String, List<Url>>>() {
+	Type type = new TypeToken<Map<String, List<Link>>>() {
 	}.getType();
 
-	Map<String, List<Url>> returnedUrls = new HashMap<String, List<Url>>();
+	Map<String, List<Link>> returnedUrls = new HashMap<String, List<Link>>();
 
 	returnedUrls = gson.fromJson(jsonResponse, type);
 
@@ -113,10 +113,10 @@ public class TestRestApi {
 	// otherwise its not valid JSON
 	assertTrue(jsonString.contains("\"" + id + "\""));
 
-	Type type = new TypeToken<Map<String, Url>>() {
+	Type type = new TypeToken<Map<String, Link>>() {
 	}.getType();
 
-	Map<String, Url> returnedUrlRepresentation = new HashMap<String, Url>();
+	Map<String, Link> returnedUrlRepresentation = new HashMap<String, Link>();
 
 	returnedUrlRepresentation = gson.fromJson(jsonString, type);
 
@@ -129,7 +129,7 @@ public class TestRestApi {
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
 		.post("/urls").asString();
 
-	Url savedUrl = gson.fromJson(jsonString, Url.class);
+	Link savedUrl = gson.fromJson(jsonString, Link.class);
 
 	assertEquals("http://www.foo.org", savedUrl.getUrl());
 	assertEquals("foo", savedUrl.getTitle());
@@ -164,9 +164,9 @@ public class TestRestApi {
     }
 
     private void checkIfPreviouslyAddedUrlsAreShown(
-	    Map<String, List<Url>> returnedUrls) {
+	    Map<String, List<Link>> returnedUrls) {
 
-	ArrayList<Url> allUrls = (ArrayList<Url>) returnedUrls.get("urls");
+	ArrayList<Link> allUrls = (ArrayList<Link>) returnedUrls.get("urls");
 
 	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
 	assertEquals("foo", allUrls.get(0).getTitle());
@@ -200,8 +200,8 @@ public class TestRestApi {
     }
 
     private void checkIfItsTheCorrectUrl(
-	    Map<String, Url> returnedUrlRepresentation) {
-	Url foundUrl = returnedUrlRepresentation.get("url");
+	    Map<String, Link> returnedUrlRepresentation) {
+	Link foundUrl = returnedUrlRepresentation.get("url");
 
 	assertEquals("http://www.foo.org", foundUrl.getUrl());
 	assertEquals("foo", foundUrl.getTitle());

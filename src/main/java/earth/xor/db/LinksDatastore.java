@@ -11,17 +11,17 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public class UrlsDatastore {
+public class LinksDatastore {
 
     private MongoClient mongo;
     private DB database;
 
-    public UrlsDatastore(MongoClient mongo) {
+    public LinksDatastore(MongoClient mongo) {
 	this.mongo = mongo;
 	this.database = mongo.getDB(DbProperties.DATABASE_NAME);
     }
 
-    public void addUrl(Url url) {
+    public void addUrl(Link url) {
 	DBCollection col = this.database
 		.getCollection(DbProperties.URLS_NAME);
 
