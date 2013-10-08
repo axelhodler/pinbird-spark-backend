@@ -48,7 +48,7 @@ public class TestUrlsDatastore {
     }
 
     @Test
-    public void testAddingAndGettingMultipleUrls() {
+    public void testAddingAndGettingAllUrls() {
 	urlsData.addUrl(ExampleUrls.testUrl1);
 	urlsData.addUrl(ExampleUrls.testUrl2);
 	urlsData.addUrl(ExampleUrls.testUrl3);
