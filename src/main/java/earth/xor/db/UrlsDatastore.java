@@ -23,18 +23,18 @@ public class UrlsDatastore {
 
     public void addUrl(Url url) {
 	DBCollection col = this.database
-		.getCollection(DbProperties.URLSCOLLECTION_NAME);
+		.getCollection(DbProperties.URLS_NAME);
 
-	col.insert(new BasicDBObject(DbProperties.URLSCOLLECTION_URL, url
+	col.insert(new BasicDBObject(DbProperties.URLS_URL, url
 		.getUrl())
-		.append(DbProperties.URLSCOLLECTION_TITLE, url.getTitle())
-		.append(DbProperties.URLSCOLLECTION_USER, url.getUser())
-		.append(DbProperties.URLSCOLLECTION_TIMESTAMP, new Date()));
+		.append(DbProperties.URLS_TITLE, url.getTitle())
+		.append(DbProperties.URLS_USER, url.getUser())
+		.append(DbProperties.URLS_TIMESTAMP, new Date()));
     }
 
     public DBCursor getUrls() {
 	DBCollection col = this.database
-		.getCollection(DbProperties.URLSCOLLECTION_NAME);
+		.getCollection(DbProperties.URLS_NAME);
 
 	return col.find();
     }
@@ -46,17 +46,17 @@ public class UrlsDatastore {
     public DBObject getUrlById(String id) {
 
 	DBCollection col = this.database
-		.getCollection(DbProperties.URLSCOLLECTION_NAME);
+		.getCollection(DbProperties.URLS_NAME);
 
 	DBObject foundUrl = col.findOne(new BasicDBObject("_id", new ObjectId(
 		id)));
 
 	String objectIdStringRepresentation = foundUrl.get("_id").toString();
 	String dateStringRepresentation = foundUrl.get(
-		DbProperties.URLSCOLLECTION_TIMESTAMP).toString();
+		DbProperties.URLS_TIMESTAMP).toString();
 
 	foundUrl.put("_id", objectIdStringRepresentation);
-	foundUrl.put(DbProperties.URLSCOLLECTION_TIMESTAMP,
+	foundUrl.put(DbProperties.URLS_TIMESTAMP,
 		dateStringRepresentation);
 
 	return foundUrl;

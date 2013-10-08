@@ -214,7 +214,7 @@ public class TestRestApi {
     @After
     public void stopRestApi() {
 	mongoClient.getDB(DbProperties.DATABASE_NAME)
-		.getCollection(DbProperties.URLSCOLLECTION_NAME).drop();
+		.getCollection(DbProperties.URLS_NAME).drop();
 	restapi.stopServer();
     }
 

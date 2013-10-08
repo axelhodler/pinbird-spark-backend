@@ -6,9 +6,9 @@ public class DbProperties {
     
     public static String DATABASE_NAME = new ConfigAccessor().getDatabaseName();
     
-    public static final String URLSCOLLECTION_NAME = "urls";
-    public static final String URLSCOLLECTION_URL = "url";
-    public static final String URLSCOLLECTION_TITLE = "title";
-    public static final String URLSCOLLECTION_USER = "user";
-    public static final String URLSCOLLECTION_TIMESTAMP = "timestamp";
+    public static final String URLS_NAME = "urls";
+    public static final String URLS_URL = "url";
+    public static final String URLS_TITLE = "title";
+    public static final String URLS_USER = "user";
+    public static final String URLS_TIMESTAMP = "timestamp";
 }

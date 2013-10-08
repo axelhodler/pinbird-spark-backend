@@ -109,8 +109,8 @@ public class SparkRestApi {
 	jsonObject.put("url", dbObject.get("url"));
 	jsonObject.put("title", dbObject.get("title"));
 	jsonObject.put("user", dbObject.get("user"));
-	jsonObject.put(DbProperties.URLSCOLLECTION_TIMESTAMP,
-		dbObject.get(DbProperties.URLSCOLLECTION_TIMESTAMP).toString());
+	jsonObject.put(DbProperties.URLS_TIMESTAMP,
+		dbObject.get(DbProperties.URLS_TIMESTAMP).toString());
 
 	return jsonObject;
     }

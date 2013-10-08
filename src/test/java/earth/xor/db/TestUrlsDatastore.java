@@ -82,7 +82,7 @@ public class TestUrlsDatastore {
 	urlsData.addUrl(ExampleUrls.testUrl1);
 
 	DBCollection col = mongoClient.getDB(DbProperties.DATABASE_NAME)
-		.getCollection(DbProperties.URLSCOLLECTION_NAME);
+		.getCollection(DbProperties.URLS_NAME);
 
 	DBObject savedUrl = col.findOne();
 
@@ -100,10 +100,10 @@ public class TestUrlsDatastore {
 	
 	while (urlsCursor.hasNext()) {
 	    DBObject dbo = urlsCursor.next();
-	    Url currentUrl = new Url(dbo.get(DbProperties.URLSCOLLECTION_URL)
-		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_TITLE)
-		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_USER)
-		    .toString(), dbo.get(DbProperties.URLSCOLLECTION_TIMESTAMP).toString());
+	    Url currentUrl = new Url(dbo.get(DbProperties.URLS_URL)
+		    .toString(), dbo.get(DbProperties.URLS_TITLE)
+		    .toString(), dbo.get(DbProperties.URLS_USER)
+		    .toString(), dbo.get(DbProperties.URLS_TIMESTAMP).toString());
 	    urlList.add(currentUrl);
 	}
 	
