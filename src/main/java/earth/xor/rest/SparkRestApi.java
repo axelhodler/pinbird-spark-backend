@@ -3,6 +3,9 @@ package earth.xor.rest;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -110,9 +113,14 @@ public class SparkRestApi {
 	jsonObject.put("title", dbObject.get("title"));
 	jsonObject.put("user", dbObject.get("user"));
 	jsonObject.put(DbProperties.URLS_TIMESTAMP,
-		dbObject.get(DbProperties.URLS_TIMESTAMP).toString());
+		formatDate((Date) dbObject.get(DbProperties.URLS_TIMESTAMP)));
 
 	return jsonObject;
+    }
+
+    private String formatDate(Date date) {
+	SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");
+	return sdf.format(date);
     }
 
     private void addAccessControlAllowOriginHeader(Response response) {
