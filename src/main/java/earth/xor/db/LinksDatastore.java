@@ -21,20 +21,20 @@ public class LinksDatastore {
 	this.database = mongo.getDB(DbProperties.DATABASE_NAME);
     }
 
-    public void addUrl(Link url) {
+    public void addLink(Link link) {
 	DBCollection col = this.database
-		.getCollection(DbProperties.URLS_NAME);
+		.getCollection(DbProperties.LINKS_NAME);
 
-	col.insert(new BasicDBObject(DbProperties.URLS_URL, url
+	col.insert(new BasicDBObject(DbProperties.LINK_URL, link
 		.getUrl())
-		.append(DbProperties.URLS_TITLE, url.getTitle())
-		.append(DbProperties.URLS_USER, url.getUser())
-		.append(DbProperties.URLS_TIMESTAMP, new Date()));
+		.append(DbProperties.LINK_TITLE, link.getTitle())
+		.append(DbProperties.LINK_USER, link.getUser())
+		.append(DbProperties.LINK_TIMESTAMP, new Date()));
     }
 
-    public DBCursor getUrls() {
+    public DBCursor getLinks() {
 	DBCollection col = this.database
-		.getCollection(DbProperties.URLS_NAME);
+		.getCollection(DbProperties.LINKS_NAME);
 
 	return col.find();
     }
@@ -43,16 +43,14 @@ public class LinksDatastore {
 	return this.mongo;
     }
 
-    public DBObject getUrlById(String id) {
+    public DBObject getLinkById(String id) {
 
 	DBCollection col = this.database
-		.getCollection(DbProperties.URLS_NAME);
+		.getCollection(DbProperties.LINKS_NAME);
 
-	DBObject foundUrl = col.findOne(new BasicDBObject("_id", new ObjectId(
+	DBObject foundLink = col.findOne(new BasicDBObject("_id", new ObjectId(
 		id)));
 
-	
-
-	return foundUrl;
+	return foundLink;
     }
 }

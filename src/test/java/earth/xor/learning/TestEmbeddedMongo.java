@@ -26,7 +26,7 @@ public class TestEmbeddedMongo {
     private static EmbeddedMongo embeddedMongo;
     
     private MongoClient mongo;
-    private LinksDatastore urlDb;
+    private LinksDatastore linksData;
     
 
     @BeforeClass
@@ -40,7 +40,7 @@ public class TestEmbeddedMongo {
     public void setUpTests() throws UnknownHostException {
 	this.mongo = new MongoClient("localhost", port);
 
-	this.urlDb = new LinksDatastore(mongo);
+	this.linksData = new LinksDatastore(mongo);
     }
 
     @Test

@@ -35,7 +35,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.EmbeddedMongo;
-import earth.xor.ExampleUrls;
+import earth.xor.ExampleLinks;
 import earth.xor.db.DbProperties;
 import earth.xor.db.Link;
 import earth.xor.db.LinksDatastore;
@@ -48,7 +48,7 @@ public class TestRestApi {
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
     private MongoClient mongoClient;
-    private LinksDatastore urlsData;
+    private LinksDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -63,7 +63,7 @@ public class TestRestApi {
 	this.gson = new Gson();
 
 	this.mongoClient = new MongoClient("localhost", port);
-	this.urlsData = new LinksDatastore(mongoClient);
+	this.linksData = new LinksDatastore(mongoClient);
 
 	RestAssured.port = 4567;
 
@@ -73,22 +73,22 @@ public class TestRestApi {
     }
 
     @Test
-    public void testAddingAUrlThroughTheRestApi() {
+    public void testAddingALinkThroughTheRestApi() {
 
-	addAUrlThroughTheRestApi();
-	checkIfUrlWasAddedToDatabase();
+	addAlinkThroughTheRestApi();
+	checkIfLinkWasAddedToDatabase();
     }
 
     @Test
     public void testGettingAListOfAllSavedUrls() {
 
-	urlsData.addUrl(ExampleUrls.testUrl1);
-	urlsData.addUrl(ExampleUrls.testUrl2);
-	urlsData.addUrl(ExampleUrls.testUrl3);
+	linksData.addLink(ExampleLinks.testLink1);
+	linksData.addLink(ExampleLinks.testLink2);
+	linksData.addLink(ExampleLinks.testLink3);
 
 	String jsonResponse = expect().contentType("application/json").and()
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
-		.get("/urls").asString();
+		.get(DbProperties.LINKS_ROUTE).asString();
 
 	Type type = new TypeToken<Map<String, List<Link>>>() {
 	}.getType();
@@ -97,17 +97,17 @@ public class TestRestApi {
 
 	returnedUrls = gson.fromJson(jsonResponse, type);
 
-	checkIfPreviouslyAddedUrlsAreShown(returnedUrls);
+	checkIfPreviouslyAddedLinksAreShown(returnedUrls);
     }
 
     @Test
-    public void testGettingASavedUrlById() {
+    public void testGettingASavedLinkById() {
 
-	String id = addUrlAndGetItsId();
+	String id = addLinkAndGetItsId();
 
 	String jsonString = expect().contentType("application/json").and()
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
-		.get("/urls/" + id).asString();
+		.get("/links/" + id).asString();
 
 	// id has to be surrounded with double quotes,
 	// otherwise its not valid JSON
@@ -120,14 +120,14 @@ public class TestRestApi {
 
 	returnedUrlRepresentation = gson.fromJson(jsonString, type);
 
-	checkIfItsTheCorrectUrl(returnedUrlRepresentation);
+	checkIfItsTheCorrectlink(returnedUrlRepresentation);
     }
 
-    private void addAUrlThroughTheRestApi() {
-	String jsonString = given().body(getUrlsPostJsonString()).expect()
+    private void addAlinkThroughTheRestApi() {
+	String jsonString = given().body(getLinksPostJsonString()).expect()
 		.contentType("application/json").and()
 		.header("Access-Control-Allow-Origin", equalTo("*")).when()
-		.post("/urls").asString();
+		.post("/links").asString();
 
 	Link savedUrl = gson.fromJson(jsonString, Link.class);
 
@@ -136,24 +136,24 @@ public class TestRestApi {
 	assertEquals("test", savedUrl.getUser());
     }
 
-    private void checkIfUrlWasAddedToDatabase() {
+    private void checkIfLinkWasAddedToDatabase() {
 	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = urlsDb.getCollection("urls");
+	DBCollection col = urlsDb.getCollection(DbProperties.LINKS_NAME);
 
-	DBObject foundEntry = col.findOne(new BasicDBObject("url",
+	DBObject foundEntry = col.findOne(new BasicDBObject(DbProperties.LINK_URL,
 		"http://www.foo.org"));
 
-	assertEquals("http://www.foo.org", foundEntry.get("url"));
-	assertEquals("foo", foundEntry.get("title"));
-	assertEquals("test", foundEntry.get("user"));
+	assertEquals("http://www.foo.org", foundEntry.get(DbProperties.LINK_URL));
+	assertEquals("foo", foundEntry.get(DbProperties.LINK_TITLE));
+	assertEquals("test", foundEntry.get(DbProperties.LINK_USER));
     }
 
-    private String getUrlsPostJsonString() {
+    private String getLinksPostJsonString() {
 
 	String jsonString = null;
 	try {
 	    File testFile = new File(TestRestApi.class.getResource(
-		    "/urlsPost.JSON").toURI());
+		    "/linksPost.JSON").toURI());
 	    jsonString = IOUtils.toString(new FileInputStream(testFile));
 	} catch (IOException e) {
 	    e.printStackTrace();
@@ -163,10 +163,10 @@ public class TestRestApi {
 	return jsonString;
     }
 
-    private void checkIfPreviouslyAddedUrlsAreShown(
+    private void checkIfPreviouslyAddedLinksAreShown(
 	    Map<String, List<Link>> returnedUrls) {
 
-	ArrayList<Link> allUrls = (ArrayList<Link>) returnedUrls.get("urls");
+	ArrayList<Link> allUrls = (ArrayList<Link>) returnedUrls.get(DbProperties.LINKS_NAME);
 
 	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
 	assertEquals("foo", allUrls.get(0).getTitle());
@@ -187,25 +187,25 @@ public class TestRestApi {
 	assertNotNull(allUrls.get(2).getTimeStamp());
     }
 
-    private String addUrlAndGetItsId() {
-	urlsData.addUrl(ExampleUrls.testUrl1);
+    private String addLinkAndGetItsId() {
+	linksData.addLink(ExampleLinks.testLink1);
 
-	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = urlsDb.getCollection("urls");
+	DB linksDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
+	DBCollection col = linksDb.getCollection(DbProperties.LINKS_NAME);
 
-	DBObject foundEntry = col.findOne(new BasicDBObject("url",
+	DBObject foundEntry = col.findOne(new BasicDBObject(DbProperties.LINK_URL,
 		"http://www.foo.org"));
 
-	return foundEntry.get("_id").toString();
+	return foundEntry.get(DbProperties.LINK_ID).toString();
     }
 
-    private void checkIfItsTheCorrectUrl(
+    private void checkIfItsTheCorrectlink(
 	    Map<String, Link> returnedUrlRepresentation) {
-	Link foundUrl = returnedUrlRepresentation.get("url");
+	Link foundLink = returnedUrlRepresentation.get(DbProperties.LINK_URL);
 
-	assertEquals("http://www.foo.org", foundUrl.getUrl());
-	assertEquals("foo", foundUrl.getTitle());
-	assertEquals("user1", foundUrl.getUser());
+	assertEquals("http://www.foo.org", foundLink.getUrl());
+	assertEquals("foo", foundLink.getTitle());
+	assertEquals("user1", foundLink.getUser());
     }
 
     /**
@@ -214,7 +214,7 @@ public class TestRestApi {
     @After
     public void stopRestApi() {
 	mongoClient.getDB(DbProperties.DATABASE_NAME)
-		.getCollection(DbProperties.URLS_NAME).drop();
+		.getCollection(DbProperties.LINKS_NAME).drop();
 	restapi.stopServer();
     }
 

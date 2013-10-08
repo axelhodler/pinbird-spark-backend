@@ -23,7 +23,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.EmbeddedMongo;
-import earth.xor.ExampleUrls;
+import earth.xor.ExampleLinks;
 
 public class TestLinksDatastore {
 
@@ -31,7 +31,7 @@ public class TestLinksDatastore {
     private static EmbeddedMongo embeddedMongo;
 
     private MongoClient mongoClient;
-    private LinksDatastore urlsData;
+    private LinksDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -44,51 +44,51 @@ public class TestLinksDatastore {
     public void setUpTests() throws UnknownHostException {
 	this.mongoClient = new MongoClient("localhost", port);
 
-	this.urlsData = new LinksDatastore(mongoClient);
+	this.linksData = new LinksDatastore(mongoClient);
     }
 
     @Test
-    public void testAddingAndGettingAllUrls() {
-	urlsData.addUrl(ExampleUrls.testUrl1);
-	urlsData.addUrl(ExampleUrls.testUrl2);
-	urlsData.addUrl(ExampleUrls.testUrl3);
+    public void testAddingAndGettingAllLinks() {
+	linksData.addLink(ExampleLinks.testLink1);
+	linksData.addLink(ExampleLinks.testLink2);
+	linksData.addLink(ExampleLinks.testLink3);
 
-	DBCursor urlsCursor = urlsData.getUrls();
+	DBCursor linksCursor = linksData.getLinks();
 	
-	List<Link> urlList = createUrlsArrayFromUrlDataInCursor(urlsCursor);
+	List<Link> linkList = createLinksArrayFromUrlDataInCursor(linksCursor);
 
-	assertEquals("bar", urlList.get(1).getTitle());
-	assertEquals("user3", urlList.get(2).getUser());
+	assertEquals("bar", linkList.get(1).getTitle());
+	assertEquals("user3", linkList.get(2).getUser());
 
-	assertNotNull(urlList.get(1).getTimeStamp());
+	assertNotNull(linkList.get(1).getTimeStamp());
     }
 
     @Test
     public void testGettingAUrlById() {
-	urlsData.addUrl(ExampleUrls.testUrl1);
+	linksData.addLink(ExampleLinks.testLink1);
 
 	DBCollection col = mongoClient.getDB(DbProperties.DATABASE_NAME)
-		.getCollection(DbProperties.URLS_NAME);
+		.getCollection(DbProperties.LINKS_NAME);
 
 	DBObject savedUrl = col.findOne();
 
-	DBObject obj = urlsData.getUrlById(savedUrl.get("_id").toString());
+	DBObject obj = linksData.getLinkById(savedUrl.get("_id").toString());
 	
-	assertEquals("foo", obj.get(DbProperties.URLS_TITLE).toString());
+	assertEquals("foo", obj.get(DbProperties.LINK_TITLE).toString());
 	assertEquals(savedUrl.get("_id"), obj.get("_id"));
     }
     
-    private List<Link> createUrlsArrayFromUrlDataInCursor(
+    private List<Link> createLinksArrayFromUrlDataInCursor(
 	    DBCursor urlsCursor) {
 	
 	List<Link> urlList = new ArrayList<Link>();
 	
 	while (urlsCursor.hasNext()) {
 	    DBObject dbo = urlsCursor.next();
-	    Link currentUrl = new Link(dbo.get(DbProperties.URLS_URL)
-		    .toString(), dbo.get(DbProperties.URLS_TITLE)
-		    .toString(), dbo.get(DbProperties.URLS_USER)
-		    .toString(), dbo.get(DbProperties.URLS_TIMESTAMP).toString());
+	    Link currentUrl = new Link(dbo.get(DbProperties.LINK_URL)
+		    .toString(), dbo.get(DbProperties.LINK_TITLE)
+		    .toString(), dbo.get(DbProperties.LINK_USER)
+		    .toString(), dbo.get(DbProperties.LINK_TIMESTAMP).toString());
 	    urlList.add(currentUrl);
 	}
 	
@@ -98,7 +98,7 @@ public class TestLinksDatastore {
     @After
     public void clearTheCollection() {
 	DB database = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = database.getCollection(DbProperties.URLS_NAME);
+	DBCollection col = database.getCollection(DbProperties.LINKS_NAME);
 	col.drop();
     }
 

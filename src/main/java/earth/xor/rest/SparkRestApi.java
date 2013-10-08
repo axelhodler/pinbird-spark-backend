@@ -39,15 +39,16 @@ public class SparkRestApi {
     }
 
     public void createUrlsPostRoute() {
-	post(new Route("/urls") {
+	post(new Route(DbProperties.LINKS_ROUTE) {
 
 	    @Override
 	    public Object handle(Request request, Response response) {
 
 		JSONObject obj = (JSONObject) JSONValue.parse(request.body());
 
-		urlsData.addUrl(new Link(obj.get("url").toString(), obj.get(
-			"title").toString(), obj.get("user").toString()));
+		urlsData.addLink(new Link(obj.get(DbProperties.LINK_URL)
+			.toString(), obj.get(DbProperties.LINK_TITLE)
+			.toString(), obj.get(DbProperties.LINK_USER).toString()));
 
 		addAccessControlAllowOriginHeader(response);
 
@@ -57,13 +58,13 @@ public class SparkRestApi {
     }
 
     public void createUrlsGetRoute() {
-	get(new Route("/urls") {
+	get(new Route(DbProperties.LINKS_ROUTE) {
 
 	    @Override
 	    public Object handle(Request request, Response response) {
 		JSONArray array = new JSONArray();
 
-		DBCursor curs = urlsData.getUrls();
+		DBCursor curs = urlsData.getLinks();
 
 		while (curs.hasNext()) {
 		    DBObject dbobj = curs.next();
@@ -72,7 +73,7 @@ public class SparkRestApi {
 		}
 
 		JSONObject object = new JSONObject();
-		object.put("urls", array);
+		object.put(DbProperties.LINKS_NAME, array);
 
 		addAccessControlAllowOriginHeader(response);
 
@@ -84,18 +85,18 @@ public class SparkRestApi {
 
     private void createUrlsGetRouteForId() {
 
-	get(new Route("/urls/:id") {
+	get(new Route(DbProperties.LINKS_ROUTE + "/:id") {
 
 	    @Override
 	    public Object handle(Request request, Response response) {
 
-		DBObject foundUrl = urlsData.getUrlById(request.params(":id"));
-		
-		JSONObject mainObject = new JSONObject();
-		
-		JSONObject innerObject = addDBObjectKeysToJsonObject(foundUrl);
+		DBObject foundLink = urlsData.getLinkById(request.params(":id"));
 
-		mainObject.put("url", innerObject);
+		JSONObject mainObject = new JSONObject();
+
+		JSONObject innerObject = addDBObjectKeysToJsonObject(foundLink);
+
+		mainObject.put(DbProperties.LINK_URL, innerObject);
 
 		addAccessControlAllowOriginHeader(response);
 
@@ -107,12 +108,16 @@ public class SparkRestApi {
     private JSONObject addDBObjectKeysToJsonObject(DBObject dbObject) {
 	JSONObject jsonObject = new JSONObject();
 
-	jsonObject.put(DbProperties.URLS_ID, dbObject.get(DbProperties.URLS_ID).toString());
-	jsonObject.put(DbProperties.URLS_URL, dbObject.get(DbProperties.URLS_URL));
-	jsonObject.put(DbProperties.URLS_TITLE, dbObject.get(DbProperties.URLS_TITLE));
-	jsonObject.put(DbProperties.URLS_USER, dbObject.get(DbProperties.URLS_USER));
-	jsonObject.put(DbProperties.URLS_TIMESTAMP,
-		formatDate((Date) dbObject.get(DbProperties.URLS_TIMESTAMP)));
+	jsonObject.put(DbProperties.LINK_ID, dbObject.get(DbProperties.LINK_ID)
+		.toString());
+	jsonObject.put(DbProperties.LINK_URL,
+		dbObject.get(DbProperties.LINK_URL));
+	jsonObject.put(DbProperties.LINK_TITLE,
+		dbObject.get(DbProperties.LINK_TITLE));
+	jsonObject.put(DbProperties.LINK_USER,
+		dbObject.get(DbProperties.LINK_USER));
+	jsonObject.put(DbProperties.LINK_TIMESTAMP,
+		formatDate((Date) dbObject.get(DbProperties.LINK_TIMESTAMP)));
 
 	return jsonObject;
     }
