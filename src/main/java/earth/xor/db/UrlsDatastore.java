@@ -51,13 +51,7 @@ public class UrlsDatastore {
 	DBObject foundUrl = col.findOne(new BasicDBObject("_id", new ObjectId(
 		id)));
 
-	String objectIdStringRepresentation = foundUrl.get("_id").toString();
-	String dateStringRepresentation = foundUrl.get(
-		DbProperties.URLS_TIMESTAMP).toString();
-
-	foundUrl.put("_id", objectIdStringRepresentation);
-	foundUrl.put(DbProperties.URLS_TIMESTAMP,
-		dateStringRepresentation);
+	
 
 	return foundUrl;
     }
