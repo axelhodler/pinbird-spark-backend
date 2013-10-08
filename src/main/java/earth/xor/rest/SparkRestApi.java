@@ -107,10 +107,10 @@ public class SparkRestApi {
     private JSONObject addDBObjectKeysToJsonObject(DBObject dbObject) {
 	JSONObject jsonObject = new JSONObject();
 
-	jsonObject.put("_id", dbObject.get("_id").toString());
-	jsonObject.put("url", dbObject.get("url"));
-	jsonObject.put("title", dbObject.get("title"));
-	jsonObject.put("user", dbObject.get("user"));
+	jsonObject.put(DbProperties.URLS_ID, dbObject.get(DbProperties.URLS_ID).toString());
+	jsonObject.put(DbProperties.URLS_URL, dbObject.get(DbProperties.URLS_URL));
+	jsonObject.put(DbProperties.URLS_TITLE, dbObject.get(DbProperties.URLS_TITLE));
+	jsonObject.put(DbProperties.URLS_USER, dbObject.get(DbProperties.URLS_USER));
 	jsonObject.put(DbProperties.URLS_TIMESTAMP,
 		formatDate((Date) dbObject.get(DbProperties.URLS_TIMESTAMP)));
 
