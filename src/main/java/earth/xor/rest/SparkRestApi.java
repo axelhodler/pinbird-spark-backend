@@ -27,19 +27,20 @@ public class SparkRestApi {
     private static SparkRestApi uniqueInstance = null;
     private LinksDatastore linksDs;
 
-    private SparkRestApi() {}
+    private SparkRestApi() {
+    }
 
     public static SparkRestApi getInstance() {
         if (uniqueInstance == null)
             uniqueInstance = new SparkRestApi();
-        return uniqueInstance; 
+        return uniqueInstance;
     }
 
     public void launchServer(MongoClient mongoClient) {
         this.linksDs = new LinksDatastore(mongoClient);
         createPOSTlinksRoute();
         createGETlinksRoute();
-        createUrlsGetRouteForId();
+        createGETlinkByIdRoute();
     }
 
     public void createPOSTlinksRoute() {
@@ -54,9 +55,9 @@ public class SparkRestApi {
             }
 
             private Link createLinkFromJSONObject(JSONObject obj) {
-                return new Link(obj.get(DbProperties.LINK_URL)
-                        .toString(), obj.get(DbProperties.LINK_TITLE)
-                        .toString(), obj.get(DbProperties.LINK_USER).toString());
+                return new Link(obj.get(DbProperties.LINK_URL).toString(), obj
+                        .get(DbProperties.LINK_TITLE).toString(), obj.get(
+                        DbProperties.LINK_USER).toString());
             }
         });
     }
@@ -91,25 +92,23 @@ public class SparkRestApi {
         });
     }
 
-    private void createUrlsGetRouteForId() {
-
+    private void createGETlinkByIdRoute() {
         get(new Route(DbProperties.LINKS_ROUTE + "/:id") {
 
             @Override
             public Object handle(Request request, Response response) {
-
-                DBObject foundLink = linksDs
-                        .getLinkById(request.params(":id"));
-
-                JSONObject mainObject = new JSONObject();
-
-                JSONObject innerObject = addDBObjectKeysToJsonObject(foundLink);
-
-                mainObject.put(DbProperties.LINK_URL, innerObject);
-
+                DBObject foundLink = linksDs.getLinkById(request.params(":id"));
+                JSONObject mainObject = createEmberJsConformJsonObject(foundLink);
                 addAccessControlAllowOriginHeader(response);
-
                 return mainObject.toJSONString();
+            }
+
+            @SuppressWarnings("unchecked")
+            private JSONObject createEmberJsConformJsonObject(DBObject foundLink) {
+                JSONObject mainObject = new JSONObject();
+                JSONObject innerObject = addDBObjectKeysToJsonObject(foundLink);
+                mainObject.put(DbProperties.LINK_URL, innerObject);
+                return mainObject;
             }
         });
     }
