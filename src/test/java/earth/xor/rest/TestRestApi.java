@@ -64,9 +64,8 @@ public class TestRestApi {
     }
 
     @Test
-    public void testAddingALinkThroughTheRestApi() {
-
-        addAlinkThroughTheRestApi();
+    public void testAddingALinkViaRestApi() {
+        addAlinkViaRestApi();
         checkIfLinkWasAddedToDatabase();
     }
 
@@ -114,17 +113,17 @@ public class TestRestApi {
         checkIfItsTheCorrectlink(returnedUrlRepresentation);
     }
 
-    private void addAlinkThroughTheRestApi() {
+    private void addAlinkViaRestApi() {
         String jsonString = given().body(getLinksPostJsonString()).expect()
                 .contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .post("/links").asString();
 
-        Link savedUrl = gson.fromJson(jsonString, Link.class);
+        Link savedLink = gson.fromJson(jsonString, Link.class);
 
-        assertEquals("http://www.foo.org", savedUrl.getUrl());
-        assertEquals("foo", savedUrl.getTitle());
-        assertEquals("test", savedUrl.getUser());
+        assertEquals("http://www.foo.org", savedLink.getUrl());
+        assertEquals("foo", savedLink.getTitle());
+        assertEquals("test", savedLink.getUser());
     }
 
     private void checkIfLinkWasAddedToDatabase() {
