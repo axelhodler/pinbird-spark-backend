@@ -135,9 +135,4 @@ public class SparkRestApi {
     private void addAccessControlAllowOriginHeader(Response response) {
         response.header("Access-Control-Allow-Origin", "*");
     }
-
-    public void stopServer() {
-        // TODO Auto-generated method stub
-
-    }
 }
