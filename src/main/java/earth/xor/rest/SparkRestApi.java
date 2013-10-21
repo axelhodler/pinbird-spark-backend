@@ -28,112 +28,112 @@ public class SparkRestApi {
     private LinksDatastore urlsData;
 
     public SparkRestApi(MongoClient mongoClient) {
-	this.mongoClient = mongoClient;
-	this.urlsData = new LinksDatastore(mongoClient);
+        this.mongoClient = mongoClient;
+        this.urlsData = new LinksDatastore(mongoClient);
     }
 
     public void launchServer() {
-	createUrlsPostRoute();
-	createUrlsGetRoute();
-	createUrlsGetRouteForId();
+        createUrlsPostRoute();
+        createUrlsGetRoute();
+        createUrlsGetRouteForId();
     }
 
     public void createUrlsPostRoute() {
-	post(new Route(DbProperties.LINKS_ROUTE) {
+        post(new Route(DbProperties.LINKS_ROUTE) {
 
-	    @Override
-	    public Object handle(Request request, Response response) {
+            @Override
+            public Object handle(Request request, Response response) {
 
-		JSONObject obj = (JSONObject) JSONValue.parse(request.body());
+                JSONObject obj = (JSONObject) JSONValue.parse(request.body());
 
-		urlsData.addLink(new Link(obj.get(DbProperties.LINK_URL)
-			.toString(), obj.get(DbProperties.LINK_TITLE)
-			.toString(), obj.get(DbProperties.LINK_USER).toString()));
+                urlsData.addLink(new Link(obj.get(DbProperties.LINK_URL)
+                        .toString(), obj.get(DbProperties.LINK_TITLE)
+                        .toString(), obj.get(DbProperties.LINK_USER).toString()));
 
-		addAccessControlAllowOriginHeader(response);
+                addAccessControlAllowOriginHeader(response);
 
-		return request.body();
-	    }
-	});
+                return request.body();
+            }
+        });
     }
 
     public void createUrlsGetRoute() {
-	get(new Route(DbProperties.LINKS_ROUTE) {
+        get(new Route(DbProperties.LINKS_ROUTE) {
 
-	    @Override
-	    public Object handle(Request request, Response response) {
-		JSONArray array = new JSONArray();
+            @Override
+            public Object handle(Request request, Response response) {
+                JSONArray array = new JSONArray();
 
-		DBCursor curs = urlsData.getLinks();
+                DBCursor curs = urlsData.getLinks();
 
-		while (curs.hasNext()) {
-		    DBObject dbobj = curs.next();
+                while (curs.hasNext()) {
+                    DBObject dbobj = curs.next();
 
-		    array.add(addDBObjectKeysToJsonObject(dbobj));
-		}
+                    array.add(addDBObjectKeysToJsonObject(dbobj));
+                }
 
-		JSONObject object = new JSONObject();
-		object.put(DbProperties.LINKS_NAME, array);
+                JSONObject object = new JSONObject();
+                object.put(DbProperties.LINKS_NAME, array);
 
-		addAccessControlAllowOriginHeader(response);
+                addAccessControlAllowOriginHeader(response);
 
-		return object.toJSONString();
-	    }
+                return object.toJSONString();
+            }
 
-	});
+        });
     }
 
     private void createUrlsGetRouteForId() {
 
-	get(new Route(DbProperties.LINKS_ROUTE + "/:id") {
+        get(new Route(DbProperties.LINKS_ROUTE + "/:id") {
 
-	    @Override
-	    public Object handle(Request request, Response response) {
+            @Override
+            public Object handle(Request request, Response response) {
 
-		DBObject foundLink = urlsData.getLinkById(request.params(":id"));
+                DBObject foundLink = urlsData
+                        .getLinkById(request.params(":id"));
 
-		JSONObject mainObject = new JSONObject();
+                JSONObject mainObject = new JSONObject();
 
-		JSONObject innerObject = addDBObjectKeysToJsonObject(foundLink);
+                JSONObject innerObject = addDBObjectKeysToJsonObject(foundLink);
 
-		mainObject.put(DbProperties.LINK_URL, innerObject);
+                mainObject.put(DbProperties.LINK_URL, innerObject);
 
-		addAccessControlAllowOriginHeader(response);
+                addAccessControlAllowOriginHeader(response);
 
-		return mainObject.toJSONString();
-	    }
-	});
+                return mainObject.toJSONString();
+            }
+        });
     }
 
     private JSONObject addDBObjectKeysToJsonObject(DBObject dbObject) {
-	JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
 
-	jsonObject.put(DbProperties.LINK_ID, dbObject.get(DbProperties.LINK_ID)
-		.toString());
-	jsonObject.put(DbProperties.LINK_URL,
-		dbObject.get(DbProperties.LINK_URL));
-	jsonObject.put(DbProperties.LINK_TITLE,
-		dbObject.get(DbProperties.LINK_TITLE));
-	jsonObject.put(DbProperties.LINK_USER,
-		dbObject.get(DbProperties.LINK_USER));
-	jsonObject.put(DbProperties.LINK_TIMESTAMP,
-		formatDate((Date) dbObject.get(DbProperties.LINK_TIMESTAMP)));
+        jsonObject.put(DbProperties.LINK_ID, dbObject.get(DbProperties.LINK_ID)
+                .toString());
+        jsonObject.put(DbProperties.LINK_URL,
+                dbObject.get(DbProperties.LINK_URL));
+        jsonObject.put(DbProperties.LINK_TITLE,
+                dbObject.get(DbProperties.LINK_TITLE));
+        jsonObject.put(DbProperties.LINK_USER,
+                dbObject.get(DbProperties.LINK_USER));
+        jsonObject.put(DbProperties.LINK_TIMESTAMP,
+                formatDate((Date) dbObject.get(DbProperties.LINK_TIMESTAMP)));
 
-	return jsonObject;
+        return jsonObject;
     }
 
     private String formatDate(Date date) {
-	SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");
-	return sdf.format(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");
+        return sdf.format(date);
     }
 
     private void addAccessControlAllowOriginHeader(Response response) {
-	response.header("Access-Control-Allow-Origin", "*");
+        response.header("Access-Control-Allow-Origin", "*");
     }
 
     public void stopServer() {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
-
 }
