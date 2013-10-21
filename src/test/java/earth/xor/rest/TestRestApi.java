@@ -42,10 +42,7 @@ import earth.xor.db.LinksDatastore;
 
 public class TestRestApi {
 
-    private SparkRestApi restapi;
     private Gson gson;
-
-    private static int port = 12345;
     private MongoClient mongoClient;
     private LinksDatastore linksData;
 
