@@ -25,8 +25,6 @@ import earth.xor.db.LinksDatastore;
 public class SparkRestApi {
 
     private static SparkRestApi uniqueInstance = null;
-
-    private MongoClient mongoClient;
     private LinksDatastore urlsData;
 
     private SparkRestApi() {}
@@ -38,7 +36,6 @@ public class SparkRestApi {
     }
 
     public void launchServer(MongoClient mongoClient) {
-        this.mongoClient = mongoClient;
         this.urlsData = new LinksDatastore(mongoClient);
         createUrlsPostRoute();
         createUrlsGetRoute();
