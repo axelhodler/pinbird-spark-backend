@@ -54,15 +54,12 @@ public class TestRestApi {
 
     @Before
     public void setUpRestApi() throws UnknownHostException {
-
         this.gson = new Gson();
-
         this.mongoClient = new MongoClient("localhost",
                 EmbedMongoProperties.PORT);
         this.linksData = new LinksDatastore(mongoClient);
 
         RestAssured.port = 4567;
-
         SparkRestApi.getInstance().launchServer(mongoClient);
     }
 
