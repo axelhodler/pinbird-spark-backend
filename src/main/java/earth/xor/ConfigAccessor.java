@@ -10,6 +10,10 @@ public class ConfigAccessor {
 
     public ConfigAccessor() {
         this.properties = new Properties();
+        tryToLoadProperties();
+    }
+
+    private void tryToLoadProperties() {
         try {
             this.properties.load(new FileInputStream("config.properties"));
         } catch (IOException e) {
