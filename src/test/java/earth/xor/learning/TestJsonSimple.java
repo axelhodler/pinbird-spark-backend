@@ -11,31 +11,31 @@ import org.junit.Test;
 
 public class TestJsonSimple {
     private String jsonExample = "{ \"url\":\"http://www.foo.org\", "
-	    + "\"title\":\"foo\", " + "\"user\":\"user\"}";
-    
+            + "\"title\":\"foo\", " + "\"user\":\"user\"}";
+
     @Test
     public void testGettingTheJsonObjectFromString() {
-	JSONObject url = (JSONObject) JSONValue.parse(jsonExample);
-	
-	assertEquals("foo", url.get("title"));
+        JSONObject url = (JSONObject) JSONValue.parse(jsonExample);
+
+        assertEquals("foo", url.get("title"));
     }
-    
+
     // A JSON-Object is an unordered set of name/value pairs
     @Test
     public void testParsingJsonObjectToString() {
-	JSONObject url = new JSONObject();
-	
-	url.put("title", "foo");
-	
-	assertEquals("{\"title\":\"foo\"}", url.toJSONString());
+        JSONObject url = new JSONObject();
+
+        url.put("title", "foo");
+
+        assertEquals("{\"title\":\"foo\"}", url.toJSONString());
     }
-    
+
     @Test
     public void testMapToJsonString() {
-	Map<String, String> url = new HashMap<String, String>();
-	
-	url.put("title", "foo");
+        Map<String, String> url = new HashMap<String, String>();
 
-	assertEquals("{\"title\":\"foo\"}", JSONObject.toJSONString(url));
+        url.put("title", "foo");
+
+        assertEquals("{\"title\":\"foo\"}", JSONObject.toJSONString(url));
     }
 }
