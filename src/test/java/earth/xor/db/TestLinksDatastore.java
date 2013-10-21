@@ -49,7 +49,7 @@ public class TestLinksDatastore {
 
         DBCursor linksCursor = linksData.getLinks();
 
-        List<Link> linkList = createLinksArrayFromUrlDataInCursor(linksCursor);
+        List<Link> linkList = createLinksArrayFromCursor(linksCursor);
 
         assertEquals("bar", linkList.get(1).getTitle());
         assertEquals("user3", linkList.get(2).getUser());
@@ -72,20 +72,25 @@ public class TestLinksDatastore {
         assertEquals(savedUrl.get("_id"), obj.get("_id"));
     }
 
-    private List<Link> createLinksArrayFromUrlDataInCursor(DBCursor urlsCursor) {
+    private List<Link> createLinksArrayFromCursor(DBCursor linksCurs) {
+        List<Link> linkList = new ArrayList<Link>();
+        iterateCursorToAddLinksToList(linksCurs, linkList);
+        return linkList;
+    }
 
-        List<Link> urlList = new ArrayList<Link>();
-
-        while (urlsCursor.hasNext()) {
-            DBObject dbo = urlsCursor.next();
-            Link currentUrl = new Link(dbo.get(DbProperties.LINK_URL)
-                    .toString(), dbo.get(DbProperties.LINK_TITLE).toString(),
-                    dbo.get(DbProperties.LINK_USER).toString(), dbo.get(
-                            DbProperties.LINK_TIMESTAMP).toString());
-            urlList.add(currentUrl);
+    private void iterateCursorToAddLinksToList(DBCursor linksCurs,
+            List<Link> linkList) {
+        while (linksCurs.hasNext()) {
+            DBObject dbo = linksCurs.next();
+            linkList.add(dbObjectToLink(dbo));
         }
+    }
 
-        return urlList;
+    private Link dbObjectToLink(DBObject dbo) {
+        return new Link(dbo.get(DbProperties.LINK_URL)
+                .toString(), dbo.get(DbProperties.LINK_TITLE).toString(),
+                dbo.get(DbProperties.LINK_USER).toString(), dbo.get(
+                        DbProperties.LINK_TIMESTAMP).toString());
     }
 
     @After
