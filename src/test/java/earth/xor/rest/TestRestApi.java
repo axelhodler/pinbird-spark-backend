@@ -66,9 +66,7 @@ public class TestRestApi {
 
         RestAssured.port = 4567;
 
-        restapi = new SparkRestApi(mongoClient);
-        restapi.launchServer();
-
+        SparkRestApi.getInstance().launchServer(mongoClient);
     }
 
     @Test
@@ -216,6 +214,5 @@ public class TestRestApi {
     public void stopRestApi() {
         mongoClient.getDB(DbProperties.DATABASE_NAME)
                 .getCollection(DbProperties.LINKS_NAME).drop();
-        restapi.stopServer();
     }
 }

@@ -24,15 +24,22 @@ import earth.xor.db.LinksDatastore;
 
 public class SparkRestApi {
 
+    private static SparkRestApi uniqueInstance = null;
+
     private MongoClient mongoClient;
     private LinksDatastore urlsData;
 
-    public SparkRestApi(MongoClient mongoClient) {
-        this.mongoClient = mongoClient;
-        this.urlsData = new LinksDatastore(mongoClient);
+    private SparkRestApi() {}
+
+    public static SparkRestApi getInstance() {
+        if (uniqueInstance == null)
+            uniqueInstance = new SparkRestApi();
+        return uniqueInstance; 
     }
 
-    public void launchServer() {
+    public void launchServer(MongoClient mongoClient) {
+        this.mongoClient = mongoClient;
+        this.urlsData = new LinksDatastore(mongoClient);
         createUrlsPostRoute();
         createUrlsGetRoute();
         createUrlsGetRouteForId();
