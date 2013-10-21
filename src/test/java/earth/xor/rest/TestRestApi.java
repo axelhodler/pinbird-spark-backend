@@ -114,7 +114,7 @@ public class TestRestApi {
     }
 
     private void addAlinkViaRestApi() {
-        String jsonString = given().body(getLinksPostJsonString()).expect()
+        String jsonString = given().body(getLinkToPOSTjson()).expect()
                 .contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .post("/links").asString();
@@ -139,8 +139,11 @@ public class TestRestApi {
         assertEquals("test", foundEntry.get(DbProperties.LINK_USER));
     }
 
-    private String getLinksPostJsonString() {
+    private String getLinkToPOSTjson() {
+        return tryGetLinkToPOSTinJson();
+    }
 
+    private String tryGetLinkToPOSTinJson() {
         String jsonString = null;
         try {
             File testFile = new File(TestRestApi.class.getResource(
