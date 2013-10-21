@@ -12,33 +12,32 @@ import earth.xor.db.Link;
 public class TestGson {
 
     private String jsonExample = "{\"url\":\"testurl\","
-    	+ "\"title\":\"testtitle\","
-    	+ "\"user\":\"testuser\"}";
-    
+            + "\"title\":\"testtitle\"," + "\"user\":\"testuser\"}";
+
     private Link urlExample;
 
     private Gson gson;
-    
+
     @Before
     public void setUpTests() {
-	this.gson = new Gson();
-	this.urlExample = new Link("testurl", "testtitle", "testuser");
+        this.gson = new Gson();
+        this.urlExample = new Link("testurl", "testtitle", "testuser");
     }
-    
+
     @Test
     public void testObjectToJsonConversion() {
-		
-	String urlAsJson = this.gson.toJson(this.urlExample);
-	
-	assertEquals(jsonExample, urlAsJson);
+
+        String urlAsJson = this.gson.toJson(this.urlExample);
+
+        assertEquals(jsonExample, urlAsJson);
     }
-    
+
     @Test
     public void testJsonToJavaObjectConversion() {
-	Link url = gson.fromJson(jsonExample, Link.class);
-	
-	assertEquals(urlExample.getTitle(), url.getTitle());
-	assertEquals(urlExample.getUrl(), url.getUrl());
-	assertEquals(urlExample.getUser(), url.getUser());
+        Link url = gson.fromJson(jsonExample, Link.class);
+
+        assertEquals(urlExample.getTitle(), url.getTitle());
+        assertEquals(urlExample.getUrl(), url.getUrl());
+        assertEquals(urlExample.getUser(), url.getUser());
     }
 }
