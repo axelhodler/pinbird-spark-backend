@@ -15,7 +15,7 @@ import com.mongodb.MongoClient;
 
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
-import earth.xor.db.DbProperties;
+import earth.xor.db.LinksProp;
 import earth.xor.db.LinksDatastore;
 
 public class TestEmbedMongo {
@@ -38,7 +38,7 @@ public class TestEmbedMongo {
     @Test
     public void testGettingCount() {
 
-        DBCollection col = mongo.getDB(DbProperties.DATABASE_NAME)
+        DBCollection col = mongo.getDB(LinksProp.DATABASE_NAME)
                 .getCollection("test");
         col.insert(new BasicDBObject("name", "pete"));
 

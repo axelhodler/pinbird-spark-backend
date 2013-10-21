@@ -60,15 +60,16 @@ public class TestLinksDatastore {
     public void testGettingAUrlById() {
         linksData.addLink(ExampleLinks.testLink1);
 
-        DBCollection col = mongoClient.getDB(DbProperties.DATABASE_NAME)
-                .getCollection(DbProperties.LINKS_NAME);
+        DBCollection col = mongoClient.getDB(LinksProp.DATABASE_NAME)
+                .getCollection(LinksProp.LINKS_NAME);
 
         DBObject savedUrl = col.findOne();
 
-        DBObject obj = linksData.getLinkById(savedUrl.get("_id").toString());
+        DBObject obj = linksData.getLinkById(savedUrl.get(LinksProp.ID)
+                .toString());
 
-        assertEquals("foo", obj.get(DbProperties.LINK_TITLE).toString());
-        assertEquals(savedUrl.get("_id"), obj.get("_id"));
+        assertEquals("foo", obj.get(LinksProp.TITLE).toString());
+        assertEquals(savedUrl.get(LinksProp.ID), obj.get(LinksProp.ID));
     }
 
     private List<Link> createLinksArrayFromCursor(DBCursor linksCurs) {
@@ -86,15 +87,15 @@ public class TestLinksDatastore {
     }
 
     private Link dbObjectToLink(DBObject dbo) {
-        return new Link(dbo.get(DbProperties.LINK_URL)
-                .toString(), dbo.get(DbProperties.LINK_TITLE).toString(),
-                dbo.get(DbProperties.LINK_USER).toString(), dbo.get(
-                        DbProperties.LINK_TIMESTAMP).toString());
+        return new Link(dbo.get(LinksProp.URL).toString(), dbo.get(
+                LinksProp.TITLE).toString(),
+                dbo.get(LinksProp.USER).toString(), dbo
+                        .get(LinksProp.TIMESTAMP).toString());
     }
 
     @After
     public void dropLinksCollection() {
-        mongoClient.getDB(DbProperties.DATABASE_NAME)
-                .getCollection(DbProperties.LINKS_NAME).drop();
+        mongoClient.getDB(LinksProp.DATABASE_NAME)
+                .getCollection(LinksProp.LINKS_NAME).drop();
     }
 }

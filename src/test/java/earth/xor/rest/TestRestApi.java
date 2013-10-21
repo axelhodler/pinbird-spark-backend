@@ -36,7 +36,7 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
 import earth.xor.ExampleLinks;
-import earth.xor.db.DbProperties;
+import earth.xor.db.LinksProp;
 import earth.xor.db.Link;
 import earth.xor.db.LinksDatastore;
 
@@ -78,7 +78,7 @@ public class TestRestApi {
 
         String jsonResponse = expect().contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
-                .get(DbProperties.LINKS_ROUTE).asString();
+                .get(LinksProp.LINKS_ROUTE).asString();
 
         Type type = new TypeToken<Map<String, List<Link>>>() {
         }.getType();
@@ -128,16 +128,16 @@ public class TestRestApi {
     }
 
     private void checkIfLinkWasAddedToDatabase() {
-        DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
-        DBCollection col = urlsDb.getCollection(DbProperties.LINKS_NAME);
+        DB urlsDb = mongoClient.getDB(LinksProp.DATABASE_NAME);
+        DBCollection col = urlsDb.getCollection(LinksProp.LINKS_NAME);
 
         DBObject foundEntry = col.findOne(new BasicDBObject(
-                DbProperties.LINK_URL, "http://www.foo.org"));
+                LinksProp.URL, "http://www.foo.org"));
 
         assertEquals("http://www.foo.org",
-                foundEntry.get(DbProperties.LINK_URL));
-        assertEquals("foo", foundEntry.get(DbProperties.LINK_TITLE));
-        assertEquals("test", foundEntry.get(DbProperties.LINK_USER));
+                foundEntry.get(LinksProp.URL));
+        assertEquals("foo", foundEntry.get(LinksProp.TITLE));
+        assertEquals("test", foundEntry.get(LinksProp.USER));
     }
 
     private String getLinkToPOSTjson() {
@@ -162,7 +162,7 @@ public class TestRestApi {
             Map<String, List<Link>> returnedUrls) {
 
         ArrayList<Link> allUrls = (ArrayList<Link>) returnedUrls
-                .get(DbProperties.LINKS_NAME);
+                .get(LinksProp.LINKS_NAME);
 
         assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
         assertEquals("foo", allUrls.get(0).getTitle());
@@ -186,18 +186,18 @@ public class TestRestApi {
     private String addLinkAndGetItsId() {
         linksData.addLink(ExampleLinks.testLink1);
 
-        DB linksDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
-        DBCollection col = linksDb.getCollection(DbProperties.LINKS_NAME);
+        DB linksDb = mongoClient.getDB(LinksProp.DATABASE_NAME);
+        DBCollection col = linksDb.getCollection(LinksProp.LINKS_NAME);
 
         DBObject foundEntry = col.findOne(new BasicDBObject(
-                DbProperties.LINK_URL, "http://www.foo.org"));
+                LinksProp.URL, "http://www.foo.org"));
 
-        return foundEntry.get(DbProperties.LINK_ID).toString();
+        return foundEntry.get(LinksProp.ID).toString();
     }
 
     private void checkIfItsTheCorrectlink(
             Map<String, Link> returnedUrlRepresentation) {
-        Link foundLink = returnedUrlRepresentation.get(DbProperties.LINK_URL);
+        Link foundLink = returnedUrlRepresentation.get(LinksProp.URL);
 
         assertEquals("http://www.foo.org", foundLink.getUrl());
         assertEquals("foo", foundLink.getTitle());
@@ -206,7 +206,7 @@ public class TestRestApi {
 
     @After
     public void dropCollection() {
-        mongoClient.getDB(DbProperties.DATABASE_NAME)
-                .getCollection(DbProperties.LINKS_NAME).drop();
+        mongoClient.getDB(LinksProp.DATABASE_NAME)
+                .getCollection(LinksProp.LINKS_NAME).drop();
     }
 }

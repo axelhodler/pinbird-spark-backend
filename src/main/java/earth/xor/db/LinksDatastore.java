@@ -18,23 +18,23 @@ public class LinksDatastore {
 
     public LinksDatastore(MongoClient mongo) {
 	this.mongo = mongo;
-	this.database = mongo.getDB(DbProperties.DATABASE_NAME);
+	this.database = mongo.getDB(LinksProp.DATABASE_NAME);
     }
 
     public void addLink(Link link) {
 	DBCollection col = this.database
-		.getCollection(DbProperties.LINKS_NAME);
+		.getCollection(LinksProp.LINKS_NAME);
 
-	col.insert(new BasicDBObject(DbProperties.LINK_URL, link
+	col.insert(new BasicDBObject(LinksProp.URL, link
 		.getUrl())
-		.append(DbProperties.LINK_TITLE, link.getTitle())
-		.append(DbProperties.LINK_USER, link.getUser())
-		.append(DbProperties.LINK_TIMESTAMP, new Date()));
+		.append(LinksProp.TITLE, link.getTitle())
+		.append(LinksProp.USER, link.getUser())
+		.append(LinksProp.TIMESTAMP, new Date()));
     }
 
     public DBCursor getLinks() {
 	DBCollection col = this.database
-		.getCollection(DbProperties.LINKS_NAME);
+		.getCollection(LinksProp.LINKS_NAME);
 
 	return col.find();
     }
@@ -46,7 +46,7 @@ public class LinksDatastore {
     public DBObject getLinkById(String id) {
 
 	DBCollection col = this.database
-		.getCollection(DbProperties.LINKS_NAME);
+		.getCollection(LinksProp.LINKS_NAME);
 
 	DBObject foundLink = col.findOne(new BasicDBObject("_id", new ObjectId(
 		id)));
