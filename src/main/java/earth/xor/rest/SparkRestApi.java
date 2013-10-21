@@ -38,7 +38,7 @@ public class SparkRestApi {
     public void launchServer(MongoClient mongoClient) {
         this.urlsData = new LinksDatastore(mongoClient);
         createUrlsPostRoute();
-        createUrlsGetRoute();
+        createGETlinksRoute();
         createUrlsGetRouteForId();
     }
 
@@ -61,29 +61,33 @@ public class SparkRestApi {
         });
     }
 
-    public void createUrlsGetRoute() {
+    public void createGETlinksRoute() {
         get(new Route(DbProperties.LINKS_ROUTE) {
 
             @Override
             public Object handle(Request request, Response response) {
                 JSONArray array = new JSONArray();
-
                 DBCursor curs = urlsData.getLinks();
-
-                while (curs.hasNext()) {
-                    DBObject dbobj = curs.next();
-
-                    array.add(addDBObjectKeysToJsonObject(dbobj));
-                }
-
-                JSONObject object = new JSONObject();
-                object.put(DbProperties.LINKS_NAME, array);
-
+                iterateCursorToAddObjectsToArray(array, curs);
+                JSONObject object = createEmberJsCompliantJSONObject(array);
                 addAccessControlAllowOriginHeader(response);
-
                 return object.toJSONString();
             }
 
+            @SuppressWarnings("unchecked")
+            private JSONObject createEmberJsCompliantJSONObject(JSONArray array) {
+                JSONObject object = new JSONObject();
+                object.put(DbProperties.LINKS_NAME, array);
+                return object;
+            }
+
+            @SuppressWarnings("unchecked")
+            private void iterateCursorToAddObjectsToArray(JSONArray array,
+                    DBCursor curs) {
+                while (curs.hasNext()) {
+                    array.add(addDBObjectKeysToJsonObject(curs.next()));
+                }
+            }
         });
     }
 
