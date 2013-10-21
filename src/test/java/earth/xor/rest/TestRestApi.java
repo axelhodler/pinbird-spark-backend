@@ -207,11 +207,8 @@ public class TestRestApi {
         assertEquals("user1", foundLink.getUser());
     }
 
-    /**
-     * Drop the collection and stop the server with the Rest API
-     */
     @After
-    public void stopRestApi() {
+    public void dropCollection() {
         mongoClient.getDB(DbProperties.DATABASE_NAME)
                 .getCollection(DbProperties.LINKS_NAME).drop();
     }
