@@ -25,7 +25,7 @@ import earth.xor.db.LinksDatastore;
 public class SparkRestApi {
 
     private static SparkRestApi uniqueInstance = null;
-    private LinksDatastore urlsData;
+    private LinksDatastore linksDs;
 
     private SparkRestApi() {}
 
@@ -36,27 +36,27 @@ public class SparkRestApi {
     }
 
     public void launchServer(MongoClient mongoClient) {
-        this.urlsData = new LinksDatastore(mongoClient);
-        createUrlsPostRoute();
+        this.linksDs = new LinksDatastore(mongoClient);
+        createPOSTlinksRoute();
         createGETlinksRoute();
         createUrlsGetRouteForId();
     }
 
-    public void createUrlsPostRoute() {
+    public void createPOSTlinksRoute() {
         post(new Route(DbProperties.LINKS_ROUTE) {
 
             @Override
             public Object handle(Request request, Response response) {
-
                 JSONObject obj = (JSONObject) JSONValue.parse(request.body());
-
-                urlsData.addLink(new Link(obj.get(DbProperties.LINK_URL)
-                        .toString(), obj.get(DbProperties.LINK_TITLE)
-                        .toString(), obj.get(DbProperties.LINK_USER).toString()));
-
+                linksDs.addLink(createLinkFromJSONObject(obj));
                 addAccessControlAllowOriginHeader(response);
-
                 return request.body();
+            }
+
+            private Link createLinkFromJSONObject(JSONObject obj) {
+                return new Link(obj.get(DbProperties.LINK_URL)
+                        .toString(), obj.get(DbProperties.LINK_TITLE)
+                        .toString(), obj.get(DbProperties.LINK_USER).toString());
             }
         });
     }
@@ -67,7 +67,7 @@ public class SparkRestApi {
             @Override
             public Object handle(Request request, Response response) {
                 JSONArray array = new JSONArray();
-                DBCursor curs = urlsData.getLinks();
+                DBCursor curs = linksDs.getLinks();
                 iterateCursorToAddObjectsToArray(array, curs);
                 JSONObject object = createEmberJsCompliantJSONObject(array);
                 addAccessControlAllowOriginHeader(response);
@@ -98,7 +98,7 @@ public class SparkRestApi {
             @Override
             public Object handle(Request request, Response response) {
 
-                DBObject foundLink = urlsData
+                DBObject foundLink = linksDs
                         .getLinkById(request.params(":id"));
 
                 JSONObject mainObject = new JSONObject();
