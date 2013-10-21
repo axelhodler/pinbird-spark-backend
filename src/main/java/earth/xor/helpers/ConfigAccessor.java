@@ -1,4 +1,4 @@
-package earth.xor;
+package earth.xor.helpers;
 
 import java.io.FileInputStream;
 import java.io.IOException;

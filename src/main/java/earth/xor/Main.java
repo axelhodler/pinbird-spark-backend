@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
+import earth.xor.helpers.ConfigAccessor;
 import earth.xor.rest.SparkRestApi;
 
 public class Main {

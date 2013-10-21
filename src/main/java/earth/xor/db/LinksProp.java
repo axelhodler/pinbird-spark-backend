@@ -1,6 +1,6 @@
 package earth.xor.db;
 
-import earth.xor.ConfigAccessor;
+import earth.xor.helpers.ConfigAccessor;
 
 public class LinksProp {
     
