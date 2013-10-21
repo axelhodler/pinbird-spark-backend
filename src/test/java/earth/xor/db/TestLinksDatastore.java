@@ -89,9 +89,8 @@ public class TestLinksDatastore {
     }
 
     @After
-    public void clearTheCollection() {
-        DB database = mongoClient.getDB(DbProperties.DATABASE_NAME);
-        DBCollection col = database.getCollection(DbProperties.LINKS_NAME);
-        col.drop();
+    public void dropLinksCollection() {
+        mongoClient.getDB(DbProperties.DATABASE_NAME)
+                .getCollection(DbProperties.LINKS_NAME).drop();
     }
 }
