@@ -1,13 +1,10 @@
 package earth.xor.learning;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,15 +20,13 @@ import earth.xor.db.LinksDatastore;
 public class TestEmbeddedMongo {
 
     private static int port = 12345;
-    private static EmbeddedMongo embeddedMongo;
     private MongoClient mongo;
     private LinksDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
             IOException {
-        embeddedMongo = new EmbeddedMongo();
-        embeddedMongo.launchEmbeddedMongo(port);
+        EmbeddedMongo.getInstance();
     }
 
     @Before
@@ -49,10 +44,5 @@ public class TestEmbeddedMongo {
         col.insert(new BasicDBObject("name", "pete"));
 
         assertEquals(1, col.getCount());
-    }
-
-    @AfterClass
-    public static void stopEmbeddedMongo() {
-        embeddedMongo.stopEmbeddedMongo();
     }
 }

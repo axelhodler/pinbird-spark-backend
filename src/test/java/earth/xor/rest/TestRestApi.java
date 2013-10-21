@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,15 +45,13 @@ public class TestRestApi {
     private Gson gson;
 
     private static int port = 12345;
-    private static EmbeddedMongo embeddedMongo;
     private MongoClient mongoClient;
     private LinksDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
             IOException {
-        embeddedMongo = new EmbeddedMongo();
-        embeddedMongo.launchEmbeddedMongo(port);
+        EmbeddedMongo.getInstance();
     }
 
     @Before
@@ -218,10 +215,5 @@ public class TestRestApi {
         mongoClient.getDB(DbProperties.DATABASE_NAME)
                 .getCollection(DbProperties.LINKS_NAME).drop();
         restapi.stopServer();
-    }
-
-    @AfterClass
-    public static void stopEmbeddedMongo() {
-        embeddedMongo.stopEmbeddedMongo();
     }
 }
