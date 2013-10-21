@@ -35,75 +35,74 @@ public class TestLinksDatastore {
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
-	    IOException {
-	embeddedMongo = new EmbeddedMongo();
-	embeddedMongo.launchEmbeddedMongo(port);
+            IOException {
+        embeddedMongo = new EmbeddedMongo();
+        embeddedMongo.launchEmbeddedMongo(port);
     }
 
     @Before
     public void setUpTests() throws UnknownHostException {
-	this.mongoClient = new MongoClient("localhost", port);
+        this.mongoClient = new MongoClient("localhost", port);
 
-	this.linksData = new LinksDatastore(mongoClient);
+        this.linksData = new LinksDatastore(mongoClient);
     }
 
     @Test
     public void testAddingAndGettingAllLinks() {
-	linksData.addLink(ExampleLinks.testLink1);
-	linksData.addLink(ExampleLinks.testLink2);
-	linksData.addLink(ExampleLinks.testLink3);
+        linksData.addLink(ExampleLinks.testLink1);
+        linksData.addLink(ExampleLinks.testLink2);
+        linksData.addLink(ExampleLinks.testLink3);
 
-	DBCursor linksCursor = linksData.getLinks();
-	
-	List<Link> linkList = createLinksArrayFromUrlDataInCursor(linksCursor);
+        DBCursor linksCursor = linksData.getLinks();
 
-	assertEquals("bar", linkList.get(1).getTitle());
-	assertEquals("user3", linkList.get(2).getUser());
+        List<Link> linkList = createLinksArrayFromUrlDataInCursor(linksCursor);
 
-	assertNotNull(linkList.get(1).getTimeStamp());
+        assertEquals("bar", linkList.get(1).getTitle());
+        assertEquals("user3", linkList.get(2).getUser());
+
+        assertNotNull(linkList.get(1).getTimeStamp());
     }
 
     @Test
     public void testGettingAUrlById() {
-	linksData.addLink(ExampleLinks.testLink1);
+        linksData.addLink(ExampleLinks.testLink1);
 
-	DBCollection col = mongoClient.getDB(DbProperties.DATABASE_NAME)
-		.getCollection(DbProperties.LINKS_NAME);
+        DBCollection col = mongoClient.getDB(DbProperties.DATABASE_NAME)
+                .getCollection(DbProperties.LINKS_NAME);
 
-	DBObject savedUrl = col.findOne();
+        DBObject savedUrl = col.findOne();
 
-	DBObject obj = linksData.getLinkById(savedUrl.get("_id").toString());
-	
-	assertEquals("foo", obj.get(DbProperties.LINK_TITLE).toString());
-	assertEquals(savedUrl.get("_id"), obj.get("_id"));
+        DBObject obj = linksData.getLinkById(savedUrl.get("_id").toString());
+
+        assertEquals("foo", obj.get(DbProperties.LINK_TITLE).toString());
+        assertEquals(savedUrl.get("_id"), obj.get("_id"));
     }
-    
-    private List<Link> createLinksArrayFromUrlDataInCursor(
-	    DBCursor urlsCursor) {
-	
-	List<Link> urlList = new ArrayList<Link>();
-	
-	while (urlsCursor.hasNext()) {
-	    DBObject dbo = urlsCursor.next();
-	    Link currentUrl = new Link(dbo.get(DbProperties.LINK_URL)
-		    .toString(), dbo.get(DbProperties.LINK_TITLE)
-		    .toString(), dbo.get(DbProperties.LINK_USER)
-		    .toString(), dbo.get(DbProperties.LINK_TIMESTAMP).toString());
-	    urlList.add(currentUrl);
-	}
-	
-	return urlList;
+
+    private List<Link> createLinksArrayFromUrlDataInCursor(DBCursor urlsCursor) {
+
+        List<Link> urlList = new ArrayList<Link>();
+
+        while (urlsCursor.hasNext()) {
+            DBObject dbo = urlsCursor.next();
+            Link currentUrl = new Link(dbo.get(DbProperties.LINK_URL)
+                    .toString(), dbo.get(DbProperties.LINK_TITLE).toString(),
+                    dbo.get(DbProperties.LINK_USER).toString(), dbo.get(
+                            DbProperties.LINK_TIMESTAMP).toString());
+            urlList.add(currentUrl);
+        }
+
+        return urlList;
     }
 
     @After
     public void clearTheCollection() {
-	DB database = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = database.getCollection(DbProperties.LINKS_NAME);
-	col.drop();
+        DB database = mongoClient.getDB(DbProperties.DATABASE_NAME);
+        DBCollection col = database.getCollection(DbProperties.LINKS_NAME);
+        col.drop();
     }
 
     @AfterClass
     public static void stopEmbeddedMongo() {
-	embeddedMongo.stopEmbeddedMongo();
+        embeddedMongo.stopEmbeddedMongo();
     }
 }
