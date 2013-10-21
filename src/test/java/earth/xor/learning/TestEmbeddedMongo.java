@@ -24,37 +24,35 @@ public class TestEmbeddedMongo {
 
     private static int port = 12345;
     private static EmbeddedMongo embeddedMongo;
-    
     private MongoClient mongo;
     private LinksDatastore linksData;
-    
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
-	    IOException {
-	embeddedMongo = new EmbeddedMongo();
-	embeddedMongo.launchEmbeddedMongo(port);
+            IOException {
+        embeddedMongo = new EmbeddedMongo();
+        embeddedMongo.launchEmbeddedMongo(port);
     }
 
     @Before
     public void setUpTests() throws UnknownHostException {
-	this.mongo = new MongoClient("localhost", port);
+        this.mongo = new MongoClient("localhost", port);
 
-	this.linksData = new LinksDatastore(mongo);
+        this.linksData = new LinksDatastore(mongo);
     }
 
     @Test
     public void testGettingCount() {
-	
-	DBCollection col = mongo.getDB(DbProperties.DATABASE_NAME).getCollection("test");
-	col.insert(new BasicDBObject("name", "pete"));
 
-	assertEquals(1, col.getCount());
+        DBCollection col = mongo.getDB(DbProperties.DATABASE_NAME)
+                .getCollection("test");
+        col.insert(new BasicDBObject("name", "pete"));
+
+        assertEquals(1, col.getCount());
     }
 
     @AfterClass
     public static void stopEmbeddedMongo() {
-	embeddedMongo.stopEmbeddedMongo();
+        embeddedMongo.stopEmbeddedMongo();
     }
-
 }
