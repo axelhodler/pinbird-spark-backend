@@ -29,7 +29,7 @@ public class EmbeddedMongo {
 
     private static void tryToStartEmbeddedMongo() {
         try {
-            uniqueInstance.startEmbeddedMongo(12345);
+            uniqueInstance.startEmbeddedMongo(EmbeddedMongoProperties.PORT);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -34,6 +34,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.EmbeddedMongo;
+import earth.xor.EmbeddedMongoProperties;
 import earth.xor.ExampleLinks;
 import earth.xor.db.DbProperties;
 import earth.xor.db.Link;
@@ -59,7 +60,8 @@ public class TestRestApi {
 
         this.gson = new Gson();
 
-        this.mongoClient = new MongoClient("localhost", port);
+        this.mongoClient = new MongoClient("localhost",
+                EmbeddedMongoProperties.PORT);
         this.linksData = new LinksDatastore(mongoClient);
 
         RestAssured.port = 4567;

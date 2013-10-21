@@ -20,12 +20,10 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.EmbeddedMongo;
+import earth.xor.EmbeddedMongoProperties;
 import earth.xor.ExampleLinks;
 
 public class TestLinksDatastore {
-
-    private static int port = 12345;
-
     private MongoClient mongoClient;
     private LinksDatastore linksData;
 
@@ -37,7 +35,8 @@ public class TestLinksDatastore {
 
     @Before
     public void setUpTests() throws UnknownHostException {
-        this.mongoClient = new MongoClient("localhost", port);
+        this.mongoClient = new MongoClient("localhost",
+                EmbeddedMongoProperties.PORT);
 
         this.linksData = new LinksDatastore(mongoClient);
     }
