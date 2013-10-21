@@ -86,7 +86,7 @@ public class SparkRestApi {
             private void iterateCursorToAddObjectsToArray(JSONArray array,
                     DBCursor curs) {
                 while (curs.hasNext()) {
-                    array.add(addDBObjectKeysToJsonObject(curs.next()));
+                    array.add(dbObjectToJsonObject(curs.next()));
                 }
             }
         });
@@ -106,14 +106,15 @@ public class SparkRestApi {
             @SuppressWarnings("unchecked")
             private JSONObject createEmberJsConformJsonObject(DBObject foundLink) {
                 JSONObject mainObject = new JSONObject();
-                JSONObject innerObject = addDBObjectKeysToJsonObject(foundLink);
+                JSONObject innerObject = dbObjectToJsonObject(foundLink);
                 mainObject.put(DbProperties.LINK_URL, innerObject);
                 return mainObject;
             }
         });
     }
 
-    private JSONObject addDBObjectKeysToJsonObject(DBObject dbObject) {
+    @SuppressWarnings("unchecked")
+    private JSONObject dbObjectToJsonObject(DBObject dbObject) {
         JSONObject jsonObject = new JSONObject();
 
         jsonObject.put(DbProperties.LINK_ID, dbObject.get(DbProperties.LINK_ID)
