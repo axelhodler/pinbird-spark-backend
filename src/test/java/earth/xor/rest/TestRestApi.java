@@ -92,16 +92,13 @@ public class TestRestApi {
 
     @Test
     public void testGettingASavedLinkById() {
-
         String id = addLinkAndGetItsId();
 
         String jsonString = expect().contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .get("/links/" + id).asString();
 
-        // id has to be surrounded with double quotes,
-        // otherwise its not valid JSON
-        assertTrue(jsonString.contains("\"" + id + "\""));
+        assertTrue(isIdSurroundedWithDoubleQuotes(id, jsonString));
 
         Type type = new TypeToken<Map<String, Link>>() {
         }.getType();
@@ -111,6 +108,10 @@ public class TestRestApi {
         returnedUrlRepresentation = gson.fromJson(jsonString, type);
 
         checkIfItsTheCorrectlink(returnedUrlRepresentation);
+    }
+
+    private boolean isIdSurroundedWithDoubleQuotes(String id, String jsonString) {
+        return jsonString.contains("\"" + id + "\"");
     }
 
     private void addAlinkViaRestApi() {
