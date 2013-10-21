@@ -19,8 +19,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import earth.xor.EmbeddedMongo;
-import earth.xor.EmbeddedMongoProperties;
+import earth.xor.EmbedMongo;
+import earth.xor.EmbedMongoProperties;
 import earth.xor.ExampleLinks;
 
 public class TestLinksDatastore {
@@ -30,13 +30,13 @@ public class TestLinksDatastore {
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
             IOException {
-        EmbeddedMongo.getInstance();
+        EmbedMongo.getInstance();
     }
 
     @Before
     public void setUpTests() throws UnknownHostException {
         this.mongoClient = new MongoClient("localhost",
-                EmbeddedMongoProperties.PORT);
+                EmbedMongoProperties.PORT);
 
         this.linksData = new LinksDatastore(mongoClient);
     }

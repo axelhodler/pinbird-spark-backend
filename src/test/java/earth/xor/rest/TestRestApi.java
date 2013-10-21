@@ -33,8 +33,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import earth.xor.EmbeddedMongo;
-import earth.xor.EmbeddedMongoProperties;
+import earth.xor.EmbedMongo;
+import earth.xor.EmbedMongoProperties;
 import earth.xor.ExampleLinks;
 import earth.xor.db.DbProperties;
 import earth.xor.db.Link;
@@ -52,7 +52,7 @@ public class TestRestApi {
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
             IOException {
-        EmbeddedMongo.getInstance();
+        EmbedMongo.getInstance();
     }
 
     @Before
@@ -61,7 +61,7 @@ public class TestRestApi {
         this.gson = new Gson();
 
         this.mongoClient = new MongoClient("localhost",
-                EmbeddedMongoProperties.PORT);
+                EmbedMongoProperties.PORT);
         this.linksData = new LinksDatastore(mongoClient);
 
         RestAssured.port = 4567;

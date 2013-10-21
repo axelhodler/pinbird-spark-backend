@@ -11,17 +11,17 @@ import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 
-public class EmbeddedMongo {
+public class EmbedMongo {
 
     private MongodExecutable mongodExecutable;
-    private static EmbeddedMongo uniqueInstance;
+    private static EmbedMongo uniqueInstance;
 
-    private EmbeddedMongo() {
+    private EmbedMongo() {
     }
 
-    public static EmbeddedMongo getInstance() {
+    public static EmbedMongo getInstance() {
         if (uniqueInstance == null) {
-            uniqueInstance = new EmbeddedMongo();
+            uniqueInstance = new EmbedMongo();
             tryToStartEmbeddedMongo();
         }
         return uniqueInstance;
@@ -29,7 +29,7 @@ public class EmbeddedMongo {
 
     private static void tryToStartEmbeddedMongo() {
         try {
-            uniqueInstance.startEmbeddedMongo(EmbeddedMongoProperties.PORT);
+            uniqueInstance.startEmbeddedMongo(EmbedMongoProperties.PORT);
         } catch (IOException e) {
             e.printStackTrace();
         }

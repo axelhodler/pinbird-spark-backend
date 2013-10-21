@@ -13,24 +13,24 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 
-import earth.xor.EmbeddedMongo;
-import earth.xor.EmbeddedMongoProperties;
+import earth.xor.EmbedMongo;
+import earth.xor.EmbedMongoProperties;
 import earth.xor.db.DbProperties;
 import earth.xor.db.LinksDatastore;
 
-public class TestEmbeddedMongo {
+public class TestEmbedMongo {
     private MongoClient mongo;
     private LinksDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
             IOException {
-        EmbeddedMongo.getInstance();
+        EmbedMongo.getInstance();
     }
 
     @Before
     public void setUpTests() throws UnknownHostException {
-        this.mongo = new MongoClient("localhost", EmbeddedMongoProperties.PORT);
+        this.mongo = new MongoClient("localhost", EmbedMongoProperties.PORT);
 
         this.linksData = new LinksDatastore(mongo);
     }

@@ -1,6 +1,6 @@
 package earth.xor;
 
-public class EmbeddedMongoProperties {
+public class EmbedMongoProperties {
 
     public final static int PORT = 12345;
 }
