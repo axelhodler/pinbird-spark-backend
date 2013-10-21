@@ -52,160 +52,162 @@ public class TestRestApi {
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
-	    IOException {
-	embeddedMongo = new EmbeddedMongo();
-	embeddedMongo.launchEmbeddedMongo(port);
+            IOException {
+        embeddedMongo = new EmbeddedMongo();
+        embeddedMongo.launchEmbeddedMongo(port);
     }
 
     @Before
     public void setUpRestApi() throws UnknownHostException {
 
-	this.gson = new Gson();
+        this.gson = new Gson();
 
-	this.mongoClient = new MongoClient("localhost", port);
-	this.linksData = new LinksDatastore(mongoClient);
+        this.mongoClient = new MongoClient("localhost", port);
+        this.linksData = new LinksDatastore(mongoClient);
 
-	RestAssured.port = 4567;
+        RestAssured.port = 4567;
 
-	restapi = new SparkRestApi(mongoClient);
-	restapi.launchServer();
+        restapi = new SparkRestApi(mongoClient);
+        restapi.launchServer();
 
     }
 
     @Test
     public void testAddingALinkThroughTheRestApi() {
 
-	addAlinkThroughTheRestApi();
-	checkIfLinkWasAddedToDatabase();
+        addAlinkThroughTheRestApi();
+        checkIfLinkWasAddedToDatabase();
     }
 
     @Test
     public void testGettingAListOfAllSavedUrls() {
 
-	linksData.addLink(ExampleLinks.testLink1);
-	linksData.addLink(ExampleLinks.testLink2);
-	linksData.addLink(ExampleLinks.testLink3);
+        linksData.addLink(ExampleLinks.testLink1);
+        linksData.addLink(ExampleLinks.testLink2);
+        linksData.addLink(ExampleLinks.testLink3);
 
-	String jsonResponse = expect().contentType("application/json").and()
-		.header("Access-Control-Allow-Origin", equalTo("*")).when()
-		.get(DbProperties.LINKS_ROUTE).asString();
+        String jsonResponse = expect().contentType("application/json").and()
+                .header("Access-Control-Allow-Origin", equalTo("*")).when()
+                .get(DbProperties.LINKS_ROUTE).asString();
 
-	Type type = new TypeToken<Map<String, List<Link>>>() {
-	}.getType();
+        Type type = new TypeToken<Map<String, List<Link>>>() {
+        }.getType();
 
-	Map<String, List<Link>> returnedUrls = new HashMap<String, List<Link>>();
+        Map<String, List<Link>> returnedUrls = new HashMap<String, List<Link>>();
 
-	returnedUrls = gson.fromJson(jsonResponse, type);
+        returnedUrls = gson.fromJson(jsonResponse, type);
 
-	checkIfPreviouslyAddedLinksAreShown(returnedUrls);
+        checkIfPreviouslyAddedLinksAreShown(returnedUrls);
     }
 
     @Test
     public void testGettingASavedLinkById() {
 
-	String id = addLinkAndGetItsId();
+        String id = addLinkAndGetItsId();
 
-	String jsonString = expect().contentType("application/json").and()
-		.header("Access-Control-Allow-Origin", equalTo("*")).when()
-		.get("/links/" + id).asString();
+        String jsonString = expect().contentType("application/json").and()
+                .header("Access-Control-Allow-Origin", equalTo("*")).when()
+                .get("/links/" + id).asString();
 
-	// id has to be surrounded with double quotes,
-	// otherwise its not valid JSON
-	assertTrue(jsonString.contains("\"" + id + "\""));
+        // id has to be surrounded with double quotes,
+        // otherwise its not valid JSON
+        assertTrue(jsonString.contains("\"" + id + "\""));
 
-	Type type = new TypeToken<Map<String, Link>>() {
-	}.getType();
+        Type type = new TypeToken<Map<String, Link>>() {
+        }.getType();
 
-	Map<String, Link> returnedUrlRepresentation = new HashMap<String, Link>();
+        Map<String, Link> returnedUrlRepresentation = new HashMap<String, Link>();
 
-	returnedUrlRepresentation = gson.fromJson(jsonString, type);
+        returnedUrlRepresentation = gson.fromJson(jsonString, type);
 
-	checkIfItsTheCorrectlink(returnedUrlRepresentation);
+        checkIfItsTheCorrectlink(returnedUrlRepresentation);
     }
 
     private void addAlinkThroughTheRestApi() {
-	String jsonString = given().body(getLinksPostJsonString()).expect()
-		.contentType("application/json").and()
-		.header("Access-Control-Allow-Origin", equalTo("*")).when()
-		.post("/links").asString();
+        String jsonString = given().body(getLinksPostJsonString()).expect()
+                .contentType("application/json").and()
+                .header("Access-Control-Allow-Origin", equalTo("*")).when()
+                .post("/links").asString();
 
-	Link savedUrl = gson.fromJson(jsonString, Link.class);
+        Link savedUrl = gson.fromJson(jsonString, Link.class);
 
-	assertEquals("http://www.foo.org", savedUrl.getUrl());
-	assertEquals("foo", savedUrl.getTitle());
-	assertEquals("test", savedUrl.getUser());
+        assertEquals("http://www.foo.org", savedUrl.getUrl());
+        assertEquals("foo", savedUrl.getTitle());
+        assertEquals("test", savedUrl.getUser());
     }
 
     private void checkIfLinkWasAddedToDatabase() {
-	DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = urlsDb.getCollection(DbProperties.LINKS_NAME);
+        DB urlsDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
+        DBCollection col = urlsDb.getCollection(DbProperties.LINKS_NAME);
 
-	DBObject foundEntry = col.findOne(new BasicDBObject(DbProperties.LINK_URL,
-		"http://www.foo.org"));
+        DBObject foundEntry = col.findOne(new BasicDBObject(
+                DbProperties.LINK_URL, "http://www.foo.org"));
 
-	assertEquals("http://www.foo.org", foundEntry.get(DbProperties.LINK_URL));
-	assertEquals("foo", foundEntry.get(DbProperties.LINK_TITLE));
-	assertEquals("test", foundEntry.get(DbProperties.LINK_USER));
+        assertEquals("http://www.foo.org",
+                foundEntry.get(DbProperties.LINK_URL));
+        assertEquals("foo", foundEntry.get(DbProperties.LINK_TITLE));
+        assertEquals("test", foundEntry.get(DbProperties.LINK_USER));
     }
 
     private String getLinksPostJsonString() {
 
-	String jsonString = null;
-	try {
-	    File testFile = new File(TestRestApi.class.getResource(
-		    "/linksPost.JSON").toURI());
-	    jsonString = IOUtils.toString(new FileInputStream(testFile));
-	} catch (IOException e) {
-	    e.printStackTrace();
-	} catch (URISyntaxException e1) {
-	    e1.printStackTrace();
-	}
-	return jsonString;
+        String jsonString = null;
+        try {
+            File testFile = new File(TestRestApi.class.getResource(
+                    "/linksPost.JSON").toURI());
+            jsonString = IOUtils.toString(new FileInputStream(testFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+        return jsonString;
     }
 
     private void checkIfPreviouslyAddedLinksAreShown(
-	    Map<String, List<Link>> returnedUrls) {
+            Map<String, List<Link>> returnedUrls) {
 
-	ArrayList<Link> allUrls = (ArrayList<Link>) returnedUrls.get(DbProperties.LINKS_NAME);
+        ArrayList<Link> allUrls = (ArrayList<Link>) returnedUrls
+                .get(DbProperties.LINKS_NAME);
 
-	assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
-	assertEquals("foo", allUrls.get(0).getTitle());
-	assertEquals("user1", allUrls.get(0).getUser());
-	
-	assertNotNull(allUrls.get(0).getTimeStamp());
+        assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
+        assertEquals("foo", allUrls.get(0).getTitle());
+        assertEquals("user1", allUrls.get(0).getUser());
 
-	assertEquals("http://www.bar.org", allUrls.get(1).getUrl());
-	assertEquals("bar", allUrls.get(1).getTitle());
-	assertEquals("user2", allUrls.get(1).getUser());
-	
-	assertNotNull(allUrls.get(1).getTimeStamp());
+        assertNotNull(allUrls.get(0).getTimeStamp());
 
-	assertEquals("http://www.baz.org", allUrls.get(2).getUrl());
-	assertEquals("baz", allUrls.get(2).getTitle());
-	assertEquals("user3", allUrls.get(2).getUser());
-	
-	assertNotNull(allUrls.get(2).getTimeStamp());
+        assertEquals("http://www.bar.org", allUrls.get(1).getUrl());
+        assertEquals("bar", allUrls.get(1).getTitle());
+        assertEquals("user2", allUrls.get(1).getUser());
+
+        assertNotNull(allUrls.get(1).getTimeStamp());
+
+        assertEquals("http://www.baz.org", allUrls.get(2).getUrl());
+        assertEquals("baz", allUrls.get(2).getTitle());
+        assertEquals("user3", allUrls.get(2).getUser());
+
+        assertNotNull(allUrls.get(2).getTimeStamp());
     }
 
     private String addLinkAndGetItsId() {
-	linksData.addLink(ExampleLinks.testLink1);
+        linksData.addLink(ExampleLinks.testLink1);
 
-	DB linksDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
-	DBCollection col = linksDb.getCollection(DbProperties.LINKS_NAME);
+        DB linksDb = mongoClient.getDB(DbProperties.DATABASE_NAME);
+        DBCollection col = linksDb.getCollection(DbProperties.LINKS_NAME);
 
-	DBObject foundEntry = col.findOne(new BasicDBObject(DbProperties.LINK_URL,
-		"http://www.foo.org"));
+        DBObject foundEntry = col.findOne(new BasicDBObject(
+                DbProperties.LINK_URL, "http://www.foo.org"));
 
-	return foundEntry.get(DbProperties.LINK_ID).toString();
+        return foundEntry.get(DbProperties.LINK_ID).toString();
     }
 
     private void checkIfItsTheCorrectlink(
-	    Map<String, Link> returnedUrlRepresentation) {
-	Link foundLink = returnedUrlRepresentation.get(DbProperties.LINK_URL);
+            Map<String, Link> returnedUrlRepresentation) {
+        Link foundLink = returnedUrlRepresentation.get(DbProperties.LINK_URL);
 
-	assertEquals("http://www.foo.org", foundLink.getUrl());
-	assertEquals("foo", foundLink.getTitle());
-	assertEquals("user1", foundLink.getUser());
+        assertEquals("http://www.foo.org", foundLink.getUrl());
+        assertEquals("foo", foundLink.getTitle());
+        assertEquals("user1", foundLink.getUser());
     }
 
     /**
@@ -213,13 +215,13 @@ public class TestRestApi {
      */
     @After
     public void stopRestApi() {
-	mongoClient.getDB(DbProperties.DATABASE_NAME)
-		.getCollection(DbProperties.LINKS_NAME).drop();
-	restapi.stopServer();
+        mongoClient.getDB(DbProperties.DATABASE_NAME)
+                .getCollection(DbProperties.LINKS_NAME).drop();
+        restapi.stopServer();
     }
 
     @AfterClass
     public static void stopEmbeddedMongo() {
-	embeddedMongo.stopEmbeddedMongo();
+        embeddedMongo.stopEmbeddedMongo();
     }
 }
