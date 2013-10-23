@@ -1,5 +1,3 @@
-package earth.xor;
-
 import java.net.UnknownHostException;
 
 import com.mongodb.MongoClient;
