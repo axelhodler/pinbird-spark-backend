@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,30 +35,27 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
 import earth.xor.ExampleLinks;
-import earth.xor.db.LinksProp;
 import earth.xor.db.Link;
 import earth.xor.db.LinksDatastore;
+import earth.xor.db.LinksProp;
 
 public class TestRestApi {
 
-    private Gson gson;
-    private MongoClient mongoClient;
-    private LinksDatastore linksData;
+    private static Gson gson;
+    private static MongoClient mongoClient;
+    private static LinksDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
             IOException {
         EmbedMongo.getInstance();
-    }
 
-    @Before
-    public void setUpRestApi() throws UnknownHostException {
-        this.gson = new Gson();
-        this.mongoClient = new MongoClient("localhost",
+        gson = new Gson();
+        mongoClient = new MongoClient("localhost",
                 EmbedMongoProperties.PORT);
-        this.linksData = new LinksDatastore(mongoClient);
+        linksData = new LinksDatastore(mongoClient);
 
-        RestAssured.port = 4567;
+        RestAssured.port = Integer.parseInt(System.getenv("PORT"));
         SparkRestApi.getInstance().launchServer(mongoClient);
     }
 
@@ -131,11 +127,10 @@ public class TestRestApi {
         DB urlsDb = mongoClient.getDB(LinksProp.DATABASE_NAME);
         DBCollection col = urlsDb.getCollection(LinksProp.LINKS_NAME);
 
-        DBObject foundEntry = col.findOne(new BasicDBObject(
-                LinksProp.URL, "http://www.foo.org"));
+        DBObject foundEntry = col.findOne(new BasicDBObject(LinksProp.URL,
+                "http://www.foo.org"));
 
-        assertEquals("http://www.foo.org",
-                foundEntry.get(LinksProp.URL));
+        assertEquals("http://www.foo.org", foundEntry.get(LinksProp.URL));
         assertEquals("foo", foundEntry.get(LinksProp.TITLE));
         assertEquals("test", foundEntry.get(LinksProp.USER));
     }
@@ -189,8 +184,8 @@ public class TestRestApi {
         DB linksDb = mongoClient.getDB(LinksProp.DATABASE_NAME);
         DBCollection col = linksDb.getCollection(LinksProp.LINKS_NAME);
 
-        DBObject foundEntry = col.findOne(new BasicDBObject(
-                LinksProp.URL, "http://www.foo.org"));
+        DBObject foundEntry = col.findOne(new BasicDBObject(LinksProp.URL,
+                "http://www.foo.org"));
 
         return foundEntry.get(LinksProp.ID).toString();
     }
