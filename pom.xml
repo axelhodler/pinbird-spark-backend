@@ -78,7 +78,7 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.4</version>
 				<executions>
-<!-- 				necessary for heroku -->
+					<!-- necessary for heroku -->
 					<execution>
 						<id>copy-dependencies</id>
 						<phase>package</phase>
@@ -91,10 +91,20 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-<!-- 				necessary for travis-ci -->
+				<!-- necessary for travis-ci -->
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.16</version>
+				<configuration>
+					<environmentVariables>
+						<PORT>5000</PORT>
+					</environmentVariables>
 				</configuration>
 			</plugin>
 		</plugins>
