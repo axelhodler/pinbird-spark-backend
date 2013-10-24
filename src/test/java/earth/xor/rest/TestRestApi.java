@@ -51,8 +51,7 @@ public class TestRestApi {
         EmbedMongo.getInstance();
 
         gson = new Gson();
-        mongoClient = new MongoClient("localhost",
-                EmbedMongoProperties.PORT);
+        mongoClient = new MongoClient("localhost", EmbedMongoProperties.PORT);
         linksData = new LinksDatastore(mongoClient);
 
         RestAssured.port = Integer.parseInt(System.getenv("PORT"));
@@ -72,7 +71,8 @@ public class TestRestApi {
         linksData.addLink(ExampleLinks.testLink2);
         linksData.addLink(ExampleLinks.testLink3);
 
-        String jsonResponse = expect().contentType("application/json").and()
+        String jsonResponse = given().param("pw", System.getenv("PASS"))
+                .expect().contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .get(LinksProp.LINKS_ROUTE).asString();
 
@@ -90,7 +90,8 @@ public class TestRestApi {
     public void testGettingASavedLinkById() {
         String id = addLinkAndGetItsId();
 
-        String jsonString = expect().contentType("application/json").and()
+        String jsonString = given().param("pw", System.getenv("PASS")).expect()
+                .contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .get("/links/" + id).asString();
 
@@ -111,7 +112,8 @@ public class TestRestApi {
     }
 
     private void addAlinkViaRestApi() {
-        String jsonString = given().body(getLinkToPOSTjson()).expect()
+        String jsonString = given().body(getLinkToPOSTjson())
+                .queryParam("pw", System.getenv("PASS")).expect()
                 .contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .post("/links").asString();
@@ -197,6 +199,11 @@ public class TestRestApi {
         assertEquals("http://www.foo.org", foundLink.getUrl());
         assertEquals("foo", foundLink.getTitle());
         assertEquals("user1", foundLink.getUser());
+    }
+
+    @Test
+    public void testAuthentication() {
+        expect().statusCode(401).when().get(LinksProp.LINKS_ROUTE);
     }
 
     @After

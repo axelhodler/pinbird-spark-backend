@@ -1,5 +1,6 @@
 package earth.xor.rest;
 
+import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.setPort;
@@ -11,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import spark.Filter;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -41,6 +43,18 @@ public class SparkRestApi {
         this.linksDs = new LinksDatastore(mongoClient);
 
         setPort(Integer.parseInt(System.getenv("PORT")));
+
+        before(new Filter() {
+
+            @Override
+            public void handle(Request request, Response response) {
+                String pw = request.queryParams("pw");
+
+                if (!(pw != null && pw.equals(System.getenv("PASS"))))
+                    halt(401, "Authentication failed");
+            }
+        });
+
         createPOSTlinksRoute();
         createGETlinksRoute();
         createGETlinkByIdRoute();
@@ -58,9 +72,9 @@ public class SparkRestApi {
             }
 
             private Link createLinkFromJSONObject(JSONObject obj) {
-                return new Link(obj.get(LinksProp.URL).toString(), obj
-                        .get(LinksProp.TITLE).toString(), obj.get(
-                        LinksProp.USER).toString());
+                return new Link(obj.get(LinksProp.URL).toString(), obj.get(
+                        LinksProp.TITLE).toString(), obj.get(LinksProp.USER)
+                        .toString());
             }
         });
     }
@@ -120,14 +134,10 @@ public class SparkRestApi {
     private JSONObject dbObjectToJsonObject(DBObject dbObject) {
         JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(LinksProp.ID, dbObject.get(LinksProp.ID)
-                .toString());
-        jsonObject.put(LinksProp.URL,
-                dbObject.get(LinksProp.URL));
-        jsonObject.put(LinksProp.TITLE,
-                dbObject.get(LinksProp.TITLE));
-        jsonObject.put(LinksProp.USER,
-                dbObject.get(LinksProp.USER));
+        jsonObject.put(LinksProp.ID, dbObject.get(LinksProp.ID).toString());
+        jsonObject.put(LinksProp.URL, dbObject.get(LinksProp.URL));
+        jsonObject.put(LinksProp.TITLE, dbObject.get(LinksProp.TITLE));
+        jsonObject.put(LinksProp.USER, dbObject.get(LinksProp.USER));
         jsonObject.put(LinksProp.TIMESTAMP,
                 formatDate((Date) dbObject.get(LinksProp.TIMESTAMP)));
 
