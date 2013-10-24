@@ -2,6 +2,7 @@ package earth.xor.rest;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.setPort;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,9 +19,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import earth.xor.db.LinksProp;
 import earth.xor.db.Link;
 import earth.xor.db.LinksDatastore;
+import earth.xor.db.LinksProp;
 
 public class SparkRestApi {
 
@@ -38,6 +39,8 @@ public class SparkRestApi {
 
     public void launchServer(MongoClient mongoClient) {
         this.linksDs = new LinksDatastore(mongoClient);
+
+        setPort(Integer.parseInt(System.getenv("PORT")));
         createPOSTlinksRoute();
         createGETlinksRoute();
         createGETlinkByIdRoute();
