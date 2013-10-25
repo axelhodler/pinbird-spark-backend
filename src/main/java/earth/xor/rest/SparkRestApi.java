@@ -44,6 +44,14 @@ public class SparkRestApi {
 
         setPort(Integer.parseInt(System.getenv("PORT")));
 
+        createFilterForUnsecureAuthentication();
+
+        createPOSTlinksRoute();
+        createGETlinksRoute();
+        createGETlinkByIdRoute();
+    }
+
+    private void createFilterForUnsecureAuthentication() {
         before(new Filter() {
 
             @Override
@@ -54,10 +62,6 @@ public class SparkRestApi {
                     halt(401, "Authentication failed");
             }
         });
-
-        createPOSTlinksRoute();
-        createGETlinksRoute();
-        createGETlinkByIdRoute();
     }
 
     public void createPOSTlinksRoute() {
