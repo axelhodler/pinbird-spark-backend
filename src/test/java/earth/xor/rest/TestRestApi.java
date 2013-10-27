@@ -204,6 +204,8 @@ public class TestRestApi {
     @Test
     public void testAuthentication() {
         expect().statusCode(401).when().get(LinksProp.LINKS_ROUTE);
+        given().queryParam("pw", System.getenv("PASS")).expect()
+                .statusCode(200).when().get(LinksProp.LINKS_ROUTE);
     }
 
     @After
