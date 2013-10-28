@@ -71,10 +71,13 @@ public class TestRestApi {
         linksData.addLink(ExampleLinks.testLink2);
         linksData.addLink(ExampleLinks.testLink3);
 
-        String jsonResponse = given().param("pw", System.getenv("PASS"))
-                .expect().contentType("application/json").and()
-                .header("Access-Control-Allow-Origin", equalTo("*")).when()
-                .get(LinksProp.LINKS_ROUTE).asString();
+        expect().contentType("application/json").when()
+                .get(LinksProp.LINKS_ROUTE);
+        expect().header("Access-Control-Allow-Origin", equalTo("*")).when()
+                .get(LinksProp.LINKS_ROUTE);
+
+        String jsonResponse = expect().when().get(LinksProp.LINKS_ROUTE)
+                .asString();
 
         Type type = new TypeToken<Map<String, List<Link>>>() {
         }.getType();
@@ -90,7 +93,7 @@ public class TestRestApi {
     public void testGettingASavedLinkById() {
         String id = addLinkAndGetItsId();
 
-        String jsonString = given().param("pw", System.getenv("PASS")).expect()
+        String jsonString = expect()
                 .contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .get("/links/" + id).asString();
@@ -203,7 +206,7 @@ public class TestRestApi {
 
     @Test
     public void testAuthentication() {
-        expect().statusCode(401).when().get(LinksProp.LINKS_ROUTE);
+        expect().statusCode(401).when().post(LinksProp.LINKS_ROUTE);
         given().queryParam("pw", System.getenv("PASS")).expect()
                 .statusCode(200).when().get(LinksProp.LINKS_ROUTE);
     }

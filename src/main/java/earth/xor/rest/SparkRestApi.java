@@ -1,6 +1,5 @@
 package earth.xor.rest;
 
-import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.setPort;
@@ -12,7 +11,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import spark.Filter;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -44,7 +42,6 @@ public class SparkRestApi {
 
         setPort(Integer.parseInt(System.getenv("PORT")));
 
-        createFilterForUnsecureAuthentication();
         setRoutes();
     }
 
@@ -54,24 +51,16 @@ public class SparkRestApi {
         createGETlinkByIdRoute();
     }
 
-    private void createFilterForUnsecureAuthentication() {
-        before(new Filter() {
-
-            @Override
-            public void handle(Request request, Response response) {
-                String pw = request.queryParams("pw");
-
-                if (!(pw != null && pw.equals(System.getenv("PASS"))))
-                    halt(401, "Authentication failed");
-            }
-        });
-    }
-
     public void createPOSTlinksRoute() {
         post(new Route(LinksProp.LINKS_ROUTE) {
 
             @Override
             public Object handle(Request request, Response response) {
+                String pw = request.queryParams("pw");
+
+                if (!(pw != null && pw.equals(System.getenv("PASS"))))
+                    halt(401, "Authentication failed");
+
                 JSONObject obj = (JSONObject) JSONValue.parse(request.body());
                 linksDs.addLink(createLinkFromJSONObject(obj));
                 addAccessControlAllowOriginHeader(response);
