@@ -1,3 +1,6 @@
+# freezing-octo-hipster
+playing with the spark java REST framework
+
 [![Build Status](https://travis-ci.org/xorrr/freezing-octo-hipster.png)](https://travis-ci.org/xorrr/freezing-octo-hipster)
 
 # License
