@@ -4,7 +4,6 @@
 .settings/
 .loadpath
 target/
-bin/
 *~
 # ================================================================================
 # Dont track the emacs backup files
