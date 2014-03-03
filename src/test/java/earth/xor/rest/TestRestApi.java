@@ -21,6 +21,7 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -39,6 +40,7 @@ import earth.xor.db.Link;
 import earth.xor.db.LinksDatastore;
 import earth.xor.db.LinksProp;
 
+@Ignore
 public class TestRestApi {
 
     private static Gson gson;

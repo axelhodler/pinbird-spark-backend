@@ -1,18 +1,18 @@
 import java.net.UnknownHostException;
 
+import org.xorrr.util.EnvironmentVars;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
-import earth.xor.helpers.ConfigAccessor;
 import earth.xor.rest.SparkRestApi;
 
 public class Main {
 
     public static void main(String args[]) throws UnknownHostException {
 
-        ConfigAccessor config = new ConfigAccessor();
-
-        MongoClientURI mongoUri = new MongoClientURI(config.getMongoUri());
+        MongoClientURI mongoUri = new MongoClientURI(
+                System.getenv(EnvironmentVars.URI));
         MongoClient client = new MongoClient(mongoUri);
 
         SparkRestApi.getInstance().launchServer(client);

@@ -1,10 +1,10 @@
 package earth.xor.db;
 
-import earth.xor.helpers.ConfigAccessor;
+import org.xorrr.util.EnvironmentVars;
 
 public class LinksProp {
 
-    public static String DATABASE_NAME = new ConfigAccessor().getDatabaseName();
+    public static String DATABASE_NAME = System.getenv(EnvironmentVars.DB_NAME);
 
     public static final String LINKS_NAME = "links";
 
