@@ -12,17 +12,18 @@ import org.junit.Test;
 public class TestJsonSimple {
     private String jsonExample = "{ \"url\":\"http://www.foo.org\", "
             + "\"title\":\"foo\", " + "\"user\":\"user\"}";
+    private JSONObject obj;
 
     @Test
     public void getJsonObjectFromString() {
-        JSONObject obj = (JSONObject) JSONValue.parse(jsonExample);
+        obj = (JSONObject) JSONValue.parse(jsonExample);
 
         assertEquals("foo", obj.get("title"));
     }
 
     @Test
     public void parseJsonObjectToString() {
-        JSONObject obj = new JSONObject();
+        obj = new JSONObject();
 
         obj.put("title", "foo");
 
