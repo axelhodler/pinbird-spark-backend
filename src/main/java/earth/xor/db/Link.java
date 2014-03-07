@@ -40,7 +40,6 @@ public class Link {
     }
 
     public static class Builder {
-        private Link baseLink = null;
         private String url = null;
         private String title = null;
         private String user = null;
