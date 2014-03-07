@@ -57,6 +57,13 @@ public class TestMongoLinksDatastore {
         verify(col, times(1)).insert(any(BasicDBObject.class));
     }
 
+    @Test
+    public void canGetAllLinks() {
+        linksData.getLinks();
+
+        verify(col, times(1)).find();
+    }
+
     @Ignore
     @Test
     public void testAddingAndGettingAllLinks() {
