@@ -2,7 +2,12 @@ package earth.xor.db;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -16,6 +21,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -27,12 +34,27 @@ import earth.xor.ExampleLinks;
 public class TestLinksDatastore {
     @Mock
     private MongoClient mongoClient;
+    @Mock
+    private DB db;
+    @Mock
+    private DBCollection col;
+
     private LinksDatastore linksData;
 
     @Before
     public void setUpTests() throws UnknownHostException {
         this.mongoClient = mock(MongoClient.class);
         this.linksData = new LinksDatastore(mongoClient);
+
+        when(mongoClient.getDB(anyString())).thenReturn(db);
+        when(db.getCollection(anyString())).thenReturn(col);
+    }
+
+    @Test
+    public void linkCanBeAdded() {
+        linksData.addLink(ExampleLinks.testLink1);
+
+        verify(col, times(1)).insert(any(BasicDBObject.class));
     }
 
     @Ignore
