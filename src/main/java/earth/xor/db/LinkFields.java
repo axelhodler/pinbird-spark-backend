@@ -2,7 +2,7 @@ package earth.xor.db;
 
 import org.xorrr.util.EnvironmentVars;
 
-public class LinkFields {
+public abstract class LinkFields {
 
     public static String DATABASE_NAME = System.getenv(EnvironmentVars.DB_NAME);
 
