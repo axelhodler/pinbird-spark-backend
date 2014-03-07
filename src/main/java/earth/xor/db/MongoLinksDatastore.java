@@ -10,7 +10,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public class MongoLinksDatastore {
+public class MongoLinksDatastore implements LinksDatastore {
 
     private MongoClient mongo;
 
