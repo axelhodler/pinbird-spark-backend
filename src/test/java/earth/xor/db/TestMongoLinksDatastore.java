@@ -31,7 +31,7 @@ import com.mongodb.MongoClient;
 import earth.xor.ExampleLinks;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestLinksDatastore {
+public class TestMongoLinksDatastore {
     @Mock
     private MongoClient mongoClient;
     @Mock
@@ -39,12 +39,12 @@ public class TestLinksDatastore {
     @Mock
     private DBCollection col;
 
-    private LinksDatastore linksData;
+    private MongoLinksDatastore linksData;
 
     @Before
     public void setUpTests() throws UnknownHostException {
         this.mongoClient = mock(MongoClient.class);
-        this.linksData = new LinksDatastore(mongoClient);
+        this.linksData = new MongoLinksDatastore(mongoClient);
 
         when(mongoClient.getDB(anyString())).thenReturn(db);
         when(db.getCollection(anyString())).thenReturn(col);
@@ -107,9 +107,8 @@ public class TestLinksDatastore {
 
     private Link dbObjectToLink(DBObject dbo) {
         return new Link(dbo.get(LinkFields.URL).toString(), dbo.get(
-                LinkFields.TITLE).toString(),
-                dbo.get(LinkFields.USER).toString(), dbo
-                        .get(LinkFields.TIMESTAMP).toString());
+                LinkFields.TITLE).toString(), dbo.get(LinkFields.USER)
+                .toString(), dbo.get(LinkFields.TIMESTAMP).toString());
     }
 
     @After

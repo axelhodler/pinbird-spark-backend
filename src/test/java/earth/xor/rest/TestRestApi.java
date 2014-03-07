@@ -37,7 +37,7 @@ import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
 import earth.xor.ExampleLinks;
 import earth.xor.db.Link;
-import earth.xor.db.LinksDatastore;
+import earth.xor.db.MongoLinksDatastore;
 import earth.xor.db.LinkFields;
 
 @Ignore
@@ -45,7 +45,7 @@ public class TestRestApi {
 
     private static Gson gson;
     private static MongoClient mongoClient;
-    private static LinksDatastore linksData;
+    private static MongoLinksDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -54,7 +54,7 @@ public class TestRestApi {
 
         gson = new Gson();
         mongoClient = new MongoClient("localhost", EmbedMongoProperties.PORT);
-        linksData = new LinksDatastore(mongoClient);
+        linksData = new MongoLinksDatastore(mongoClient);
 
         RestAssured.port = Integer.parseInt(System.getenv("PORT"));
         SparkRestApi.getInstance().launchServer(mongoClient);

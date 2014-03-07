@@ -20,13 +20,13 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.db.Link;
-import earth.xor.db.LinksDatastore;
+import earth.xor.db.MongoLinksDatastore;
 import earth.xor.db.LinkFields;
 
 public class SparkRestApi {
 
     private static SparkRestApi uniqueInstance = null;
-    private LinksDatastore linksDs;
+    private MongoLinksDatastore linksDs;
 
     private SparkRestApi() {
     }
@@ -38,7 +38,7 @@ public class SparkRestApi {
     }
 
     public void launchServer(MongoClient mongoClient) {
-        this.linksDs = new LinksDatastore(mongoClient);
+        this.linksDs = new MongoLinksDatastore(mongoClient);
 
         setPort(Integer.parseInt(System.getenv("PORT")));
 

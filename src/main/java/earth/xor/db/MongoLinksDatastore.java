@@ -10,11 +10,11 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-public class LinksDatastore {
+public class MongoLinksDatastore {
 
     private MongoClient mongo;
 
-    public LinksDatastore(MongoClient mongo) {
+    public MongoLinksDatastore(MongoClient mongo) {
         this.mongo = mongo;
     }
 
