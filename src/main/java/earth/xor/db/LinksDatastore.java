@@ -17,40 +17,36 @@ public class LinksDatastore {
     private DB database;
 
     public LinksDatastore(MongoClient mongo) {
-	this.mongo = mongo;
-	this.database = mongo.getDB(LinksProp.DATABASE_NAME);
+        this.mongo = mongo;
+        this.database = mongo.getDB(LinksProp.DATABASE_NAME);
     }
 
     public void addLink(Link link) {
-	DBCollection col = this.database
-		.getCollection(LinksProp.LINKS_NAME);
+        DBCollection col = this.database.getCollection(LinksProp.LINKS_NAME);
 
-	col.insert(new BasicDBObject(LinksProp.URL, link
-		.getUrl())
-		.append(LinksProp.TITLE, link.getTitle())
-		.append(LinksProp.USER, link.getUser())
-		.append(LinksProp.TIMESTAMP, new Date()));
+        col.insert(new BasicDBObject(LinksProp.URL, link.getUrl())
+                .append(LinksProp.TITLE, link.getTitle())
+                .append(LinksProp.USER, link.getUser())
+                .append(LinksProp.TIMESTAMP, new Date()));
     }
 
     public DBCursor getLinks() {
-	DBCollection col = this.database
-		.getCollection(LinksProp.LINKS_NAME);
+        DBCollection col = this.database.getCollection(LinksProp.LINKS_NAME);
 
-	return col.find();
+        return col.find();
     }
 
     public Object getMongoClient() {
-	return this.mongo;
+        return this.mongo;
     }
 
     public DBObject getLinkById(String id) {
 
-	DBCollection col = this.database
-		.getCollection(LinksProp.LINKS_NAME);
+        DBCollection col = this.database.getCollection(LinksProp.LINKS_NAME);
 
-	DBObject foundLink = col.findOne(new BasicDBObject("_id", new ObjectId(
-		id)));
+        DBObject foundLink = col.findOne(new BasicDBObject("_id", new ObjectId(
+                id)));
 
-	return foundLink;
+        return foundLink;
     }
 }
