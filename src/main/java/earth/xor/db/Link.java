@@ -12,54 +12,62 @@ public class Link {
     @SerializedName(value = "_id")
     private String objectId;
 
-    public Link(String url, String title, String user, String string) {
-        setEveryThingButTimeAndId(url, title, user);
-        this.timestamp = string;
-    }
-
-    public Link(String url, String title, String user) {
-        setEveryThingButTimeAndId(url, title, user);
+    private Link(Builder builder) {
+        this.url = builder.url;
+        this.title = builder.title;
+        this.user = builder.user;
+        this.timestamp = builder.timestamp;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getUser() {
         return user;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
     public String getObjectId() {
         return this.objectId;
-    }
-
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
     }
 
     public String getTimeStamp() {
         return this.timestamp;
     }
 
-    private void setEveryThingButTimeAndId(String url, String title, String user) {
-        this.url = url;
-        this.title = title;
-        this.user = user;
+    public static class Builder {
+        private Link baseLink = null;
+        private String url = null;
+        private String title = null;
+        private String user = null;
+        private String timestamp = null;
+
+        public Builder url(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder user(String user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder timestamp(String timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Link build() {
+            return new Link(this);
+        }
     }
 }
