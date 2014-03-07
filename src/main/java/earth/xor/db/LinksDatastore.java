@@ -36,7 +36,7 @@ public class LinksDatastore {
     public DBObject getLinkById(String id) {
         DBCollection col = getCollection();
 
-        DBObject foundLink = col.findOne(new BasicDBObject("_id", new ObjectId(
+        DBObject foundLink = col.findOne(new BasicDBObject(LinkFields.ID, new ObjectId(
                 id)));
 
         return foundLink;
