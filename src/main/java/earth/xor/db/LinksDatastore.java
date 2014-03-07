@@ -5,7 +5,6 @@ import java.util.Date;
 import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -32,10 +31,6 @@ public class LinksDatastore {
         DBCollection col = getCollection();
 
         return col.find();
-    }
-
-    public Object getMongoClient() {
-        return this.mongo;
     }
 
     public DBObject getLinkById(String id) {
