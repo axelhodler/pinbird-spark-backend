@@ -38,7 +38,7 @@ import earth.xor.EmbedMongoProperties;
 import earth.xor.ExampleLinks;
 import earth.xor.db.Link;
 import earth.xor.db.LinksDatastore;
-import earth.xor.db.LinksProp;
+import earth.xor.db.LinkFields;
 
 @Ignore
 public class TestRestApi {
@@ -74,11 +74,11 @@ public class TestRestApi {
         linksData.addLink(ExampleLinks.testLink3);
 
         expect().contentType("application/json").when()
-                .get(LinksProp.LINKS_ROUTE);
+                .get(LinkFields.LINKS_ROUTE);
         expect().header("Access-Control-Allow-Origin", equalTo("*")).when()
-                .get(LinksProp.LINKS_ROUTE);
+                .get(LinkFields.LINKS_ROUTE);
 
-        String jsonResponse = expect().when().get(LinksProp.LINKS_ROUTE)
+        String jsonResponse = expect().when().get(LinkFields.LINKS_ROUTE)
                 .asString();
 
         Type type = new TypeToken<Map<String, List<Link>>>() {
@@ -131,15 +131,15 @@ public class TestRestApi {
     }
 
     private void checkIfLinkWasAddedToDatabase() {
-        DB urlsDb = mongoClient.getDB(LinksProp.DATABASE_NAME);
-        DBCollection col = urlsDb.getCollection(LinksProp.LINKS_NAME);
+        DB urlsDb = mongoClient.getDB(LinkFields.DATABASE_NAME);
+        DBCollection col = urlsDb.getCollection(LinkFields.LINKS_NAME);
 
-        DBObject foundEntry = col.findOne(new BasicDBObject(LinksProp.URL,
+        DBObject foundEntry = col.findOne(new BasicDBObject(LinkFields.URL,
                 "http://www.foo.org"));
 
-        assertEquals("http://www.foo.org", foundEntry.get(LinksProp.URL));
-        assertEquals("foo", foundEntry.get(LinksProp.TITLE));
-        assertEquals("test", foundEntry.get(LinksProp.USER));
+        assertEquals("http://www.foo.org", foundEntry.get(LinkFields.URL));
+        assertEquals("foo", foundEntry.get(LinkFields.TITLE));
+        assertEquals("test", foundEntry.get(LinkFields.USER));
     }
 
     private String getLinkToPOSTjson() {
@@ -164,7 +164,7 @@ public class TestRestApi {
             Map<String, List<Link>> returnedUrls) {
 
         ArrayList<Link> allUrls = (ArrayList<Link>) returnedUrls
-                .get(LinksProp.LINKS_NAME);
+                .get(LinkFields.LINKS_NAME);
 
         assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
         assertEquals("foo", allUrls.get(0).getTitle());
@@ -188,18 +188,18 @@ public class TestRestApi {
     private String addLinkAndGetItsId() {
         linksData.addLink(ExampleLinks.testLink1);
 
-        DB linksDb = mongoClient.getDB(LinksProp.DATABASE_NAME);
-        DBCollection col = linksDb.getCollection(LinksProp.LINKS_NAME);
+        DB linksDb = mongoClient.getDB(LinkFields.DATABASE_NAME);
+        DBCollection col = linksDb.getCollection(LinkFields.LINKS_NAME);
 
-        DBObject foundEntry = col.findOne(new BasicDBObject(LinksProp.URL,
+        DBObject foundEntry = col.findOne(new BasicDBObject(LinkFields.URL,
                 "http://www.foo.org"));
 
-        return foundEntry.get(LinksProp.ID).toString();
+        return foundEntry.get(LinkFields.ID).toString();
     }
 
     private void checkIfItsTheCorrectlink(
             Map<String, Link> returnedUrlRepresentation) {
-        Link foundLink = returnedUrlRepresentation.get(LinksProp.URL);
+        Link foundLink = returnedUrlRepresentation.get(LinkFields.URL);
 
         assertEquals("http://www.foo.org", foundLink.getUrl());
         assertEquals("foo", foundLink.getTitle());
@@ -208,14 +208,14 @@ public class TestRestApi {
 
     @Test
     public void testAuthentication() {
-        expect().statusCode(401).when().post(LinksProp.LINKS_ROUTE);
+        expect().statusCode(401).when().post(LinkFields.LINKS_ROUTE);
         given().queryParam("pw", System.getenv("PASS")).expect()
-                .statusCode(200).when().get(LinksProp.LINKS_ROUTE);
+                .statusCode(200).when().get(LinkFields.LINKS_ROUTE);
     }
 
     @After
     public void dropCollection() {
-        mongoClient.getDB(LinksProp.DATABASE_NAME)
-                .getCollection(LinksProp.LINKS_NAME).drop();
+        mongoClient.getDB(LinkFields.DATABASE_NAME)
+                .getCollection(LinkFields.LINKS_NAME).drop();
     }
 }

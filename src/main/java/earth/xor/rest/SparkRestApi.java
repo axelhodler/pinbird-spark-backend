@@ -21,7 +21,7 @@ import com.mongodb.MongoClient;
 
 import earth.xor.db.Link;
 import earth.xor.db.LinksDatastore;
-import earth.xor.db.LinksProp;
+import earth.xor.db.LinkFields;
 
 public class SparkRestApi {
 
@@ -52,7 +52,7 @@ public class SparkRestApi {
     }
 
     public void createPOSTlinksRoute() {
-        post(new Route(LinksProp.LINKS_ROUTE) {
+        post(new Route(LinkFields.LINKS_ROUTE) {
 
             @Override
             public Object handle(Request request, Response response) {
@@ -68,15 +68,15 @@ public class SparkRestApi {
             }
 
             private Link createLinkFromJSONObject(JSONObject obj) {
-                return new Link(obj.get(LinksProp.URL).toString(), obj.get(
-                        LinksProp.TITLE).toString(), obj.get(LinksProp.USER)
+                return new Link(obj.get(LinkFields.URL).toString(), obj.get(
+                        LinkFields.TITLE).toString(), obj.get(LinkFields.USER)
                         .toString());
             }
         });
     }
 
     public void createGETlinksRoute() {
-        get(new Route(LinksProp.LINKS_ROUTE) {
+        get(new Route(LinkFields.LINKS_ROUTE) {
 
             @Override
             public Object handle(Request request, Response response) {
@@ -91,7 +91,7 @@ public class SparkRestApi {
             @SuppressWarnings("unchecked")
             private JSONObject createEmberJsCompliantJSONObject(JSONArray array) {
                 JSONObject object = new JSONObject();
-                object.put(LinksProp.LINKS_NAME, array);
+                object.put(LinkFields.LINKS_NAME, array);
                 return object;
             }
 
@@ -106,7 +106,7 @@ public class SparkRestApi {
     }
 
     private void createGETlinkByIdRoute() {
-        get(new Route(LinksProp.LINKS_ROUTE + "/:id") {
+        get(new Route(LinkFields.LINKS_ROUTE + "/:id") {
 
             @Override
             public Object handle(Request request, Response response) {
@@ -120,7 +120,7 @@ public class SparkRestApi {
             private JSONObject createEmberJsConformJsonObject(DBObject foundLink) {
                 JSONObject mainObject = new JSONObject();
                 JSONObject innerObject = dbObjectToJsonObject(foundLink);
-                mainObject.put(LinksProp.URL, innerObject);
+                mainObject.put(LinkFields.URL, innerObject);
                 return mainObject;
             }
         });
@@ -130,12 +130,12 @@ public class SparkRestApi {
     private JSONObject dbObjectToJsonObject(DBObject dbObject) {
         JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(LinksProp.ID, dbObject.get(LinksProp.ID).toString());
-        jsonObject.put(LinksProp.URL, dbObject.get(LinksProp.URL));
-        jsonObject.put(LinksProp.TITLE, dbObject.get(LinksProp.TITLE));
-        jsonObject.put(LinksProp.USER, dbObject.get(LinksProp.USER));
-        jsonObject.put(LinksProp.TIMESTAMP,
-                formatDate((Date) dbObject.get(LinksProp.TIMESTAMP)));
+        jsonObject.put(LinkFields.ID, dbObject.get(LinkFields.ID).toString());
+        jsonObject.put(LinkFields.URL, dbObject.get(LinkFields.URL));
+        jsonObject.put(LinkFields.TITLE, dbObject.get(LinkFields.TITLE));
+        jsonObject.put(LinkFields.USER, dbObject.get(LinkFields.USER));
+        jsonObject.put(LinkFields.TIMESTAMP,
+                formatDate((Date) dbObject.get(LinkFields.TIMESTAMP)));
 
         return jsonObject;
     }
