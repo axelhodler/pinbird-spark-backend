@@ -1,6 +1,6 @@
 package earth.xor.learning;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,8 @@ public class TestGson {
     @Before
     public void setUpTests() {
         this.gson = new Gson();
-        this.urlExample = new Link("testurl", "testtitle", "testuser");
+        this.urlExample = new Link.Builder().url("testurl").title("testtitle")
+                .user("testuser").build();
     }
 
     @Test

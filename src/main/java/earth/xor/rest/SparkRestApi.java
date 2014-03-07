@@ -68,9 +68,10 @@ public class SparkRestApi {
             }
 
             private Link createLinkFromJSONObject(JSONObject obj) {
-                return new Link(obj.get(LinkFields.URL).toString(), obj.get(
-                        LinkFields.TITLE).toString(), obj.get(LinkFields.USER)
-                        .toString());
+                return new Link.Builder()
+                        .url(obj.get(LinkFields.URL).toString())
+                        .title(obj.get(LinkFields.TITLE).toString())
+                        .user(obj.get(LinkFields.USER).toString()).build();
             }
         });
     }
