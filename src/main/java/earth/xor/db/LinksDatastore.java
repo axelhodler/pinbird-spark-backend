@@ -14,15 +14,13 @@ import com.mongodb.MongoClient;
 public class LinksDatastore {
 
     private MongoClient mongo;
-    private DB database;
 
     public LinksDatastore(MongoClient mongo) {
         this.mongo = mongo;
-        this.database = mongo.getDB(LinkFields.DATABASE_NAME);
     }
 
     public void addLink(Link link) {
-        DBCollection col = this.database.getCollection(LinkFields.LINKS_NAME);
+        DBCollection col = getCollection();
 
         col.insert(new BasicDBObject(LinkFields.URL, link.getUrl())
                 .append(LinkFields.TITLE, link.getTitle())
@@ -31,7 +29,7 @@ public class LinksDatastore {
     }
 
     public DBCursor getLinks() {
-        DBCollection col = this.database.getCollection(LinkFields.LINKS_NAME);
+        DBCollection col = getCollection();
 
         return col.find();
     }
@@ -41,12 +39,16 @@ public class LinksDatastore {
     }
 
     public DBObject getLinkById(String id) {
-
-        DBCollection col = this.database.getCollection(LinkFields.LINKS_NAME);
+        DBCollection col = getCollection();
 
         DBObject foundLink = col.findOne(new BasicDBObject("_id", new ObjectId(
                 id)));
 
         return foundLink;
+    }
+
+    private DBCollection getCollection() {
+        return mongo.getDB(LinkFields.DATABASE_NAME).getCollection(
+                LinkFields.LINKS_NAME);
     }
 }
