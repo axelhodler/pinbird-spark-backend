@@ -13,7 +13,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -116,11 +115,5 @@ public class TestMongoLinksDatastore {
         return new Link(dbo.get(LinkFields.URL).toString(), dbo.get(
                 LinkFields.TITLE).toString(), dbo.get(LinkFields.USER)
                 .toString(), dbo.get(LinkFields.TIMESTAMP).toString());
-    }
-
-    @After
-    public void dropLinksCollection() {
-        mongoClient.getDB(LinkFields.DATABASE_NAME)
-                .getCollection(LinkFields.LINKS_NAME).drop();
     }
 }
