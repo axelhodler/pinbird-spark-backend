@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -61,6 +62,13 @@ public class TestMongoLinksDatastore {
         linksData.getLinks();
 
         verify(col, times(1)).find();
+    }
+
+    @Test
+    public void canGetLinkViaId() {
+        linksData.getLinkById(new ObjectId().toString());
+
+        verify(col, times(1)).findOne(any(BasicDBObject.class));
     }
 
     @Ignore
