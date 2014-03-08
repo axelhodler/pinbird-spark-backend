@@ -21,6 +21,7 @@ public class TestJsonSimple {
         assertEquals("foo", obj.get("title"));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void parseJsonObjectToString() {
         obj = new JSONObject();
