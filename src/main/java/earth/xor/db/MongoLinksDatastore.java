@@ -30,19 +30,11 @@ public class MongoLinksDatastore implements LinksDatastore {
     }
 
     public List<Link> getLinks() {
-        DBCollection col = getCollection();
-
         List<Link> links = new ArrayList<>();
 
-        DBCursor curs = col.find();
-        for (DBObject dbo : curs) {
-            Link link = new Link.Builder().url(dbo.get(LinkFields.URL).toString())
-                        .title(dbo.get(LinkFields.TITLE).toString())
-                        .user(dbo.get(LinkFields.USER).toString())
-                        .timestamp(dbo.get(LinkFields.TIMESTAMP).toString())
-                        .build();
-            links.add(link);
-        }
+        DBCursor curs = getCollection().find();
+        for (DBObject dbo : curs)
+            links.add(buildLink(dbo));
 
         return links;
     }
@@ -59,5 +51,13 @@ public class MongoLinksDatastore implements LinksDatastore {
     private DBCollection getCollection() {
         return mongo.getDB(LinkFields.DATABASE_NAME).getCollection(
                 LinkFields.LINKS_NAME);
+    }
+
+    private Link buildLink(DBObject dbo) {
+        return new Link.Builder().url(dbo.get(LinkFields.URL).toString())
+                .title(dbo.get(LinkFields.TITLE).toString())
+                .user(dbo.get(LinkFields.USER).toString())
+                .timestamp(dbo.get(LinkFields.TIMESTAMP).toString())
+                .build();
     }
 }
