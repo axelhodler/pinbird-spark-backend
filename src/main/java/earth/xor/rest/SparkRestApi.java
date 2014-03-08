@@ -4,8 +4,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.setPort;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,13 +14,11 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.db.Link;
-import earth.xor.db.MongoLinksDatastore;
 import earth.xor.db.LinkFields;
+import earth.xor.db.MongoLinksDatastore;
 
 public class SparkRestApi {
 
@@ -76,14 +73,15 @@ public class SparkRestApi {
         });
     }
 
-    public void createGETlinksRoute() {
+    private void createGETlinksRoute() {
         get(new Route(LinkFields.LINKS_ROUTE) {
 
             @Override
             public Object handle(Request request, Response response) {
                 JSONArray array = new JSONArray();
-                DBCursor curs = linksDs.getLinks();
-                iterateCursorToAddObjectsToArray(array, curs);
+                List<Link> links = linksDs.getLinks();
+
+                iterateCursorToAddObjectsToArray(array, links);
                 JSONObject object = createEmberJsCompliantJSONObject(array);
                 addAccessControlAllowOriginHeader(response);
                 return object.toJSONString();
@@ -98,10 +96,9 @@ public class SparkRestApi {
 
             @SuppressWarnings("unchecked")
             private void iterateCursorToAddObjectsToArray(JSONArray array,
-                    DBCursor curs) {
-                while (curs.hasNext()) {
-                    array.add(dbObjectToJsonObject(curs.next()));
-                }
+                    List<Link> links) {
+                for (Link l : links)
+                    array.add(linkToJson(l));
             }
         });
     }
@@ -111,16 +108,16 @@ public class SparkRestApi {
 
             @Override
             public Object handle(Request request, Response response) {
-                DBObject foundLink = linksDs.getLinkById(request.params(":id"));
+                Link foundLink = linksDs.getLinkById(request.params(":id"));
                 JSONObject mainObject = createEmberJsConformJsonObject(foundLink);
                 addAccessControlAllowOriginHeader(response);
                 return mainObject.toJSONString();
             }
 
             @SuppressWarnings("unchecked")
-            private JSONObject createEmberJsConformJsonObject(DBObject foundLink) {
+            private JSONObject createEmberJsConformJsonObject(Link foundLink) {
                 JSONObject mainObject = new JSONObject();
-                JSONObject innerObject = dbObjectToJsonObject(foundLink);
+                JSONObject innerObject = linkToJson(foundLink);
                 mainObject.put(LinkFields.URL, innerObject);
                 return mainObject;
             }
@@ -128,22 +125,16 @@ public class SparkRestApi {
     }
 
     @SuppressWarnings("unchecked")
-    private JSONObject dbObjectToJsonObject(DBObject dbObject) {
+    private JSONObject linkToJson(Link link) {
         JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(LinkFields.ID, dbObject.get(LinkFields.ID).toString());
-        jsonObject.put(LinkFields.URL, dbObject.get(LinkFields.URL));
-        jsonObject.put(LinkFields.TITLE, dbObject.get(LinkFields.TITLE));
-        jsonObject.put(LinkFields.USER, dbObject.get(LinkFields.USER));
-        jsonObject.put(LinkFields.TIMESTAMP,
-                formatDate((Date) dbObject.get(LinkFields.TIMESTAMP)));
+        jsonObject.put(LinkFields.ID, link.getObjectId());
+        jsonObject.put(LinkFields.URL, link.getUrl());
+        jsonObject.put(LinkFields.TITLE, link.getTitle());
+        jsonObject.put(LinkFields.USER, link.getUser());
+        jsonObject.put(LinkFields.TIMESTAMP, link.getTimeStamp());
 
         return jsonObject;
-    }
-
-    private String formatDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");
-        return sdf.format(date);
     }
 
     private void addAccessControlAllowOriginHeader(Response response) {
