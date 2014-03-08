@@ -1,6 +1,8 @@
 package earth.xor.db;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 
@@ -27,10 +29,22 @@ public class MongoLinksDatastore implements LinksDatastore {
                 .append(LinkFields.TIMESTAMP, new Date()));
     }
 
-    public DBCursor getLinks() {
+    public List<Link> getLinks() {
         DBCollection col = getCollection();
 
-        return col.find();
+        List<Link> links = new ArrayList<>();
+
+        DBCursor curs = col.find();
+        for (DBObject dbo : curs) {
+            Link link = new Link.Builder().url(dbo.get(LinkFields.URL).toString())
+                        .title(dbo.get(LinkFields.TITLE).toString())
+                        .user(dbo.get(LinkFields.USER).toString())
+                        .timestamp(dbo.get(LinkFields.TIMESTAMP).toString())
+                        .build();
+            links.add(link);
+        }
+
+        return links;
     }
 
     public DBObject getLinkById(String id) {

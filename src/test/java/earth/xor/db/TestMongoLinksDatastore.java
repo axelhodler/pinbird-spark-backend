@@ -1,5 +1,6 @@
 package earth.xor.db;
 
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -8,6 +9,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.junit.Before;
@@ -19,6 +22,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import earth.xor.ExampleLinks;
@@ -31,6 +36,12 @@ public class TestMongoLinksDatastore {
     private DB db;
     @Mock
     private DBCollection col;
+    @Mock
+    private DBCursor curs;
+    @Mock
+    private Iterator<DBObject> dbos;
+    @Mock
+    private DBObject dbo;
 
     private MongoLinksDatastore linksData;
 
@@ -52,9 +63,22 @@ public class TestMongoLinksDatastore {
 
     @Test
     public void canGetAllLinks() {
-        linksData.getLinks();
+        when(col.find()).thenReturn(curs);
+        when(curs.iterator()).thenReturn(dbos);
+        when(dbos.hasNext()).thenReturn(true, false);
+        when(dbos.next()).thenReturn(dbo);
+        when(dbo.get(LinkFields.URL)).thenReturn("u");
+        when(dbo.get(LinkFields.TITLE)).thenReturn("t");
+        when(dbo.get(LinkFields.USER)).thenReturn("us");
+        when(dbo.get(LinkFields.TIMESTAMP)).thenReturn("ts");
+        
+        List<Link> links = linksData.getLinks();
 
         verify(col, times(1)).find();
+        assertEquals("u", links.get(0).getUrl());
+        assertEquals("t", links.get(0).getTitle());
+        assertEquals("us", links.get(0).getUser());
+        assertEquals("ts", links.get(0).getTimeStamp());
     }
 
     @Test
