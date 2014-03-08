@@ -1,5 +1,7 @@
 package earth.xor.db;
 
+import java.util.List;
+
 
 public class DatastoreFacade {
 
@@ -11,5 +13,13 @@ public class DatastoreFacade {
 
     public void addLink(Link link) {
         this.ds.addLink(link);
+    }
+
+    public List<Link> getLinks() {
+        return ds.getLinks();
+    }
+
+    public Link getLinkById(String id) {
+        return ds.getLinkById(id);
     }
 }

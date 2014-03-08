@@ -1,6 +1,7 @@
 package earth.xor.db;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -27,5 +28,19 @@ public class TestDatastoreFacade {
         facade.addLink(any(Link.class));
 
         verify(ds, times(1)).addLink(any(Link.class));
+    }
+
+    @Test
+    public void canGetAllLinks() {
+        facade.getLinks();
+
+        verify(ds, times(1)).getLinks();
+    }
+
+    @Test
+    public void canGetLinkById() {
+        facade.getLinkById(anyString());
+
+        verify(ds, times(1)).getLinkById(anyString());
     }
 }
