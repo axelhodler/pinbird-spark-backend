@@ -40,13 +40,10 @@ public class MongoLinksDatastore implements LinksDatastore {
     }
 
     public Link getLinkById(String id) {
-        DBCollection col = getCollection();
-
-        DBObject foundLink = col.findOne(new BasicDBObject(LinkFields.ID, new ObjectId(
+        DBObject foundLink = getCollection().findOne(new BasicDBObject(LinkFields.ID, new ObjectId(
                 id)));
 
-        Link l = buildLink(foundLink);
-        return l;
+        return buildLink(foundLink);
     }
 
     private DBCollection getCollection() {
