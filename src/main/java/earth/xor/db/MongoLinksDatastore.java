@@ -39,13 +39,14 @@ public class MongoLinksDatastore implements LinksDatastore {
         return links;
     }
 
-    public DBObject getLinkById(String id) {
+    public Link getLinkById(String id) {
         DBCollection col = getCollection();
 
         DBObject foundLink = col.findOne(new BasicDBObject(LinkFields.ID, new ObjectId(
                 id)));
 
-        return foundLink;
+        Link l = buildLink(foundLink);
+        return l;
     }
 
     private DBCollection getCollection() {

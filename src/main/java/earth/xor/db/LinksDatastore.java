@@ -10,5 +10,5 @@ public interface LinksDatastore {
 
     public List<Link> getLinks();
 
-    public DBObject getLinkById(String id);
+    public Link getLinkById(String id);
 }
