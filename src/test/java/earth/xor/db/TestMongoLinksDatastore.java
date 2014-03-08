@@ -45,6 +45,13 @@ public class TestMongoLinksDatastore {
 
     private MongoLinksDatastore linksData;
 
+    private void mockDBObjectBehaviour() {
+        when(dbo.get(LinkFields.URL)).thenReturn("u");
+        when(dbo.get(LinkFields.TITLE)).thenReturn("t");
+        when(dbo.get(LinkFields.USER)).thenReturn("us");
+        when(dbo.get(LinkFields.TIMESTAMP)).thenReturn("ts");
+    }
+
     @Before
     public void setUpTests() throws UnknownHostException {
         this.mongoClient = mock(MongoClient.class);
@@ -67,10 +74,7 @@ public class TestMongoLinksDatastore {
         when(curs.iterator()).thenReturn(dbos);
         when(dbos.hasNext()).thenReturn(true, false);
         when(dbos.next()).thenReturn(dbo);
-        when(dbo.get(LinkFields.URL)).thenReturn("u");
-        when(dbo.get(LinkFields.TITLE)).thenReturn("t");
-        when(dbo.get(LinkFields.USER)).thenReturn("us");
-        when(dbo.get(LinkFields.TIMESTAMP)).thenReturn("ts");
+        mockDBObjectBehaviour();
         
         List<Link> links = linksData.getLinks();
 
@@ -83,8 +87,15 @@ public class TestMongoLinksDatastore {
 
     @Test
     public void canGetLinkViaId() {
-        linksData.getLinkById(new ObjectId().toString());
+        when(col.findOne(any(DBObject.class))).thenReturn(dbo);
+        mockDBObjectBehaviour();
+
+        Link l = linksData.getLinkById(new ObjectId().toString());
 
         verify(col, times(1)).findOne(any(BasicDBObject.class));
+        assertEquals("u", l.getUrl());
+        assertEquals("t", l.getTitle());
+        assertEquals("us", l.getUser());
+        assertEquals("ts", l.getTimeStamp());
     }
 }
