@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface LinksDatastore {
 
-    public void addLink(Link link);
+    void addLink(Link link);
 
-    public List<Link> getLinks();
+    List<Link> getLinks();
 
-    public Link getLinkById(String id);
+    Link getLinkById(String id);
 }
