@@ -15,6 +15,7 @@ public class Main {
                 System.getenv(EnvironmentVars.URI));
         MongoClient client = new MongoClient(mongoUri);
 
-        SparkRestApi.getInstance().launchServer(client);
+        SparkRestApi rest = new SparkRestApi();
+        rest.launchServer(client);
     }
 }

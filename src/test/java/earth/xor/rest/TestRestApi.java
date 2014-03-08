@@ -57,7 +57,8 @@ public class TestRestApi {
         linksData = new MongoLinksDatastore(mongoClient);
 
         RestAssured.port = Integer.parseInt(System.getenv("PORT"));
-        SparkRestApi.getInstance().launchServer(mongoClient);
+        SparkRestApi rest = new SparkRestApi();
+        rest.launchServer(mongoClient);
     }
 
     @Test

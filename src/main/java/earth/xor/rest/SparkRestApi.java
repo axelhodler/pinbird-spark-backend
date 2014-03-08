@@ -22,17 +22,7 @@ import earth.xor.db.MongoLinksDatastore;
 
 public class SparkRestApi {
 
-    private static SparkRestApi uniqueInstance = null;
     private MongoLinksDatastore linksDs;
-
-    private SparkRestApi() {
-    }
-
-    public static SparkRestApi getInstance() {
-        if (uniqueInstance == null)
-            uniqueInstance = new SparkRestApi();
-        return uniqueInstance;
-    }
 
     public void launchServer(MongoClient mongoClient) {
         this.linksDs = new MongoLinksDatastore(mongoClient);
