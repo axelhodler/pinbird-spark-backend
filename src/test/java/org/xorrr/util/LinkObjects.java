@@ -1,4 +1,4 @@
-package earth.xor;
+package org.xorrr.util;
 
 import earth.xor.db.Link;
 

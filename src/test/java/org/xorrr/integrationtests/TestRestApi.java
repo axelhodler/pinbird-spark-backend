@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xorrr.util.LinkObjects;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +36,6 @@ import com.mongodb.MongoClient;
 
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
-import earth.xor.LinkObjects;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;

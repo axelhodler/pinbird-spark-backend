@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.xorrr.util.LinkObjects;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -25,8 +26,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-
-import earth.xor.LinkObjects;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestMongoLinksDatastore {
