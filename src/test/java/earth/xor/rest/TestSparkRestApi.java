@@ -1,5 +1,6 @@
 package earth.xor.rest;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 
 import org.junit.Before;
@@ -12,6 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import spark.Spark;
 import earth.xor.db.DatastoreFacade;
+import earth.xor.rest.routes.PostLinkRoute;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Spark.class })
@@ -34,5 +36,11 @@ public class TestSparkRestApi {
     public void portIsSet() {
         PowerMockito.verifyStatic();
         Spark.setPort(anyInt());
+    }
+
+    @Test
+    public void ableToPostOnPostLinkRoute() {
+        PowerMockito.verifyStatic();
+        Spark.post(any(PostLinkRoute.class)); //TODO search for alternative solution
     }
 }

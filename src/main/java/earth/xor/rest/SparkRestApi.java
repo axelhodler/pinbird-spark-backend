@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import spark.Request;
 import spark.Response;
@@ -16,6 +15,8 @@ import spark.Route;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
+import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.transformation.Transformator;
 
 public class SparkRestApi {
 
@@ -38,28 +39,7 @@ public class SparkRestApi {
     }
 
     private void createPOSTlinksRoute() {
-        post(new Route(LinkFields.LINKS_ROUTE) {
-
-            @Override
-            public Object handle(Request request, Response response) {
-                String pw = request.queryParams("pw");
-
-                if (!(pw != null && pw.equals(System.getenv("PASS"))))
-                    halt(401, "Authentication failed");
-
-                JSONObject obj = (JSONObject) JSONValue.parse(request.body());
-                linksDs.addLink(createLinkFromJSONObject(obj));
-                addAccessControlAllowOriginHeader(response);
-                return request.body();
-            }
-
-            private Link createLinkFromJSONObject(JSONObject obj) {
-                return new Link.Builder()
-                        .url(obj.get(LinkFields.URL).toString())
-                        .title(obj.get(LinkFields.TITLE).toString())
-                        .user(obj.get(LinkFields.USER).toString()).build();
-            }
-        });
+        post(new PostLinkRoute(LinkFields.LINKS_ROUTE, linksDs, new Transformator()));
     }
 
     private void createGETlinksRoute() {
