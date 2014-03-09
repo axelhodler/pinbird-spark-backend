@@ -1,4 +1,4 @@
-package earth.xor.rest;
+package earth.xor.rest.routes;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -17,6 +17,7 @@ import spark.AbstractRoute;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.LinkFields;
+import earth.xor.rest.routes.PostLinkRoute;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ AbstractRoute.class })

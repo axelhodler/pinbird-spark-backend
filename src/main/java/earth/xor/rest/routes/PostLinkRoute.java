@@ -1,4 +1,4 @@
-package earth.xor.rest;
+package earth.xor.rest.routes;
 
 import org.xorrr.util.EnvironmentVars;
 
