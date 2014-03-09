@@ -1,4 +1,4 @@
-package earth.xor.rest;
+package org.xorrr.integrationtests;
 
 import static com.jayway.restassured.RestAssured.expect;
 import static com.jayway.restassured.RestAssured.given;
@@ -40,6 +40,7 @@ import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
 import earth.xor.db.MongoLinksDatastore;
+import earth.xor.rest.SparkRestApi;
 
 @Ignore
 public class TestRestApi {
