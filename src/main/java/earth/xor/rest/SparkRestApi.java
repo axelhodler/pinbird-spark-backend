@@ -21,9 +21,11 @@ public class SparkRestApi {
 
     private DatastoreFacade linksDs;
 
-    public void startApi(DatastoreFacade ds) {
+    public SparkRestApi(DatastoreFacade ds) {
         this.linksDs = ds;
+    }
 
+    public void startApi() {
         setPort(Integer.parseInt(System.getenv("PORT")));
 
         setRoutes();
