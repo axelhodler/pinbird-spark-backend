@@ -36,9 +36,10 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
 import earth.xor.ExampleLinks;
+import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
-import earth.xor.db.MongoLinksDatastore;
 import earth.xor.db.LinkFields;
+import earth.xor.db.MongoLinksDatastore;
 
 @Ignore
 public class TestRestApi {
@@ -57,8 +58,10 @@ public class TestRestApi {
         linksData = new MongoLinksDatastore(mongoClient);
 
         RestAssured.port = Integer.parseInt(System.getenv("PORT"));
-        SparkRestApi rest = new SparkRestApi();
-        rest.launchServer(mongoClient);
+        
+        DatastoreFacade facade = new DatastoreFacade(linksData);
+        SparkRestApi rest = new SparkRestApi(facade);
+        rest.startApi();
     }
 
     @Test
@@ -96,8 +99,7 @@ public class TestRestApi {
     public void testGettingASavedLinkById() {
         String id = addLinkAndGetItsId();
 
-        String jsonString = expect()
-                .contentType("application/json").and()
+        String jsonString = expect().contentType("application/json").and()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .get("/links/" + id).asString();
 
