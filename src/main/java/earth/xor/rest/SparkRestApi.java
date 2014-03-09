@@ -21,7 +21,7 @@ public class SparkRestApi {
 
     private LinksDatastore linksDs;
 
-    public void launchServer(LinksDatastore ds) {
+    public void startApi(LinksDatastore ds) {
         this.linksDs = ds;
 
         setPort(Integer.parseInt(System.getenv("PORT")));
