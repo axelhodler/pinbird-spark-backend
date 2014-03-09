@@ -11,23 +11,23 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import spark.Spark;
-import earth.xor.db.LinksDatastore;
+import earth.xor.db.DatastoreFacade;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Spark.class })
 public class TestSparkRestApi {
 
     @Mock
-    LinksDatastore ds;
+    DatastoreFacade facade;
 
     private SparkRestApi restApi;
 
     @Before
     public void setUp() {
-        restApi = new SparkRestApi();
+        restApi = new SparkRestApi(facade);
 
         PowerMockito.mockStatic(Spark.class);
-        restApi.startApi(ds);
+        restApi.startApi();
     }
 
     @Test
