@@ -20,7 +20,6 @@ import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
-import earth.xor.db.LinkFields;
 import earth.xor.rest.transformation.Transformator;
 
 @RunWith(PowerMockRunner.class)
@@ -44,7 +43,7 @@ public class TestPostLinkRoute {
     @Before
     public void setUp() {
         PowerMockito.mockStatic(AbstractRoute.class);
-        route = new PostLinkRoute(LinkFields.LINKS_ROUTE, facade, transformator);
+        route = new PostLinkRoute(Routes.LINKS_ROUTE, facade, transformator);
 
         testLink = LinkObjects.testLink1;
     }

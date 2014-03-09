@@ -41,6 +41,7 @@ import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
 import earth.xor.db.MongoLinksDatastore;
 import earth.xor.rest.SparkRestApi;
+import earth.xor.rest.routes.Routes;
 
 @Ignore
 public class TestRestApi {
@@ -79,11 +80,11 @@ public class TestRestApi {
         linksData.addLink(LinkObjects.testLink3);
 
         expect().contentType("application/json").when()
-                .get(LinkFields.LINKS_ROUTE);
+                .get(Routes.LINKS_ROUTE);
         expect().header("Access-Control-Allow-Origin", equalTo("*")).when()
-                .get(LinkFields.LINKS_ROUTE);
+                .get(Routes.LINKS_ROUTE);
 
-        String jsonResponse = expect().when().get(LinkFields.LINKS_ROUTE)
+        String jsonResponse = expect().when().get(Routes.LINKS_ROUTE)
                 .asString();
 
         Type type = new TypeToken<Map<String, List<Link>>>() {
@@ -212,9 +213,9 @@ public class TestRestApi {
 
     @Test
     public void testAuthentication() {
-        expect().statusCode(401).when().post(LinkFields.LINKS_ROUTE);
+        expect().statusCode(401).when().post(Routes.LINKS_ROUTE);
         given().queryParam("pw", System.getenv("PASS")).expect()
-                .statusCode(200).when().get(LinkFields.LINKS_ROUTE);
+                .statusCode(200).when().get(Routes.LINKS_ROUTE);
     }
 
     @After

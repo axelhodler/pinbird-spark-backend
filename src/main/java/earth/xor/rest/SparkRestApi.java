@@ -16,6 +16,7 @@ import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
 import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.routes.Routes;
 import earth.xor.rest.transformation.Transformator;
 
 public class SparkRestApi {
@@ -39,11 +40,11 @@ public class SparkRestApi {
     }
 
     private void createPOSTlinksRoute() {
-        post(new PostLinkRoute(LinkFields.LINKS_ROUTE, linksDs, new Transformator()));
+        post(new PostLinkRoute(Routes.LINKS_ROUTE, linksDs, new Transformator()));
     }
 
     private void createGETlinksRoute() {
-        get(new Route(LinkFields.LINKS_ROUTE) {
+        get(new Route(Routes.LINKS_ROUTE) {
 
             @Override
             public Object handle(Request request, Response response) {
@@ -73,7 +74,7 @@ public class SparkRestApi {
     }
 
     private void createGETlinkByIdRoute() {
-        get(new Route(LinkFields.LINKS_ROUTE + "/:id") {
+        get(new Route(Routes.LINKS_ROUTE + "/:id") {
 
             @Override
             public Object handle(Request request, Response response) {

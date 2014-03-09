@@ -14,5 +14,4 @@ public abstract class LinkFields {
     public static final String USER = "user";
     public static final String TIMESTAMP = "timestamp";
 
-    public static final String LINKS_ROUTE = "/links";
 }
