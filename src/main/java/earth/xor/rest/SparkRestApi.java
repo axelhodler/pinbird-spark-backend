@@ -13,19 +13,16 @@ import org.json.simple.JSONValue;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import com.mongodb.MongoClient;
-
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
-import earth.xor.db.MongoLinksDatastore;
+import earth.xor.db.LinksDatastore;
 
 public class SparkRestApi {
 
-    private MongoLinksDatastore linksDs;
+    private LinksDatastore linksDs;
 
-    public void launchServer(MongoClient mongoClient) {
-        this.linksDs = new MongoLinksDatastore(mongoClient);
+    public void launchServer(LinksDatastore ds) {
+        this.linksDs = ds;
 
         setPort(Integer.parseInt(System.getenv("PORT")));
 
@@ -38,7 +35,7 @@ public class SparkRestApi {
         createGETlinkByIdRoute();
     }
 
-    public void createPOSTlinksRoute() {
+    private void createPOSTlinksRoute() {
         post(new Route(LinkFields.LINKS_ROUTE) {
 
             @Override
