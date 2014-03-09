@@ -13,15 +13,15 @@ import org.json.simple.JSONValue;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
-import earth.xor.db.LinksDatastore;
 
 public class SparkRestApi {
 
-    private LinksDatastore linksDs;
+    private DatastoreFacade linksDs;
 
-    public void startApi(LinksDatastore ds) {
+    public void startApi(DatastoreFacade ds) {
         this.linksDs = ds;
 
         setPort(Integer.parseInt(System.getenv("PORT")));
