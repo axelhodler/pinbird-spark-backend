@@ -35,7 +35,7 @@ import com.mongodb.MongoClient;
 
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
-import earth.xor.ExampleLinks;
+import earth.xor.LinkObjects;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
@@ -74,9 +74,9 @@ public class TestRestApi {
     @Test
     public void testGettingAListOfAllSavedUrls() {
 
-        linksData.addLink(ExampleLinks.testLink1);
-        linksData.addLink(ExampleLinks.testLink2);
-        linksData.addLink(ExampleLinks.testLink3);
+        linksData.addLink(LinkObjects.testLink1);
+        linksData.addLink(LinkObjects.testLink2);
+        linksData.addLink(LinkObjects.testLink3);
 
         expect().contentType("application/json").when()
                 .get(LinkFields.LINKS_ROUTE);
@@ -190,7 +190,7 @@ public class TestRestApi {
     }
 
     private String addLinkAndGetItsId() {
-        linksData.addLink(ExampleLinks.testLink1);
+        linksData.addLink(LinkObjects.testLink1);
 
         DB linksDb = mongoClient.getDB(LinkFields.DATABASE_NAME);
         DBCollection col = linksDb.getCollection(LinkFields.LINKS_NAME);

@@ -2,7 +2,7 @@ package earth.xor;
 
 import earth.xor.db.Link;
 
-public class ExampleLinks {
+public class LinkObjects {
 
     public static final Link testLink1 = new Link.Builder()
             .url("http://www.foo.org").title("foo").user("user1").build();

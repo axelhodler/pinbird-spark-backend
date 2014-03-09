@@ -26,7 +26,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import earth.xor.ExampleLinks;
+import earth.xor.LinkObjects;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestMongoLinksDatastore {
@@ -63,7 +63,7 @@ public class TestMongoLinksDatastore {
 
     @Test
     public void linkCanBeAdded() {
-        linksData.addLink(ExampleLinks.testLink1);
+        linksData.addLink(LinkObjects.testLink1);
 
         verify(col, times(1)).insert(any(BasicDBObject.class));
     }
