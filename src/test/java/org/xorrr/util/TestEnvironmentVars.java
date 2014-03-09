@@ -10,6 +10,7 @@ public class TestEnvironmentVars {
     public void envVarConstantsExist() {
         assertNotNull(EnvironmentVars.URI);
         assertNotNull(EnvironmentVars.DB_NAME);
+        assertNotNull(EnvironmentVars.PW);
     }
 
 }
