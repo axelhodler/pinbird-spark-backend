@@ -1,5 +1,6 @@
 package earth.xor.rest.routes;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,8 +17,8 @@ import org.xorrr.util.EnvironmentVars;
 import spark.AbstractRoute;
 import spark.Request;
 import spark.Response;
+import earth.xor.db.DatastoreFacade;
 import earth.xor.db.LinkFields;
-import earth.xor.rest.routes.PostLinkRoute;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ AbstractRoute.class })
@@ -26,22 +27,28 @@ public class TestPostLinkRoute {
     Request req;
     @Mock
     Response resp;
+    @Mock
+    DatastoreFacade facade;
 
     private PostLinkRoute route;
+    private String jsonExample = "{ \"url\":\"http://www.foo.org\", "
+            + "\"title\":\"foo\", " + "\"user\":\"user\"}";
 
     @Before
     public void setUp() {
         PowerMockito.mockStatic(AbstractRoute.class);
-        route = new PostLinkRoute(LinkFields.LINKS_ROUTE);
+        route = new PostLinkRoute(LinkFields.LINKS_ROUTE, facade);
     }
 
     @Test
     public void linkCanBePosted() {
         when(req.queryParams("pw")).thenReturn(System.getenv(EnvironmentVars.PW));
+        when(req.body()).thenReturn(jsonExample);
 
-        route.handle(req, resp);
+        Object returned = route.handle(req, resp);
 
         verify(req, times(1)).queryParams("pw");
+        assertEquals(jsonExample, returned.toString());
     }
 
     @Test
