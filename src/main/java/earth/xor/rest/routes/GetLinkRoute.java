@@ -6,8 +6,8 @@ import spark.Route;
 
 public class GetLinkRoute extends Route {
 
-    public GetLinkRoute(String path) {
-        super(path);
+    public GetLinkRoute() {
+        super(Routes.GET_LINK);
         // TODO Auto-generated constructor stub
     }
 

@@ -6,7 +6,7 @@ public class TestGetLinkRoute {
 
     @Test
     public void test() {
-        GetLinkRoute route = new GetLinkRoute("asdf");
+        GetLinkRoute route = new GetLinkRoute();
     }
 
 }
