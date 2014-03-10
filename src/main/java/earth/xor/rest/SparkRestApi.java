@@ -40,7 +40,7 @@ public class SparkRestApi {
     }
 
     private void createPOSTlinksRoute() {
-        post(new PostLinkRoute(Routes.LINKS_ROUTE, linksDs, new Transformator()));
+        post(new PostLinkRoute(linksDs, new Transformator()));
     }
 
     private void createGETlinksRoute() {

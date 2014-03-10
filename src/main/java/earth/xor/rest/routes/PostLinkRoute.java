@@ -3,6 +3,7 @@ package earth.xor.rest.routes;
 import org.xorrr.util.EnvironmentVars;
 
 import earth.xor.db.DatastoreFacade;
+import earth.xor.db.LinkFields;
 import earth.xor.rest.transformation.Transformator;
 import spark.Request;
 import spark.Response;
@@ -13,8 +14,8 @@ public class PostLinkRoute extends Route{
     private DatastoreFacade facade;
     private Transformator transformator;
 
-    public PostLinkRoute(String path, DatastoreFacade facade, Transformator transformator) {
-        super(path);
+    public PostLinkRoute(DatastoreFacade facade, Transformator transformator) {
+        super(LinkFields.LINKS_NAME);
         this.facade = facade;
         this.transformator = transformator;
     }

@@ -43,7 +43,7 @@ public class TestPostLinkRoute {
     @Before
     public void setUp() {
         PowerMockito.mockStatic(AbstractRoute.class);
-        route = new PostLinkRoute(Routes.LINKS_ROUTE, facade, transformator);
+        route = new PostLinkRoute(facade, transformator);
 
         testLink = LinkObjects.testLink1;
     }
