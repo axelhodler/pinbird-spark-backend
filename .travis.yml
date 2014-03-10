@@ -1,4 +1,4 @@
 language: java
 
-env: PASS=test
-
+env:
+  - PW=test DB_NAME=test URI=test
