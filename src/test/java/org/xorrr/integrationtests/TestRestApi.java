@@ -80,11 +80,11 @@ public class TestRestApi {
         linksData.addLink(LinkObjects.testLink3);
 
         expect().contentType("application/json").when()
-                .get(Routes.LINKS_ROUTE);
+                .get(Routes.POST_LINK);
         expect().header("Access-Control-Allow-Origin", equalTo("*")).when()
-                .get(Routes.LINKS_ROUTE);
+                .get(Routes.POST_LINK);
 
-        String jsonResponse = expect().when().get(Routes.LINKS_ROUTE)
+        String jsonResponse = expect().when().get(Routes.POST_LINK)
                 .asString();
 
         Type type = new TypeToken<Map<String, List<Link>>>() {
@@ -213,9 +213,9 @@ public class TestRestApi {
 
     @Test
     public void testAuthentication() {
-        expect().statusCode(401).when().post(Routes.LINKS_ROUTE);
+        expect().statusCode(401).when().post(Routes.POST_LINK);
         given().queryParam("pw", System.getenv("PASS")).expect()
-                .statusCode(200).when().get(Routes.LINKS_ROUTE);
+                .statusCode(200).when().get(Routes.POST_LINK);
     }
 
     @After

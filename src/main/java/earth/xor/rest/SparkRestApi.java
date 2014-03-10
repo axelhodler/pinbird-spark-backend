@@ -44,7 +44,7 @@ public class SparkRestApi {
     }
 
     private void createGETlinksRoute() {
-        get(new Route(Routes.LINKS_ROUTE) {
+        get(new Route(Routes.POST_LINK) {
 
             @Override
             public Object handle(Request request, Response response) {
@@ -74,7 +74,7 @@ public class SparkRestApi {
     }
 
     private void createGETlinkByIdRoute() {
-        get(new Route(Routes.LINKS_ROUTE + "/:id") {
+        get(new Route(Routes.POST_LINK + "/:id") {
 
             @Override
             public Object handle(Request request, Response response) {
