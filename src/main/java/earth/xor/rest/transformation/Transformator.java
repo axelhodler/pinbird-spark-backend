@@ -1,5 +1,8 @@
 package earth.xor.rest.transformation;
 
+import java.util.List;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -11,9 +14,19 @@ public class Transformator {
         return createLink((JSONObject) JSONValue.parse(json));
     }
 
+    public String toJson(List<Link> links) {
+        JSONArray array = new JSONArray();
+        for (Link l : links)
+            array.add(linkToJson(l));
+
+        JSONObject object = new JSONObject();
+        object.put(LinkFields.LINKS_NAME, array);
+
+        return object.toJSONString();
+    }
+
     private Link createLink(JSONObject json) {
-        return new Link.Builder().url(getUrl(json))
-                .title(getTitle(json))
+        return new Link.Builder().url(getUrl(json)).title(getTitle(json))
                 .user(getUser(json)).build();
     }
 
@@ -27,5 +40,17 @@ public class Transformator {
 
     private String getUrl(JSONObject json) {
         return json.get(LinkFields.URL).toString();
+    }
+
+    private JSONObject linkToJson(Link link) {
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put(LinkFields.ID, link.getObjectId());
+        jsonObject.put(LinkFields.URL, link.getUrl());
+        jsonObject.put(LinkFields.TITLE, link.getTitle());
+        jsonObject.put(LinkFields.USER, link.getUser());
+        jsonObject.put(LinkFields.TIMESTAMP, link.getTimeStamp());
+
+        return jsonObject;
     }
 }
