@@ -14,6 +14,7 @@ public class Transformator {
         return createLink((JSONObject) JSONValue.parse(json));
     }
 
+    @SuppressWarnings("unchecked")
     public String toJson(List<Link> links) {
         JSONArray array = new JSONArray();
         for (Link l : links)
@@ -23,6 +24,13 @@ public class Transformator {
         object.put(LinkFields.LINKS_NAME, array);
 
         return object.toJSONString();
+    }
+
+    @SuppressWarnings("unchecked")
+    public String toJson(Link testlink1) {
+        JSONObject main = new JSONObject();
+        main.put("link", linkToJson(testlink1));
+        return main.toJSONString();
     }
 
     private Link createLink(JSONObject json) {
@@ -42,6 +50,7 @@ public class Transformator {
         return json.get(LinkFields.URL).toString();
     }
 
+    @SuppressWarnings("unchecked")
     private JSONObject linkToJson(Link link) {
         JSONObject jsonObject = new JSONObject();
 
@@ -53,4 +62,5 @@ public class Transformator {
 
         return jsonObject;
     }
+
 }

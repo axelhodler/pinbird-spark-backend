@@ -5,14 +5,11 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.xorrr.util.LinkObjects;
 
 import earth.xor.db.Link;
-import earth.xor.db.LinkFields;
 
 public class TestTransformator {
 
@@ -26,6 +23,10 @@ public class TestTransformator {
             + ":\"http:\\/\\/www.foo.org\"},{\"timestamp\":null,\"title\""
             + ":\"bar\",\"_id\":null,\"user\":\"user2\",\"url\""
             + ":\"http:\\/\\/www.bar.org\"}]}";
+
+    private String linkInJson = "{\"link\":{\"timestamp\":null,"
+            + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
+            + ":\"http:\\/\\/www.foo.org\"}}";
 
     @Before
     public void setUp() {
@@ -49,5 +50,12 @@ public class TestTransformator {
 
         String json = trans.toJson(links);
         assertEquals(json, linksInJson);
+    }
+
+    @Test
+    public void canTransformLinkToJson() {
+        String json = trans.toJson(LinkObjects.testLink1);
+
+        assertEquals(json, linkInJson);
     }
 }
