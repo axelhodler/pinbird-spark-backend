@@ -21,10 +21,10 @@ import earth.xor.rest.transformation.Transformator;
 
 public class SparkRestApi {
 
-    private DatastoreFacade linksDs;
+    private DatastoreFacade facade;
 
-    public SparkRestApi(DatastoreFacade ds) {
-        this.linksDs = ds;
+    public SparkRestApi(DatastoreFacade facade) {
+        this.facade = facade;
     }
 
     public void startApi() {
@@ -40,7 +40,7 @@ public class SparkRestApi {
     }
 
     private void createPOSTlinksRoute() {
-        post(new PostLinkRoute(linksDs, new Transformator()));
+        post(new PostLinkRoute(facade, new Transformator()));
     }
 
     private void createGETlinksRoute() {
@@ -49,7 +49,7 @@ public class SparkRestApi {
             @Override
             public Object handle(Request request, Response response) {
                 JSONArray array = new JSONArray();
-                List<Link> links = linksDs.getLinks();
+                List<Link> links = facade.getLinks();
 
                 iterateCursorToAddObjectsToArray(array, links);
                 JSONObject object = createEmberJsCompliantJSONObject(array);
@@ -78,7 +78,7 @@ public class SparkRestApi {
 
             @Override
             public Object handle(Request request, Response response) {
-                Link foundLink = linksDs.getLinkById(request.params(":id"));
+                Link foundLink = facade.getLinkById(request.params(":id"));
                 JSONObject mainObject = createEmberJsConformJsonObject(foundLink);
                 addAccessControlAllowOriginHeader(response);
                 return mainObject.toJSONString();
