@@ -3,6 +3,9 @@ package earth.xor.rest;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.setPort;
+
+import org.xorrr.util.EnvironmentVars;
+
 import earth.xor.db.DatastoreFacade;
 import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.GetLinkByIdRoute;
@@ -17,7 +20,7 @@ public class SparkRestApi {
     }
 
     public void startApi() {
-        setPort(Integer.parseInt(System.getenv("PORT")));
+        setPort(Integer.parseInt(System.getenv(EnvironmentVars.PORT)));
 
         setRoutes();
     }
