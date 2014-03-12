@@ -11,6 +11,7 @@ public class TestEnvironmentVars {
         assertNotNull(EnvironmentVars.URI);
         assertNotNull(EnvironmentVars.DB_NAME);
         assertNotNull(EnvironmentVars.PW);
+        assertNotNull(EnvironmentVars.PORT);
     }
 
 }
