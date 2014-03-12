@@ -4,9 +4,6 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.setPort;
 
-import java.util.List;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import spark.Request;
@@ -15,6 +12,7 @@ import spark.Route;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
+import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.PostLinkRoute;
 import earth.xor.rest.routes.Routes;
 import earth.xor.rest.transformation.Transformator;
@@ -44,33 +42,7 @@ public class SparkRestApi {
     }
 
     private void createGETlinksRoute() {
-        get(new Route(Routes.POST_LINK) {
-
-            @Override
-            public Object handle(Request request, Response response) {
-                JSONArray array = new JSONArray();
-                List<Link> links = facade.getLinks();
-
-                iterateCursorToAddObjectsToArray(array, links);
-                JSONObject object = createEmberJsCompliantJSONObject(array);
-                addAccessControlAllowOriginHeader(response);
-                return object.toJSONString();
-            }
-
-            @SuppressWarnings("unchecked")
-            private JSONObject createEmberJsCompliantJSONObject(JSONArray array) {
-                JSONObject object = new JSONObject();
-                object.put(LinkFields.LINKS_NAME, array);
-                return object;
-            }
-
-            @SuppressWarnings("unchecked")
-            private void iterateCursorToAddObjectsToArray(JSONArray array,
-                    List<Link> links) {
-                for (Link l : links)
-                    array.add(linkToJson(l));
-            }
-        });
+        get(new GetAllLinksRoute(facade, new Transformator()));
     }
 
     private void createGETlinkByIdRoute() {
