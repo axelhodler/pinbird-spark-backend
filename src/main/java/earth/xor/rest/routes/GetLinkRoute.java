@@ -1,19 +1,22 @@
 package earth.xor.rest.routes;
 
+import earth.xor.db.DatastoreFacade;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class GetLinkRoute extends Route {
 
-    public GetLinkRoute() {
+    private DatastoreFacade facade;
+
+    public GetLinkRoute(DatastoreFacade facade) {
         super(Routes.GET_LINK);
-        // TODO Auto-generated constructor stub
+        this.facade = facade;
     }
 
     @Override
     public Object handle(Request request, Response response) {
-        // TODO Auto-generated method stub
+        facade.getLinks();
         return null;
     }
 
