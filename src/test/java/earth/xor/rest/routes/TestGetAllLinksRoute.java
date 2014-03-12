@@ -1,6 +1,7 @@
 package earth.xor.rest.routes;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,7 +11,6 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +23,7 @@ import spark.Response;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
+import earth.xor.rest.transformation.Transformator;
 
 @RunWith(PowerMockRunner.class)
 public class TestGetAllLinksRoute {
@@ -32,19 +33,39 @@ public class TestGetAllLinksRoute {
     Response resp;
     @Mock
     DatastoreFacade facade;
+    @Mock
+    Transformator transformator;
 
     private GetAllLinksRoute route;
 
     @Before
     public void setUp() {
-        route = new GetAllLinksRoute(facade);
+        route = new GetAllLinksRoute(facade, transformator);
     }
 
     @Test
     public void canGetLink() {
-        List<Link> links = new ArrayList<>();
-        links.add(LinkObjects.testLink1);
-        links.add(LinkObjects.testLink2);
+        List<Link> links = createTestLinks();
+        JSONObject mainJsonObject = conformToEmberStandards(links);
+        when(transformator.toJson(anyListOf(Link.class))).thenReturn(mainJsonObject.toJSONString());
+        when(facade.getLinks()).thenReturn(links);
+
+        Object json = route.handle(req, resp);
+
+        verify(facade, times(1)).getLinks();
+        verify(transformator, times(1)).toJson(anyListOf(Link.class));
+        assertEquals(json, mainJsonObject.toJSONString());
+    }
+
+    @SuppressWarnings("unchecked")
+    private JSONObject conformToEmberStandards(List<Link> links) {
+        JSONObject mainJsonObject = new JSONObject();
+        mainJsonObject.put("links", createTestLinksArray(links));
+        return mainJsonObject;
+    }
+
+    @SuppressWarnings("unchecked")
+    private JSONArray createTestLinksArray(List<Link> links) {
         JSONArray linksArray = new JSONArray();
         for (Link l : links) {
             JSONObject jo = new JSONObject();
@@ -55,15 +76,13 @@ public class TestGetAllLinksRoute {
             jo.put(LinkFields.TIMESTAMP, l.getTimeStamp());
             linksArray.add(jo);
         }
+        return linksArray;
+    }
 
-        JSONObject mainJsonObject = new JSONObject();
-        mainJsonObject.put("links", linksArray);
-
-        when(facade.getLinks()).thenReturn(links);
-
-        Object json = route.handle(req, resp);
-
-        verify(facade, times(1)).getLinks();
-        assertEquals(json, mainJsonObject.toJSONString());
+    private List<Link> createTestLinks() {
+        List<Link> links = new ArrayList<>();
+        links.add(LinkObjects.testLink1);
+        links.add(LinkObjects.testLink2);
+        return links;
     }
 }
