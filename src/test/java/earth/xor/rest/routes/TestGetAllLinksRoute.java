@@ -14,7 +14,7 @@ import spark.Response;
 import earth.xor.db.DatastoreFacade;
 
 @RunWith(PowerMockRunner.class)
-public class TestGetLinkRoute {
+public class TestGetAllLinksRoute {
     @Mock
     Request req;
     @Mock
@@ -22,11 +22,11 @@ public class TestGetLinkRoute {
     @Mock
     DatastoreFacade facade;
 
-    private GetLinkRoute route;
+    private GetAllLinksRoute route;
 
     @Before
     public void setUp() {
-        route = new GetLinkRoute(facade);
+        route = new GetAllLinksRoute(facade);
     }
 
     @Test

@@ -5,12 +5,12 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class GetLinkRoute extends Route {
+public class GetAllLinksRoute extends Route {
 
     private DatastoreFacade facade;
 
-    public GetLinkRoute(DatastoreFacade facade) {
-        super(Routes.GET_LINK);
+    public GetAllLinksRoute(DatastoreFacade facade) {
+        super(Routes.GET_ALL_LINKS);
         this.facade = facade;
     }
 
