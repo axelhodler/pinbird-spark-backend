@@ -54,7 +54,7 @@ public class TestTransformator {
 
     @Test
     public void canTransformLinkToJson() {
-        String json = trans.toJson(LinkObjects.testLink1);
+        String json = trans.linkToJson(LinkObjects.testLink1);
 
         assertEquals(json, linkInJson);
     }

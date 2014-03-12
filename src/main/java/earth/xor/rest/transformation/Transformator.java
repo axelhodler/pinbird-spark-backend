@@ -18,7 +18,7 @@ public class Transformator {
     public String toJson(List<Link> links) {
         JSONArray array = new JSONArray();
         for (Link l : links)
-            array.add(linkToJson(l));
+            array.add(transformLinkToJson(l));
 
         JSONObject object = new JSONObject();
         object.put(LinkFields.LINKS_NAME, array);
@@ -27,9 +27,9 @@ public class Transformator {
     }
 
     @SuppressWarnings("unchecked")
-    public String toJson(Link testlink1) {
+    public String linkToJson(Link testlink1) {
         JSONObject main = new JSONObject();
-        main.put("link", linkToJson(testlink1));
+        main.put("link", transformLinkToJson(testlink1));
         return main.toJSONString();
     }
 
@@ -51,7 +51,7 @@ public class Transformator {
     }
 
     @SuppressWarnings("unchecked")
-    private JSONObject linkToJson(Link link) {
+    private JSONObject transformLinkToJson(Link link) {
         JSONObject jsonObject = new JSONObject();
 
         jsonObject.put(LinkFields.ID, link.getObjectId());
