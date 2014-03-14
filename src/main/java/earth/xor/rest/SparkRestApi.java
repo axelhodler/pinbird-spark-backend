@@ -14,9 +14,11 @@ import earth.xor.rest.transformation.Transformator;
 
 public class SparkRestApi {
     private DatastoreFacade facade;
+    private Transformator transformator;
 
-    public SparkRestApi(DatastoreFacade facade) {
+    public SparkRestApi(DatastoreFacade facade, Transformator transformator) {
         this.facade = facade;
+        this.transformator = transformator;
     }
 
     public void startApi() {
@@ -32,14 +34,14 @@ public class SparkRestApi {
     }
 
     private void createPOSTlinksRoute() {
-        post(new PostLinkRoute(facade, new Transformator()));
+        post(new PostLinkRoute(facade, transformator));
     }
 
     private void createGETlinksRoute() {
-        get(new GetAllLinksRoute(facade, new Transformator()));
+        get(new GetAllLinksRoute(facade, transformator));
     }
 
     private void createGETlinkByIdRoute() {
-        get(new GetLinkByIdRoute(facade, new Transformator()));
+        get(new GetLinkByIdRoute(facade, transformator));
     }
 }

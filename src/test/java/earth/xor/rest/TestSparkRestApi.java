@@ -14,6 +14,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import spark.Spark;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.transformation.Transformator;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Spark.class })
@@ -21,12 +22,14 @@ public class TestSparkRestApi {
 
     @Mock
     DatastoreFacade facade;
+    @Mock
+    Transformator transformator;
 
     private SparkRestApi restApi;
 
     @Before
     public void setUp() {
-        restApi = new SparkRestApi(facade);
+        restApi = new SparkRestApi(facade, transformator);
 
         PowerMockito.mockStatic(Spark.class);
         restApi.startApi();

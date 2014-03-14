@@ -42,10 +42,10 @@ import earth.xor.db.LinkFields;
 import earth.xor.db.MongoLinksDatastore;
 import earth.xor.rest.SparkRestApi;
 import earth.xor.rest.routes.Routes;
+import earth.xor.rest.transformation.Transformator;
 
 @Ignore
 public class TestRestApi {
-
     private static Gson gson;
     private static MongoClient mongoClient;
     private static MongoLinksDatastore linksData;
@@ -62,7 +62,7 @@ public class TestRestApi {
         RestAssured.port = Integer.parseInt(System.getenv("PORT"));
         
         DatastoreFacade facade = new DatastoreFacade(linksData);
-        SparkRestApi rest = new SparkRestApi(facade);
+        SparkRestApi rest = new SparkRestApi(facade, new Transformator());
         rest.startApi();
     }
 
