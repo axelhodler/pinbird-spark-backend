@@ -22,10 +22,10 @@ public class SparkRestApi {
     public void startApi() {
         setPort(Integer.parseInt(System.getenv(EnvironmentVars.PORT)));
 
-        setRoutes();
+        createRoutes();
     }
 
-    private void setRoutes() {
+    private void createRoutes() {
         createPOSTlinksRoute();
         createGETlinksRoute();
         createGETlinkByIdRoute();
