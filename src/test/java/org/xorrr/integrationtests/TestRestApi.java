@@ -40,9 +40,9 @@ import earth.xor.db.DatastoreFacade;
 import earth.xor.db.Link;
 import earth.xor.db.LinkFields;
 import earth.xor.db.MongoLinksDatastore;
-import earth.xor.rest.SparkRestApi;
+import earth.xor.rest.RestApi;
+import earth.xor.rest.SparkFacade;
 import earth.xor.rest.routes.Routes;
-import earth.xor.rest.transformation.Transformator;
 
 @Ignore
 public class TestRestApi {
@@ -60,10 +60,9 @@ public class TestRestApi {
         linksData = new MongoLinksDatastore(mongoClient);
 
         RestAssured.port = Integer.parseInt(System.getenv("PORT"));
-        
+
         DatastoreFacade facade = new DatastoreFacade(linksData);
-        SparkRestApi rest = new SparkRestApi(facade, new Transformator());
-        rest.startApi();
+        RestApi rest = new RestApi(new SparkFacade());
     }
 
     @Test
@@ -79,13 +78,11 @@ public class TestRestApi {
         linksData.addLink(LinkObjects.testLink2);
         linksData.addLink(LinkObjects.testLink3);
 
-        expect().contentType("application/json").when()
-                .get(Routes.POST_LINK);
+        expect().contentType("application/json").when().get(Routes.POST_LINK);
         expect().header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .get(Routes.POST_LINK);
 
-        String jsonResponse = expect().when().get(Routes.POST_LINK)
-                .asString();
+        String jsonResponse = expect().when().get(Routes.POST_LINK).asString();
 
         Type type = new TypeToken<Map<String, List<Link>>>() {
         }.getType();

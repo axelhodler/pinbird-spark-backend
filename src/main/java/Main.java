@@ -8,7 +8,8 @@ import com.mongodb.MongoClientURI;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.LinksDatastore;
 import earth.xor.db.MongoLinksDatastore;
-import earth.xor.rest.SparkRestApi;
+import earth.xor.rest.RestApi;
+import earth.xor.rest.SparkFacade;
 import earth.xor.rest.transformation.Transformator;
 
 public class Main {
@@ -20,7 +21,6 @@ public class Main {
         LinksDatastore ds = new MongoLinksDatastore(client);
         DatastoreFacade facade = new DatastoreFacade(ds);
 
-        SparkRestApi rest = new SparkRestApi(facade, new Transformator());
-        rest.startApi();
+        RestApi rest = new RestApi(new SparkFacade());
     }
 }
