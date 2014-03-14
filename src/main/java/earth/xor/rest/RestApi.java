@@ -1,7 +1,5 @@
 package earth.xor.rest;
 
-import org.xorrr.util.EnvironmentVars;
-
 import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.GetLinkByIdRoute;
 import earth.xor.rest.routes.PostLinkRoute;
@@ -13,9 +11,8 @@ public class RestApi {
         this.sparkFacade = sparkFacade;
     }
 
-    public void setPort() {
-        sparkFacade.setPort(Integer.parseInt(System
-                .getenv(EnvironmentVars.PORT)));
+    public void setPort(int port) {
+        sparkFacade.setPort(port);
     }
 
     public void createPOSTlinksRoute(PostLinkRoute route) {

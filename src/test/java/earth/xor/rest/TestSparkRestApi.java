@@ -1,5 +1,6 @@
 package earth.xor.rest;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -34,9 +35,8 @@ public class TestSparkRestApi {
 
     @Test
     public void portIsSet() {
-        restApi.setPort();
-        verify(sparkFacade, times(1)).setPort(
-                Integer.parseInt(System.getenv(EnvironmentVars.PORT)));
+        restApi.setPort(Integer.parseInt(System.getenv(EnvironmentVars.PORT)));
+        verify(sparkFacade, times(1)).setPort(anyInt());
     }
 
     @Test
