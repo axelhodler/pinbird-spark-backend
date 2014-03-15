@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.LinkObjects;
 
 import com.google.gson.Gson;
@@ -37,18 +38,22 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
 import earth.xor.db.DatastoreFacade;
+import earth.xor.db.LinksDatastore;
 import earth.xor.db.MongoLinksDatastore;
 import earth.xor.model.Link;
 import earth.xor.model.LinkFields;
-import earth.xor.rest.SparkRestApi;
 import earth.xor.rest.SparkFacade;
+import earth.xor.rest.SparkRestApi;
+import earth.xor.rest.routes.GetAllLinksRoute;
+import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.PostLinkRoute;
 import earth.xor.rest.routes.Routes;
+import earth.xor.rest.transformation.JSONTransformator;
 
-@Ignore
 public class TestRestApi {
     private static Gson gson;
     private static MongoClient mongoClient;
-    private static MongoLinksDatastore linksData;
+    private static LinksDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -59,18 +64,26 @@ public class TestRestApi {
         mongoClient = new MongoClient("localhost", EmbedMongoProperties.PORT);
         linksData = new MongoLinksDatastore(mongoClient);
 
-        RestAssured.port = Integer.parseInt(System.getenv("PORT"));
+        RestAssured.port = Integer.parseInt(System.getenv(EnvironmentVars.PORT));
 
         DatastoreFacade facade = new DatastoreFacade(linksData);
+        JSONTransformator transformator = new JSONTransformator();
+
         SparkRestApi rest = new SparkRestApi(new SparkFacade());
+        rest.setPort(Integer.valueOf(System.getenv(EnvironmentVars.PORT)));
+        rest.createGETlinkByIdRoute(new GetLinkByIdRoute(facade, transformator));
+        rest.createPOSTlinksRoute(new PostLinkRoute(facade, transformator));
+        rest.createGETlinksRoute(new GetAllLinksRoute(facade, transformator));
     }
 
+    @Ignore
     @Test
     public void testAddingALinkViaRestApi() {
         addAlinkViaRestApi();
         checkIfLinkWasAddedToDatabase();
     }
 
+    @Ignore
     @Test
     public void testGettingAListOfAllSavedUrls() {
 
@@ -94,6 +107,7 @@ public class TestRestApi {
         checkIfPreviouslyAddedLinksAreShown(returnedUrls);
     }
 
+    @Ignore
     @Test
     public void testGettingASavedLinkById() {
         String id = addLinkAndGetItsId();
@@ -208,6 +222,7 @@ public class TestRestApi {
         assertEquals("user1", foundLink.getUser());
     }
 
+    @Ignore
     @Test
     public void testAuthentication() {
         expect().statusCode(401).when().post(Routes.POST_LINK);
