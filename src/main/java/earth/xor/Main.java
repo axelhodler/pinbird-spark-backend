@@ -6,12 +6,13 @@ import org.xorrr.util.EnvironmentVars;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.LinksDatastore;
 import earth.xor.db.MongoLinksDatastore;
-
-import earth.xor.rest.SparkRestApi;
+import earth.xor.rest.RestApi;
 import earth.xor.rest.SparkFacade;
+import earth.xor.rest.SparkRestApi;
 import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.GetLinkByIdRoute;
 import earth.xor.rest.routes.PostLinkRoute;
@@ -28,7 +29,7 @@ public class Main {
         DatastoreFacade facade = new DatastoreFacade(ds);
         Transformator transformator = new Transformator();
 
-        SparkRestApi rest = new SparkRestApi(new SparkFacade());
+        RestApi rest = new SparkRestApi(new SparkFacade());
         rest.setPort(Integer.valueOf(System.getenv(EnvironmentVars.PORT)));
         rest.createPOSTlinksRoute(new PostLinkRoute(facade, transformator));
         rest.createGETlinkByIdRoute(new GetLinkByIdRoute(facade, transformator));
