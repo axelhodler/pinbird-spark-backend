@@ -26,11 +26,11 @@ public class TestSparkRestApi {
     @Mock
     GetAllLinksRoute getAllLinksRoute;
 
-    private RestApi restApi;
+    private SparkRestApi restApi;
 
     @Before
     public void setUp() {
-        restApi = new RestApi(sparkFacade);
+        restApi = new SparkRestApi(sparkFacade);
     }
 
     @Test
