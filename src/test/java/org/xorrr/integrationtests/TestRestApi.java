@@ -64,7 +64,8 @@ public class TestRestApi {
         mongoClient = new MongoClient("localhost", EmbedMongoProperties.PORT);
         linksData = new MongoLinksDatastore(mongoClient);
 
-        RestAssured.port = Integer.parseInt(System.getenv(EnvironmentVars.PORT));
+        RestAssured.port = Integer
+                .parseInt(System.getenv(EnvironmentVars.PORT));
 
         DatastoreFacade facade = new DatastoreFacade(linksData);
         JSONTransformator transformator = new JSONTransformator();
@@ -74,6 +75,23 @@ public class TestRestApi {
         rest.createGETlinkByIdRoute(new GetLinkByIdRoute(facade, transformator));
         rest.createPOSTlinksRoute(new PostLinkRoute(facade, transformator));
         rest.createGETlinksRoute(new GetAllLinksRoute(facade, transformator));
+    }
+
+    @Test
+    public void authenticationNecessary() {
+        expect().statusCode(400).when().post(Routes.POST_LINK);
+    }
+
+    @Test
+    public void dealsWithIncorrectAuth() {
+        given().queryParam("pw", "").expect().statusCode(401).when()
+                .post(Routes.POST_LINK);
+    }
+
+    @Test
+    public void dealWithMissingPayload() {
+        given().queryParam("pw", System.getenv(EnvironmentVars.PW)).expect()
+                .statusCode(400).when().post(Routes.POST_LINK);
     }
 
     @Ignore
@@ -220,14 +238,6 @@ public class TestRestApi {
         assertEquals("http://www.foo.org", foundLink.getUrl());
         assertEquals("foo", foundLink.getTitle());
         assertEquals("user1", foundLink.getUser());
-    }
-
-    @Ignore
-    @Test
-    public void testAuthentication() {
-        expect().statusCode(401).when().post(Routes.POST_LINK);
-        given().queryParam("pw", System.getenv("PASS")).expect()
-                .statusCode(200).when().get(Routes.POST_LINK);
     }
 
     @After
