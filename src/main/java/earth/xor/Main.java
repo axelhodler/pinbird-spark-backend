@@ -1,13 +1,15 @@
+package earth.xor;
+
 import java.net.UnknownHostException;
 
 import org.xorrr.util.EnvironmentVars;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.LinksDatastore;
 import earth.xor.db.MongoLinksDatastore;
+
 import earth.xor.rest.RestApi;
 import earth.xor.rest.SparkFacade;
 import earth.xor.rest.routes.GetAllLinksRoute;
