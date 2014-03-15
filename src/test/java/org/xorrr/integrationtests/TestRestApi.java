@@ -97,10 +97,10 @@ public class TestRestApi {
                 .statusCode(400).when().post(Routes.POST_LINK);
     }
 
-    @Ignore
     @Test
-    public void testAddingALinkViaRestApi() {
+    public void canPostLink() {
         addAlinkViaRestApi();
+
         checkIfLinkWasAddedToDatabase();
     }
 
@@ -154,9 +154,8 @@ public class TestRestApi {
     }
 
     private void addAlinkViaRestApi() {
-        String jsonString = given().body(getLinkToPOSTjson())
-                .queryParam("pw", System.getenv("PASS")).expect()
-                .contentType("application/json").and()
+        String jsonString = given().body(tryGetLinkToPOSTinJson())
+                .queryParam("pw", System.getenv(EnvironmentVars.PW)).expect()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .post("/links").asString();
 
@@ -177,10 +176,6 @@ public class TestRestApi {
         assertEquals("http://www.foo.org", foundEntry.get(LinkFields.URL));
         assertEquals("foo", foundEntry.get(LinkFields.TITLE));
         assertEquals("test", foundEntry.get(LinkFields.USER));
-    }
-
-    private String getLinkToPOSTjson() {
-        return tryGetLinkToPOSTinJson();
     }
 
     private String tryGetLinkToPOSTinJson() {
