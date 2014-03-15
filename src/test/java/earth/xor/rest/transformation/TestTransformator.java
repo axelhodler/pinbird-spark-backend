@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xorrr.util.LinkObjects;
 
-import earth.xor.db.Link;
+import earth.xor.model.Link;
 
 public class TestTransformator {
 

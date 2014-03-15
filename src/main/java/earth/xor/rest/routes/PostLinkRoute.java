@@ -3,7 +3,7 @@ package earth.xor.rest.routes;
 import org.xorrr.util.EnvironmentVars;
 
 import earth.xor.db.DatastoreFacade;
-import earth.xor.db.LinkFields;
+import earth.xor.model.LinkFields;
 import earth.xor.rest.transformation.Transformator;
 import spark.Request;
 import spark.Response;

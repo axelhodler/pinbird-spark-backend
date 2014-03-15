@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import earth.xor.db.Link;
+import earth.xor.model.Link;
 
 public class TestGson {
 

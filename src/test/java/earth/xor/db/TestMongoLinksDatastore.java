@@ -27,6 +27,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import earth.xor.model.Link;
+import earth.xor.model.LinkFields;
+
 @RunWith(MockitoJUnitRunner.class)
 public class TestMongoLinksDatastore {
     @Mock

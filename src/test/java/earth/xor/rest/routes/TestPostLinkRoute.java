@@ -19,7 +19,7 @@ import spark.AbstractRoute;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.db.Link;
+import earth.xor.model.Link;
 import earth.xor.rest.transformation.Transformator;
 
 @RunWith(PowerMockRunner.class)

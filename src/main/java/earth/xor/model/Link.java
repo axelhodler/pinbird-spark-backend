@@ -1,4 +1,4 @@
-package earth.xor.db;
+package earth.xor.model;
 
 import com.google.gson.annotations.SerializedName;
 

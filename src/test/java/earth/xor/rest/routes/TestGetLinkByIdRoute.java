@@ -16,7 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.db.Link;
+import earth.xor.model.Link;
 import earth.xor.rest.transformation.Transformator;
 
 @RunWith(MockitoJUnitRunner.class)

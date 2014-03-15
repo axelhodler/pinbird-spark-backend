@@ -16,8 +16,8 @@ import com.mongodb.MongoClient;
 
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
-import earth.xor.db.LinkFields;
 import earth.xor.helpers.IntegrationTest;
+import earth.xor.model.LinkFields;
 
 @Category(IntegrationTest.class)
 public class TestEmbedMongo {

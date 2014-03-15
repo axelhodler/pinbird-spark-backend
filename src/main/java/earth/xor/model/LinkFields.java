@@ -1,4 +1,4 @@
-package earth.xor.db;
+package earth.xor.model;
 
 import org.xorrr.util.EnvironmentVars;
 

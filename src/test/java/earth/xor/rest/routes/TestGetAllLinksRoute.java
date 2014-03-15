@@ -21,8 +21,8 @@ import org.xorrr.util.LinkObjects;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.db.Link;
-import earth.xor.db.LinkFields;
+import earth.xor.model.Link;
+import earth.xor.model.LinkFields;
 import earth.xor.rest.transformation.Transformator;
 
 @RunWith(PowerMockRunner.class)

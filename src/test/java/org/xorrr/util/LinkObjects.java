@@ -1,6 +1,6 @@
 package org.xorrr.util;
 
-import earth.xor.db.Link;
+import earth.xor.model.Link;
 
 public class LinkObjects {
 

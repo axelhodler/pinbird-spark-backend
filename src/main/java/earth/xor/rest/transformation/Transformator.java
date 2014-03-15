@@ -6,8 +6,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import earth.xor.db.Link;
-import earth.xor.db.LinkFields;
+import earth.xor.model.Link;
+import earth.xor.model.LinkFields;
 
 public class Transformator {
     public Link toLink(String json) {

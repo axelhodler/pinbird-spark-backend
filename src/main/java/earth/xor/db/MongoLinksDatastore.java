@@ -12,6 +12,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
+import earth.xor.model.Link;
+import earth.xor.model.LinkFields;
+
 public class MongoLinksDatastore implements LinksDatastore {
 
     private MongoClient mongo;

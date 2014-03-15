@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import earth.xor.model.Link;
+
 @RunWith(MockitoJUnitRunner.class)
 public class TestDatastoreFacade {
     @Mock
