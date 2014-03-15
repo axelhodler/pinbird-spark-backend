@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.LinkObjects;
 
@@ -40,6 +41,7 @@ import earth.xor.EmbedMongoProperties;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.LinksDatastore;
 import earth.xor.db.MongoLinksDatastore;
+import earth.xor.helpers.IntegrationTest;
 import earth.xor.model.Link;
 import earth.xor.model.LinkFields;
 import earth.xor.rest.SparkFacade;
@@ -50,6 +52,7 @@ import earth.xor.rest.routes.PostLinkRoute;
 import earth.xor.rest.routes.Routes;
 import earth.xor.rest.transformation.JSONTransformator;
 
+@Category(IntegrationTest.class)
 public class TestRestApi {
     private static Gson gson;
     private static MongoClient mongoClient;
