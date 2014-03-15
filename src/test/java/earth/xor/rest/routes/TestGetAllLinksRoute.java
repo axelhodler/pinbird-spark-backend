@@ -47,13 +47,15 @@ public class TestGetAllLinksRoute {
     public void canGetLink() {
         List<Link> links = createTestLinks();
         JSONObject mainJsonObject = conformToEmberStandards(links);
-        when(transformator.listOfLinksToJson(anyListOf(Link.class))).thenReturn(mainJsonObject.toJSONString());
+        when(transformator.listOfLinksToJson(anyListOf(Link.class)))
+                .thenReturn(mainJsonObject.toJSONString());
         when(facade.getLinks()).thenReturn(links);
 
         Object json = route.handle(req, resp);
 
         verify(facade, times(1)).getLinks();
-        verify(transformator, times(1)).listOfLinksToJson(anyListOf(Link.class));
+        verify(transformator, times(1))
+                .listOfLinksToJson(anyListOf(Link.class));
         assertEquals(json, mainJsonObject.toJSONString());
     }
 
