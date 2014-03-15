@@ -4,7 +4,7 @@ import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.GetLinkByIdRoute;
 import earth.xor.rest.routes.PostLinkRoute;
 
-public class SparkRestApi {
+public class SparkRestApi implements RestApi {
     private SparkFacade sparkFacade;
 
     public SparkRestApi(SparkFacade sparkFacade) {
