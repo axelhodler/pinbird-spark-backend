@@ -9,12 +9,12 @@ import org.json.simple.JSONValue;
 import earth.xor.model.Link;
 import earth.xor.model.LinkFields;
 
+@SuppressWarnings("unchecked")
 public class JSONTransformator {
     public Link jsonToLink(String json) {
         return createLink((JSONObject) JSONValue.parse(json));
     }
 
-    @SuppressWarnings("unchecked")
     public String listOfLinksToJson(List<Link> links) {
         JSONArray array = new JSONArray();
         for (Link l : links)
@@ -26,7 +26,6 @@ public class JSONTransformator {
         return object.toJSONString();
     }
 
-    @SuppressWarnings("unchecked")
     public String linkToJson(Link testlink1) {
         JSONObject main = new JSONObject();
         main.put("link", transformLinkToJson(testlink1));
@@ -50,7 +49,6 @@ public class JSONTransformator {
         return json.get(LinkFields.URL).toString();
     }
 
-    @SuppressWarnings("unchecked")
     private JSONObject transformLinkToJson(Link link) {
         JSONObject jsonObject = new JSONObject();
 
