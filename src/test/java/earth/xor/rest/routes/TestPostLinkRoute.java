@@ -13,6 +13,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.xorrr.util.EnvironmentVars;
+import org.xorrr.util.HttpResponseErrorMessages;
 import org.xorrr.util.LinkObjects;
 
 import spark.AbstractRoute;
@@ -70,7 +71,7 @@ public class TestPostLinkRoute {
         route.handle(req, resp);
 
         PowerMockito.verifyPrivate(AbstractRoute.class).invoke(400,
-                "Provide a password parameter");
+                HttpResponseErrorMessages.MISSING_PW);
     }
 
     @Test
@@ -80,6 +81,6 @@ public class TestPostLinkRoute {
         route.handle(req, resp);
 
         PowerMockito.verifyPrivate(AbstractRoute.class).invoke(401,
-                "Authentication failed");
+                HttpResponseErrorMessages.AUTH_FAIL);
     }
 }
