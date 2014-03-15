@@ -50,7 +50,8 @@ public class TestPostLinkRoute {
 
     @Test
     public void linkCanBePosted() {
-        when(req.queryParams("pw")).thenReturn(System.getenv(EnvironmentVars.PW));
+        when(req.queryParams("pw")).thenReturn(
+                System.getenv(EnvironmentVars.PW));
         when(req.body()).thenReturn(jsonExample);
         when(transformator.jsonToLink(jsonExample)).thenReturn(testLink);
 
@@ -60,6 +61,16 @@ public class TestPostLinkRoute {
         verify(facade, times(1)).addLink(testLink);
         verify(req, times(2)).body();
         assertEquals(jsonExample, returned.toString());
+    }
+
+    @Test
+    public void failRequestWithNoPassword() throws Exception {
+        when(req.queryParams("pw")).thenReturn(null);
+
+        route.handle(req, resp);
+
+        PowerMockito.verifyPrivate(AbstractRoute.class).invoke(400,
+                "Provide a password parameter");
     }
 
     @Test
