@@ -4,14 +4,14 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.rest.transformation.Transformator;
+import earth.xor.rest.transformation.JSONTransformator;
 
 public class GetAllLinksRoute extends Route {
 
     private DatastoreFacade facade;
-    private Transformator transformator;
+    private JSONTransformator transformator;
 
-    public GetAllLinksRoute(DatastoreFacade facade, Transformator transformator) {
+    public GetAllLinksRoute(DatastoreFacade facade, JSONTransformator transformator) {
         super(Routes.GET_ALL_LINKS);
         this.facade = facade;
         this.transformator = transformator;

@@ -16,7 +16,7 @@ import earth.xor.rest.SparkRestApi;
 import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.GetLinkByIdRoute;
 import earth.xor.rest.routes.PostLinkRoute;
-import earth.xor.rest.transformation.Transformator;
+import earth.xor.rest.transformation.JSONTransformator;
 
 public class Main {
 
@@ -27,7 +27,7 @@ public class Main {
 
         LinksDatastore ds = new MongoLinksDatastore(client);
         DatastoreFacade facade = new DatastoreFacade(ds);
-        Transformator transformator = new Transformator();
+        JSONTransformator transformator = new JSONTransformator();
 
         RestApi rest = new SparkRestApi(new SparkFacade());
         rest.setPort(Integer.valueOf(System.getenv(EnvironmentVars.PORT)));

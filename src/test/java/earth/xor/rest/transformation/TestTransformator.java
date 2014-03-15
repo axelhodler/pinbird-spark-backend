@@ -13,7 +13,7 @@ import earth.xor.model.Link;
 
 public class TestTransformator {
 
-    private Transformator trans;
+    private JSONTransformator trans;
     private String jsonExample = "{\"url\":\"http://www.foo.org\", "
             + "\"title\":\"foo\", " + "\"user\":\"user\"}";
     private List<Link> links;
@@ -30,7 +30,7 @@ public class TestTransformator {
 
     @Before
     public void setUp() {
-        trans = new Transformator();
+        trans = new JSONTransformator();
     }
 
     @Test

@@ -20,7 +20,7 @@ import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.model.Link;
-import earth.xor.rest.transformation.Transformator;
+import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ AbstractRoute.class })
@@ -32,7 +32,7 @@ public class TestPostLinkRoute {
     @Mock
     DatastoreFacade facade;
     @Mock
-    Transformator transformator;
+    JSONTransformator transformator;
     @Mock
     Link testLink;
 

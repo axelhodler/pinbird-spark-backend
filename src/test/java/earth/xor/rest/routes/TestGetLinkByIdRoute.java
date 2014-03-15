@@ -17,7 +17,7 @@ import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.model.Link;
-import earth.xor.rest.transformation.Transformator;
+import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestGetLinkByIdRoute {
@@ -28,7 +28,7 @@ public class TestGetLinkByIdRoute {
     @Mock
     DatastoreFacade facade;
     @Mock
-    Transformator transformator;
+    JSONTransformator transformator;
 
     private GetLinkByIdRoute route;
     private final String id = "12345";

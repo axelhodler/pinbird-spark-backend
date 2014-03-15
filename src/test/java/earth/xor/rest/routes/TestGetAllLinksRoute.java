@@ -23,7 +23,7 @@ import spark.Response;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.model.Link;
 import earth.xor.model.LinkFields;
-import earth.xor.rest.transformation.Transformator;
+import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(PowerMockRunner.class)
 public class TestGetAllLinksRoute {
@@ -34,7 +34,7 @@ public class TestGetAllLinksRoute {
     @Mock
     DatastoreFacade facade;
     @Mock
-    Transformator transformator;
+    JSONTransformator transformator;
 
     private GetAllLinksRoute route;
 

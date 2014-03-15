@@ -9,7 +9,7 @@ import org.json.simple.JSONValue;
 import earth.xor.model.Link;
 import earth.xor.model.LinkFields;
 
-public class Transformator {
+public class JSONTransformator {
     public Link toLink(String json) {
         return createLink((JSONObject) JSONValue.parse(json));
     }
