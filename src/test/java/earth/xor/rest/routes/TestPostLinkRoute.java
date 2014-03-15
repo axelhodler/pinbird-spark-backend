@@ -52,7 +52,7 @@ public class TestPostLinkRoute {
     public void linkCanBePosted() {
         when(req.queryParams("pw")).thenReturn(System.getenv(EnvironmentVars.PW));
         when(req.body()).thenReturn(jsonExample);
-        when(transformator.toLink(jsonExample)).thenReturn(testLink);
+        when(transformator.jsonToLink(jsonExample)).thenReturn(testLink);
 
         Object returned = route.handle(req, resp);
 

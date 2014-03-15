@@ -23,7 +23,7 @@ public class PostLinkRoute extends Route{
     @Override
     public Object handle(Request request, Response response) {
         checkPassword(request);
-        facade.addLink(transformator.toLink(request.body()));
+        facade.addLink(transformator.jsonToLink(request.body()));
 
         return request.body();
     }

@@ -35,7 +35,7 @@ public class TestTransformator {
 
     @Test
     public void canTransformStringToLink() {
-        Link l = trans.toLink(jsonExample);
+        Link l = trans.jsonToLink(jsonExample);
 
         assertEquals("http://www.foo.org", l.getUrl());
         assertEquals("foo", l.getTitle());
@@ -48,7 +48,7 @@ public class TestTransformator {
         links.add(LinkObjects.testLink1);
         links.add(LinkObjects.testLink2);
 
-        String json = trans.toJson(links);
+        String json = trans.listOfLinksToJson(links);
         assertEquals(json, linksInJson);
     }
 

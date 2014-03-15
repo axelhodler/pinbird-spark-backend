@@ -19,7 +19,7 @@ public class GetAllLinksRoute extends Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        return transformator.toJson(facade.getLinks());
+        return transformator.listOfLinksToJson(facade.getLinks());
     }
 
 }

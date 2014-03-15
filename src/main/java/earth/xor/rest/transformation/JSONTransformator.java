@@ -10,12 +10,12 @@ import earth.xor.model.Link;
 import earth.xor.model.LinkFields;
 
 public class JSONTransformator {
-    public Link toLink(String json) {
+    public Link jsonToLink(String json) {
         return createLink((JSONObject) JSONValue.parse(json));
     }
 
     @SuppressWarnings("unchecked")
-    public String toJson(List<Link> links) {
+    public String listOfLinksToJson(List<Link> links) {
         JSONArray array = new JSONArray();
         for (Link l : links)
             array.add(transformLinkToJson(l));
