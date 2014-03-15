@@ -2,12 +2,12 @@ package earth.xor.rest.routes;
 
 import org.xorrr.util.EnvironmentVars;
 
-import earth.xor.db.DatastoreFacade;
-import earth.xor.model.LinkFields;
-import earth.xor.rest.transformation.JSONTransformator;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import earth.xor.db.DatastoreFacade;
+import earth.xor.model.LinkFields;
+import earth.xor.rest.transformation.JSONTransformator;
 
 public class PostLinkRoute extends Route{
 
@@ -29,8 +29,10 @@ public class PostLinkRoute extends Route{
     }
 
     private void checkPassword(Request request) {
-        String  pw = request.queryParams("pw");
-        if (passwardIncorrect(pw))
+        String pw = request.queryParams("pw");
+        if (pw == null)
+            halt(400, "Provide a password parameter");
+        else if (passwardIncorrect(pw))
             halt(401, "Authentication failed");
     }
 
