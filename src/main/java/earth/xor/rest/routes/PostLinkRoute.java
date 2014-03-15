@@ -24,11 +24,20 @@ public class PostLinkRoute extends Route{
     @Override
     public Object handle(Request request, Response response) {
         checkPassword(request);
-        if (request.body().equals("")) 
-            halt(400, HttpResponseErrorMessages.MISSING_PAYLOAD);
+        checkIfPayloadMissing(request);
+
         facade.addLink(transformator.jsonToLink(request.body()));
 
         return request.body();
+    }
+
+    private void checkIfPayloadMissing(Request request) {
+        if (payloadMissing(request)) 
+            halt(400, HttpResponseErrorMessages.MISSING_PAYLOAD);
+    }
+
+    private boolean payloadMissing(Request request) {
+        return request.body().equals("");
     }
 
     private void checkPassword(Request request) {
