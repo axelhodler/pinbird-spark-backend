@@ -16,14 +16,10 @@ public class JSONTransformator {
     }
 
     public String listOfLinksToJson(List<Link> links) {
-        JSONArray array = new JSONArray();
-        for (Link l : links)
-            array.add(transformLinkToJson(l));
+        JSONObject mainObject = new JSONObject();
+        mainObject.put(LinkFields.LINKS_NAME, iterateLinksAndAddToArray(links));
 
-        JSONObject object = new JSONObject();
-        object.put(LinkFields.LINKS_NAME, array);
-
-        return object.toJSONString();
+        return mainObject.toJSONString();
     }
 
     public String linkToJson(Link testlink1) {
@@ -33,9 +29,9 @@ public class JSONTransformator {
     }
 
     private Link createLink(JSONObject json) {
-        return new Link.Builder().url(getUrl(json)).title(getTitle(json))
-                .user(getUser(json)).build();
+        return buildLink(json);
     }
+
 
     private String getUser(JSONObject json) {
         return json.get(LinkFields.USER).toString();
@@ -61,4 +57,15 @@ public class JSONTransformator {
         return jsonObject;
     }
 
+    private JSONArray iterateLinksAndAddToArray(List<Link> links) {
+        JSONArray linksArray = new JSONArray();
+        for (Link l : links)
+            linksArray.add(transformLinkToJson(l));
+        return linksArray;
+    }
+
+    private Link buildLink(JSONObject json) {
+        return new Link.Builder().url(getUrl(json)).title(getTitle(json))
+                .user(getUser(json)).build();
+    }
 }
