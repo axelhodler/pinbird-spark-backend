@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.LinkObjects;
 
 import spark.Request;
@@ -58,6 +59,17 @@ public class TestGetAllLinksRoute {
         verify(transformator, times(1))
                 .listOfLinksToJson(anyListOf(Link.class));
         assertEquals(jsonString, mainJsonObject.toJSONString());
+    }
+
+    @Test
+    public void accessControlAllowOriginHeaderUsed() {
+        when(req.queryParams("pw")).thenReturn(
+                System.getenv(EnvironmentVars.PW));
+        when(req.body()).thenReturn("something");
+
+        route.handle(req, resp);
+
+        verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
     }
 
     private JSONObject conformToEmberStandards(List<Link> links) {

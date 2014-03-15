@@ -19,6 +19,8 @@ public class GetAllLinksRoute extends Route {
 
     @Override
     public Object handle(Request request, Response response) {
+        response.header("Access-Control-Allow-Origin", "*");
+
         return transformator.listOfLinksToJson(facade.getLinks());
     }
 
