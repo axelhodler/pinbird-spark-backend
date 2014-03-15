@@ -26,6 +26,7 @@ import earth.xor.model.LinkFields;
 import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(MockitoJUnitRunner.class)
+@SuppressWarnings("unchecked")
 public class TestGetAllLinksRoute {
     @Mock
     Request req;
@@ -59,14 +60,12 @@ public class TestGetAllLinksRoute {
         assertEquals(json, mainJsonObject.toJSONString());
     }
 
-    @SuppressWarnings("unchecked")
     private JSONObject conformToEmberStandards(List<Link> links) {
         JSONObject mainJsonObject = new JSONObject();
         mainJsonObject.put("links", createTestLinksArray(links));
         return mainJsonObject;
     }
 
-    @SuppressWarnings("unchecked")
     private JSONArray createTestLinksArray(List<Link> links) {
         JSONArray linksArray = new JSONArray();
         for (Link l : links) {
