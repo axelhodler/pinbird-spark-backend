@@ -22,11 +22,19 @@ public class PostLinkRoute extends Route{
 
     @Override
     public Object handle(Request request, Response response) {
-        String  pw = request.queryParams("pw");
-        if (!pw.equals(System.getenv(EnvironmentVars.PW)))
-            halt(401, "Authentication failed");
+        checkPassword(request);
         facade.addLink(transformator.toLink(request.body()));
 
         return request.body();
+    }
+
+    private void checkPassword(Request request) {
+        String  pw = request.queryParams("pw");
+        if (passwardIncorrect(pw))
+            halt(401, "Authentication failed");
+    }
+
+    private boolean passwardIncorrect(String pw) {
+        return !pw.equals(System.getenv(EnvironmentVars.PW));
     }
 }
