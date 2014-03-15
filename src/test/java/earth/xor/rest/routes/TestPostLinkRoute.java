@@ -97,4 +97,15 @@ public class TestPostLinkRoute {
         PowerMockito.verifyPrivate(AbstractRoute.class).invoke(400,
                 HttpResponseErrorMessages.MISSING_PAYLOAD);
     }
+
+    @Test
+    public void accessControlAllowOriginHeaderUsed() {
+        when(req.queryParams("pw")).thenReturn(
+                System.getenv(EnvironmentVars.PW));
+        when(req.body()).thenReturn("something");
+
+        route.handle(req, resp);
+
+        verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
+    }
 }

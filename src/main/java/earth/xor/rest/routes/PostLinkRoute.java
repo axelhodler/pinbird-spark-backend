@@ -28,6 +28,8 @@ public class PostLinkRoute extends Route{
 
         facade.addLink(transformator.jsonToLink(request.body()));
 
+        response.header("Access-Control-Allow-Origin", "*");
+
         return request.body();
     }
 
