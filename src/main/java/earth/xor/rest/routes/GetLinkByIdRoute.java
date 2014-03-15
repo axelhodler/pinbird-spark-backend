@@ -19,6 +19,8 @@ public class GetLinkByIdRoute extends Route{
 
     @Override
     public Object handle(Request request, Response response) {
+        response.header("Access-Control-Allow-Origin", "*");
+
         return transformator.linkToJson(facade.getLinkById(request.params(":id")));
     }
 

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.xorrr.util.EnvironmentVars;
 
 import spark.Request;
 import spark.Response;
@@ -51,5 +52,16 @@ public class TestGetLinkByIdRoute {
         verify(facade, times(1)).getLinkById(anyString());
         verify(transformator, times(1)).linkToJson(any(Link.class));
         assertEquals(json, linkInJson);
+    }
+
+    @Test
+    public void accessControlAllowOriginHeaderUsed() {
+        when(req.queryParams("pw")).thenReturn(
+                System.getenv(EnvironmentVars.PW));
+        when(req.body()).thenReturn("something");
+
+        route.handle(req, resp);
+
+        verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
     }
 }
