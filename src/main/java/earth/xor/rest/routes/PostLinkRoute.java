@@ -24,6 +24,8 @@ public class PostLinkRoute extends Route{
     @Override
     public Object handle(Request request, Response response) {
         checkPassword(request);
+        if (request.body().equals("")) 
+            halt(400, HttpResponseErrorMessages.MISSING_PAYLOAD);
         facade.addLink(transformator.jsonToLink(request.body()));
 
         return request.body();

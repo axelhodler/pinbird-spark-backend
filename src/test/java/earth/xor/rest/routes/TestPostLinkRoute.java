@@ -60,13 +60,14 @@ public class TestPostLinkRoute {
 
         verify(req, times(1)).queryParams("pw");
         verify(facade, times(1)).addLink(testLink);
-        verify(req, times(2)).body();
+        verify(req, times(3)).body();
         assertEquals(jsonExample, returned.toString());
     }
 
     @Test
     public void failRequestWithNoPassword() throws Exception {
         when(req.queryParams("pw")).thenReturn(null);
+        when(req.body()).thenReturn("");
 
         route.handle(req, resp);
 
@@ -77,10 +78,23 @@ public class TestPostLinkRoute {
     @Test
     public void dontAuthWithWrongPassword() throws Exception {
         when(req.queryParams("pw")).thenReturn("wrong");
+        when(req.body()).thenReturn("");
 
         route.handle(req, resp);
 
         PowerMockito.verifyPrivate(AbstractRoute.class).invoke(401,
                 HttpResponseErrorMessages.AUTH_FAIL);
+    }
+
+    @Test
+    public void haltIfPayloadMissing() throws Exception {
+        when(req.queryParams("pw")).thenReturn(
+                System.getenv(EnvironmentVars.PW));
+        when(req.body()).thenReturn("");
+
+        route.handle(req, resp);
+
+        PowerMockito.verifyPrivate(AbstractRoute.class).invoke(400,
+                HttpResponseErrorMessages.MISSING_PAYLOAD);
     }
 }
