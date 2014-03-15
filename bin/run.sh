@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export URI=test
+export URI=mongodb://localhost:27017
 export DB_NAME=test
 export PW=test
 export PORT=5000
