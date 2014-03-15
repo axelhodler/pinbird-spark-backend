@@ -52,12 +52,12 @@ public class TestGetAllLinksRoute {
                 .thenReturn(mainJsonObject.toJSONString());
         when(facade.getLinks()).thenReturn(links);
 
-        Object json = route.handle(req, resp);
+        Object jsonString = route.handle(req, resp);
 
         verify(facade, times(1)).getLinks();
         verify(transformator, times(1))
                 .listOfLinksToJson(anyListOf(Link.class));
-        assertEquals(json, mainJsonObject.toJSONString());
+        assertEquals(jsonString, mainJsonObject.toJSONString());
     }
 
     private JSONObject conformToEmberStandards(List<Link> links) {
