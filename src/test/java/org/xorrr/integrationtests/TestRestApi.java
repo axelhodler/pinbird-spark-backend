@@ -101,7 +101,10 @@ public class TestRestApi {
     public void canPostLink() {
         addAlinkViaRestApi();
 
-        checkIfLinkWasAddedToDatabase();
+        DBObject foundEntry = getSavedLinkFromDb();
+        assertEquals("http://www.foo.org", foundEntry.get(LinkFields.URL));
+        assertEquals("foo", foundEntry.get(LinkFields.TITLE));
+        assertEquals("test", foundEntry.get(LinkFields.USER));
     }
 
     @Ignore
@@ -166,29 +169,25 @@ public class TestRestApi {
         assertEquals("test", savedLink.getUser());
     }
 
-    private void checkIfLinkWasAddedToDatabase() {
+    private DBObject getSavedLinkFromDb() {
         DB urlsDb = mongoClient.getDB(LinkFields.DATABASE_NAME);
         DBCollection col = urlsDb.getCollection(LinkFields.LINKS_NAME);
 
-        DBObject foundEntry = col.findOne(new BasicDBObject(LinkFields.URL,
+        return col.findOne(new BasicDBObject(LinkFields.URL,
                 "http://www.foo.org"));
-
-        assertEquals("http://www.foo.org", foundEntry.get(LinkFields.URL));
-        assertEquals("foo", foundEntry.get(LinkFields.TITLE));
-        assertEquals("test", foundEntry.get(LinkFields.USER));
     }
 
     private String tryGetLinkToPOSTinJson() {
         String jsonString = null;
+
         try {
             File testFile = new File(TestRestApi.class.getResource(
                     "/linksPost.JSON").toURI());
             jsonString = IOUtils.toString(new FileInputStream(testFile));
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
-        } catch (URISyntaxException e1) {
-            e1.printStackTrace();
         }
+
         return jsonString;
     }
 
