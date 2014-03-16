@@ -1,6 +1,6 @@
 package earth.xor.db;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -48,6 +48,7 @@ public class TestMongoLinksDatastore {
     private MongoLinksDatastore linksData;
 
     private void mockDBObjectBehaviour() {
+        when(dbo.get(LinkFields.ID)).thenReturn("i");
         when(dbo.get(LinkFields.URL)).thenReturn("u");
         when(dbo.get(LinkFields.TITLE)).thenReturn("t");
         when(dbo.get(LinkFields.USER)).thenReturn("us");
@@ -81,6 +82,7 @@ public class TestMongoLinksDatastore {
         List<Link> links = linksData.getLinks();
 
         verify(col, times(1)).find();
+        assertEquals("i", links.get(0).getObjectId());
         assertEquals("u", links.get(0).getUrl());
         assertEquals("t", links.get(0).getTitle());
         assertEquals("us", links.get(0).getUser());

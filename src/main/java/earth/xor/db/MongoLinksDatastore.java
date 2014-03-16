@@ -43,8 +43,8 @@ public class MongoLinksDatastore implements LinksDatastore {
     }
 
     public Link getLinkById(String id) {
-        DBObject foundLink = getCollection().findOne(new BasicDBObject(LinkFields.ID, new ObjectId(
-                id)));
+        DBObject foundLink = getCollection().findOne(
+                new BasicDBObject(LinkFields.ID, new ObjectId(id)));
 
         return buildLink(foundLink);
     }
@@ -55,10 +55,10 @@ public class MongoLinksDatastore implements LinksDatastore {
     }
 
     private Link buildLink(DBObject dbo) {
-        return new Link.Builder().url(dbo.get(LinkFields.URL).toString())
+        return new Link.Builder().objectId(dbo.get(LinkFields.ID).toString())
+                .url(dbo.get(LinkFields.URL).toString())
                 .title(dbo.get(LinkFields.TITLE).toString())
                 .user(dbo.get(LinkFields.USER).toString())
-                .timestamp(dbo.get(LinkFields.TIMESTAMP).toString())
-                .build();
+                .timestamp(dbo.get(LinkFields.TIMESTAMP).toString()).build();
     }
 }
