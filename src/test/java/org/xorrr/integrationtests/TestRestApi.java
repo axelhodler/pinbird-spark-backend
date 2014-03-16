@@ -21,7 +21,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.xorrr.util.EnvironmentVars;
@@ -124,24 +123,19 @@ public class TestRestApi {
         checkIfPreviouslyAddedLinksAreShown(returnedUrls);
     }
 
-    @Ignore
     @Test
-    public void testGettingASavedLinkById() {
+    public void canGetSavedLinkById() {
         String id = addLinkAndGetItsId();
 
-        String jsonString = expect().contentType("application/json").and()
+        String jsonString = expect()
                 .header("Access-Control-Allow-Origin", equalTo("*")).when()
                 .get("/links/" + id).asString();
 
         assertTrue(isIdSurroundedWithDoubleQuotes(id, jsonString));
-
         Type type = new TypeToken<Map<String, Link>>() {
         }.getType();
-
         Map<String, Link> returnedUrlRepresentation = new HashMap<String, Link>();
-
         returnedUrlRepresentation = gson.fromJson(jsonString, type);
-
         checkIfItsTheCorrectlink(returnedUrlRepresentation);
     }
 
@@ -223,7 +217,7 @@ public class TestRestApi {
 
     private void checkIfItsTheCorrectlink(
             Map<String, Link> returnedUrlRepresentation) {
-        Link foundLink = returnedUrlRepresentation.get(LinkFields.URL);
+        Link foundLink = returnedUrlRepresentation.get("link");
 
         assertEquals("http://www.foo.org", foundLink.getUrl());
         assertEquals("foo", foundLink.getTitle());
