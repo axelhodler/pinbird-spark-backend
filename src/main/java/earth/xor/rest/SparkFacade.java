@@ -16,4 +16,8 @@ public class SparkFacade {
     public void setPostRoute(Route route) {
         Spark.post(route);
     }
+
+    public void setOptionsRoute(Route route) {
+        Spark.options(route);
+    }
 }

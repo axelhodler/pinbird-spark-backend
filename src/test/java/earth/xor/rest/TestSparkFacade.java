@@ -12,6 +12,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import spark.Spark;
 import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.OptionsRoute;
 import earth.xor.rest.routes.PostLinkRoute;
 
 @RunWith(PowerMockRunner.class)
@@ -21,6 +22,8 @@ public class TestSparkFacade {
     GetLinkByIdRoute getLinkByIdRoute;
     @Mock
     PostLinkRoute postLinkRoute;
+    @Mock
+    OptionsRoute optionsRoute;
 
     private SparkFacade facade;
 
@@ -50,5 +53,12 @@ public class TestSparkFacade {
         facade.setGetRoute(postLinkRoute);
         PowerMockito.verifyStatic();
         Spark.get(postLinkRoute);
+    }
+
+    @Test
+    public void canSetOptionsRoute() {
+        facade.setOptionsRoute(optionsRoute);
+        PowerMockito.verifyStatic();
+        Spark.options(optionsRoute);
     }
 }
