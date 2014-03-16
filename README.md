@@ -13,7 +13,14 @@ For POST requests you need to add the "pw" param to the url (subject to change)
 
     http://localhost:5000/links?pw=test
 
+# Development
+Run unit tests:
 
+     ./bin/run_tests.sh
+
+Run unit and integration tests
+
+     ./bin/run_integration_tests.sh
 
 # License
 MIT
