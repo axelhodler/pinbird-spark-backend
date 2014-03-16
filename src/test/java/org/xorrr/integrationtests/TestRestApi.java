@@ -107,27 +107,20 @@ public class TestRestApi {
         assertEquals("test", foundEntry.get(LinkFields.USER));
     }
 
-    @Ignore
     @Test
-    public void testGettingAListOfAllSavedUrls() {
-
+    public void canGetListOfAllSavedLinks() {
         linksData.addLink(LinkObjects.testLink1);
         linksData.addLink(LinkObjects.testLink2);
         linksData.addLink(LinkObjects.testLink3);
 
-        expect().contentType("application/json").when().get(Routes.POST_LINK);
         expect().header("Access-Control-Allow-Origin", equalTo("*")).when()
-                .get(Routes.POST_LINK);
-
-        String jsonResponse = expect().when().get(Routes.POST_LINK).asString();
+                .get(Routes.GET_ALL_LINKS);
+        String jsonResponse = expect().when().get(Routes.GET_ALL_LINKS).asString();
 
         Type type = new TypeToken<Map<String, List<Link>>>() {
         }.getType();
-
         Map<String, List<Link>> returnedUrls = new HashMap<String, List<Link>>();
-
         returnedUrls = gson.fromJson(jsonResponse, type);
-
         checkIfPreviouslyAddedLinksAreShown(returnedUrls);
     }
 
