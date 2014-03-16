@@ -2,6 +2,7 @@ package earth.xor.rest;
 
 import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.OptionsRoute;
 import earth.xor.rest.routes.PostLinkRoute;
 
 public class SparkRestApi implements RestApi {
@@ -25,5 +26,10 @@ public class SparkRestApi implements RestApi {
 
     public void createGETlinkByIdRoute(GetLinkByIdRoute route) {
         sparkFacade.setGetRoute(route);
+    }
+
+    @Override
+    public void createOPTIONSlinksRoute(OptionsRoute route) {
+        sparkFacade.setOptionsRoute(route);
     }
 }

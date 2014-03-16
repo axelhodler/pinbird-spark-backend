@@ -13,6 +13,7 @@ import org.xorrr.util.EnvironmentVars;
 
 import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.OptionsRoute;
 import earth.xor.rest.routes.PostLinkRoute;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,6 +26,8 @@ public class TestSparkRestApi {
     GetLinkByIdRoute getLinkByIdRoute;
     @Mock
     GetAllLinksRoute getAllLinksRoute;
+    @Mock
+    OptionsRoute optionsRoute;
 
     private SparkRestApi restApi;
 
@@ -58,5 +61,12 @@ public class TestSparkRestApi {
         restApi.createGETlinksRoute(getAllLinksRoute);
 
         verify(sparkFacade, times(1)).setGetRoute(getAllLinksRoute);
+    }
+
+    @Test
+    public void optionsRouteIsSet() {
+        restApi.createOPTIONSlinksRoute(optionsRoute);
+
+        verify(sparkFacade, times(1)).setOptionsRoute(optionsRoute);
     }
 }
