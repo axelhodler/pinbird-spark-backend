@@ -45,4 +45,14 @@ public class TestOptionsRoute {
 
         verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
     }
+
+    @Test
+    public void accessControlAllowHeadersUsed() {
+        when(req.body()).thenReturn("something");
+
+        route.handle(req, resp);
+
+        verify(resp, times(1)).header("Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept");
+    }
 }

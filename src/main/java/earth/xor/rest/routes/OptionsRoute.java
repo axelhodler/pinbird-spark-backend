@@ -14,6 +14,8 @@ public class OptionsRoute extends Route {
     public Object handle(Request request, Response response) {
         response.header("Access-Control-Allow-Methods", "GET, POST");
         response.header("Access-Control-Allow-Origin", "*");
+        response.header("Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept");
 
         return request.body();
     }
