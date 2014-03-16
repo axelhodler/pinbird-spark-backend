@@ -13,6 +13,7 @@ public class Link {
     private String objectId;
 
     private Link(Builder builder) {
+        this.objectId = builder.objectId;
         this.url = builder.url;
         this.title = builder.title;
         this.user = builder.user;
@@ -44,6 +45,12 @@ public class Link {
         private String title = null;
         private String user = null;
         private String timestamp = null;
+        private String objectId = null;
+
+        public Builder objectId(String objectId) {
+            this.objectId = objectId;
+            return this;
+        }
 
         public Builder url(String url) {
             this.url = url;
