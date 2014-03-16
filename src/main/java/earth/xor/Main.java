@@ -15,6 +15,7 @@ import earth.xor.rest.SparkFacade;
 import earth.xor.rest.SparkRestApi;
 import earth.xor.rest.routes.GetAllLinksRoute;
 import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.OptionsRoute;
 import earth.xor.rest.routes.PostLinkRoute;
 import earth.xor.rest.transformation.JSONTransformator;
 
@@ -34,5 +35,6 @@ public class Main {
         rest.createPOSTlinksRoute(new PostLinkRoute(facade, transformator));
         rest.createGETlinkByIdRoute(new GetLinkByIdRoute(facade, transformator));
         rest.createGETlinksRoute(new GetAllLinksRoute(facade, transformator));
+        rest.createOPTIONSlinksRoute(new OptionsRoute());
     }
 }
