@@ -8,7 +8,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.model.LinkFields;
+import earth.xor.model.BookmarkFields;
 import earth.xor.rest.transformation.JSONTransformator;
 
 public class PostLinkRoute extends Route {
@@ -17,7 +17,7 @@ public class PostLinkRoute extends Route {
     private JSONTransformator transformator;
 
     public PostLinkRoute(DatastoreFacade facade, JSONTransformator transformator) {
-        super(LinkFields.LINKS_NAME);
+        super(BookmarkFields.LINKS_NAME);
         this.facade = facade;
         this.transformator = transformator;
     }

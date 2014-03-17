@@ -41,8 +41,8 @@ import earth.xor.db.DatastoreFacade;
 import earth.xor.db.LinksDatastore;
 import earth.xor.db.MongoLinksDatastore;
 import earth.xor.helpers.IntegrationTest;
-import earth.xor.model.Link;
-import earth.xor.model.LinkFields;
+import earth.xor.model.Bookmark;
+import earth.xor.model.BookmarkFields;
 import earth.xor.rest.SparkFacade;
 import earth.xor.rest.SparkRestApi;
 import earth.xor.rest.routes.GetAllLinksRoute;
@@ -103,9 +103,9 @@ public class TestRestApi {
 
         DBObject foundEntry = getSavedLinkFromDb();
 
-        assertEquals("http://www.foo.org", foundEntry.get(LinkFields.URL));
-        assertEquals("foo", foundEntry.get(LinkFields.TITLE));
-        assertEquals("test", foundEntry.get(LinkFields.USER));
+        assertEquals("http://www.foo.org", foundEntry.get(BookmarkFields.URL));
+        assertEquals("foo", foundEntry.get(BookmarkFields.TITLE));
+        assertEquals("test", foundEntry.get(BookmarkFields.USER));
     }
 
     @Test
@@ -119,9 +119,9 @@ public class TestRestApi {
         String jsonResponse = expect().when().get(Routes.GET_ALL_LINKS)
                 .asString();
 
-        Type type = new TypeToken<Map<String, List<Link>>>() {
+        Type type = new TypeToken<Map<String, List<Bookmark>>>() {
         }.getType();
-        Map<String, List<Link>> returnedUrls = new HashMap<String, List<Link>>();
+        Map<String, List<Bookmark>> returnedUrls = new HashMap<String, List<Bookmark>>();
         returnedUrls = gson.fromJson(jsonResponse, type);
         checkIfPreviouslyAddedLinksAreShown(returnedUrls);
     }
@@ -135,9 +135,9 @@ public class TestRestApi {
                 .get("/links/" + id).asString();
 
         assertTrue(isIdSurroundedWithDoubleQuotes(id, jsonString));
-        Type type = new TypeToken<Map<String, Link>>() {
+        Type type = new TypeToken<Map<String, Bookmark>>() {
         }.getType();
-        Map<String, Link> returnedUrlRepresentation = new HashMap<String, Link>();
+        Map<String, Bookmark> returnedUrlRepresentation = new HashMap<String, Bookmark>();
         returnedUrlRepresentation = gson.fromJson(jsonString, type);
         checkIfItsTheCorrectlink(returnedUrlRepresentation);
     }
@@ -157,24 +157,24 @@ public class TestRestApi {
         JSONObject mainObj = (JSONObject) JSONValue.parse(jsonString);
         JSONObject link = (JSONObject) mainObj.get("link");
 
-        assertEquals("http://www.foo.org", link.get(LinkFields.URL).toString());
-        assertEquals("foo", link.get(LinkFields.TITLE).toString());
-        assertEquals("test", link.get(LinkFields.USER).toString());
+        assertEquals("http://www.foo.org", link.get(BookmarkFields.URL).toString());
+        assertEquals("foo", link.get(BookmarkFields.TITLE).toString());
+        assertEquals("test", link.get(BookmarkFields.USER).toString());
     }
 
     private DBObject getSavedLinkFromDb() {
-        DB urlsDb = mongoClient.getDB(LinkFields.DATABASE_NAME);
-        DBCollection col = urlsDb.getCollection(LinkFields.LINKS_NAME);
+        DB urlsDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
+        DBCollection col = urlsDb.getCollection(BookmarkFields.LINKS_NAME);
 
-        return col.findOne(new BasicDBObject(LinkFields.URL,
+        return col.findOne(new BasicDBObject(BookmarkFields.URL,
                 "http://www.foo.org"));
     }
 
     private void checkIfPreviouslyAddedLinksAreShown(
-            Map<String, List<Link>> returnedUrls) {
+            Map<String, List<Bookmark>> returnedUrls) {
 
-        ArrayList<Link> allUrls = (ArrayList<Link>) returnedUrls
-                .get(LinkFields.LINKS_NAME);
+        ArrayList<Bookmark> allUrls = (ArrayList<Bookmark>) returnedUrls
+                .get(BookmarkFields.LINKS_NAME);
 
         assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
         assertEquals("foo", allUrls.get(0).getTitle());
@@ -198,18 +198,18 @@ public class TestRestApi {
     private String addLinkAndGetItsId() {
         linksData.addLink(LinkObjects.testLink1);
 
-        DB linksDb = mongoClient.getDB(LinkFields.DATABASE_NAME);
-        DBCollection col = linksDb.getCollection(LinkFields.LINKS_NAME);
+        DB linksDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
+        DBCollection col = linksDb.getCollection(BookmarkFields.LINKS_NAME);
 
-        DBObject foundEntry = col.findOne(new BasicDBObject(LinkFields.URL,
+        DBObject foundEntry = col.findOne(new BasicDBObject(BookmarkFields.URL,
                 "http://www.foo.org"));
 
-        return foundEntry.get(LinkFields.ID).toString();
+        return foundEntry.get(BookmarkFields.ID).toString();
     }
 
     private void checkIfItsTheCorrectlink(
-            Map<String, Link> returnedUrlRepresentation) {
-        Link foundLink = returnedUrlRepresentation.get("link");
+            Map<String, Bookmark> returnedUrlRepresentation) {
+        Bookmark foundLink = returnedUrlRepresentation.get("link");
 
         assertEquals("http://www.foo.org", foundLink.getUrl());
         assertEquals("foo", foundLink.getTitle());
@@ -218,7 +218,7 @@ public class TestRestApi {
 
     @After
     public void dropCollection() {
-        mongoClient.getDB(LinkFields.DATABASE_NAME)
-                .getCollection(LinkFields.LINKS_NAME).drop();
+        mongoClient.getDB(BookmarkFields.DATABASE_NAME)
+                .getCollection(BookmarkFields.LINKS_NAME).drop();
     }
 }

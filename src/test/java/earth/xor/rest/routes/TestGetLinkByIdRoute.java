@@ -19,7 +19,7 @@ import org.xorrr.util.JsonAccessor;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,13 +44,13 @@ public class TestGetLinkByIdRoute {
     @Test
     public void canGetLinkById() {
         when(req.params(":id")).thenReturn(id);
-        when(transformator.linkToJson(any(Link.class))).thenReturn(
+        when(transformator.linkToJson(any(Bookmark.class))).thenReturn(
                 JsonAccessor.getExampleLink());
 
         Object json = route.handle(req, resp);
 
         verify(facade, times(1)).getLinkById(anyString());
-        verify(transformator, times(1)).linkToJson(any(Link.class));
+        verify(transformator, times(1)).linkToJson(any(Bookmark.class));
         assertEquals(json, JsonAccessor.getExampleLink());
     }
 

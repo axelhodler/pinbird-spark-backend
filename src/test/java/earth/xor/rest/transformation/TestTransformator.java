@@ -9,14 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xorrr.util.LinkObjects;
 
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 
 public class TestTransformator {
 
     private JSONTransformator trans;
     private String jsonExample = "{\"link\":{\"url\":\"http://www.foo.org\", "
             + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
-    private List<Link> links;
+    private List<Bookmark> links;
 
     private String linksInJson = "{\"links\":[{\"timestamp\":null,"
             + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
@@ -35,7 +35,7 @@ public class TestTransformator {
 
     @Test
     public void canTransformStringToLink() {
-        Link l = trans.jsonToLink(jsonExample);
+        Bookmark l = trans.jsonToLink(jsonExample);
 
         assertEquals("http://www.foo.org", l.getUrl());
         assertEquals("foo", l.getTitle());

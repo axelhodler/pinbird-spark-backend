@@ -27,8 +27,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import earth.xor.model.Link;
-import earth.xor.model.LinkFields;
+import earth.xor.model.Bookmark;
+import earth.xor.model.BookmarkFields;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestMongoLinksDatastore {
@@ -48,11 +48,11 @@ public class TestMongoLinksDatastore {
     private MongoLinksDatastore linksData;
 
     private void mockDBObjectBehaviour() {
-        when(dbo.get(LinkFields.ID)).thenReturn("i");
-        when(dbo.get(LinkFields.URL)).thenReturn("u");
-        when(dbo.get(LinkFields.TITLE)).thenReturn("t");
-        when(dbo.get(LinkFields.USER)).thenReturn("us");
-        when(dbo.get(LinkFields.TIMESTAMP)).thenReturn("ts");
+        when(dbo.get(BookmarkFields.ID)).thenReturn("i");
+        when(dbo.get(BookmarkFields.URL)).thenReturn("u");
+        when(dbo.get(BookmarkFields.TITLE)).thenReturn("t");
+        when(dbo.get(BookmarkFields.USER)).thenReturn("us");
+        when(dbo.get(BookmarkFields.TIMESTAMP)).thenReturn("ts");
     }
 
     @Before
@@ -79,7 +79,7 @@ public class TestMongoLinksDatastore {
         when(dbos.next()).thenReturn(dbo);
         mockDBObjectBehaviour();
         
-        List<Link> links = linksData.getLinks();
+        List<Bookmark> links = linksData.getLinks();
 
         verify(col, times(1)).find();
         assertEquals("i", links.get(0).getObjectId());
@@ -94,7 +94,7 @@ public class TestMongoLinksDatastore {
         when(col.findOne(any(DBObject.class))).thenReturn(dbo);
         mockDBObjectBehaviour();
 
-        Link l = linksData.getLinkById(new ObjectId().toString());
+        Bookmark l = linksData.getLinkById(new ObjectId().toString());
 
         verify(col, times(1)).findOne(any(BasicDBObject.class));
         assertEquals("u", l.getUrl());

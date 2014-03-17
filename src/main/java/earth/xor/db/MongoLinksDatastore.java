@@ -12,8 +12,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
-import earth.xor.model.Link;
-import earth.xor.model.LinkFields;
+import earth.xor.model.Bookmark;
+import earth.xor.model.BookmarkFields;
 
 public class MongoLinksDatastore implements LinksDatastore {
 
@@ -23,17 +23,17 @@ public class MongoLinksDatastore implements LinksDatastore {
         this.mongo = mongo;
     }
 
-    public void addLink(Link link) {
+    public void addLink(Bookmark link) {
         DBCollection col = getCollection();
 
-        col.insert(new BasicDBObject(LinkFields.URL, link.getUrl())
-                .append(LinkFields.TITLE, link.getTitle())
-                .append(LinkFields.USER, link.getUser())
-                .append(LinkFields.TIMESTAMP, new Date()));
+        col.insert(new BasicDBObject(BookmarkFields.URL, link.getUrl())
+                .append(BookmarkFields.TITLE, link.getTitle())
+                .append(BookmarkFields.USER, link.getUser())
+                .append(BookmarkFields.TIMESTAMP, new Date()));
     }
 
-    public List<Link> getLinks() {
-        List<Link> links = new ArrayList<>();
+    public List<Bookmark> getLinks() {
+        List<Bookmark> links = new ArrayList<>();
 
         DBCursor curs = getCollection().find();
         for (DBObject dbo : curs)
@@ -42,23 +42,23 @@ public class MongoLinksDatastore implements LinksDatastore {
         return links;
     }
 
-    public Link getLinkById(String id) {
+    public Bookmark getLinkById(String id) {
         DBObject foundLink = getCollection().findOne(
-                new BasicDBObject(LinkFields.ID, new ObjectId(id)));
+                new BasicDBObject(BookmarkFields.ID, new ObjectId(id)));
 
         return buildLink(foundLink);
     }
 
     private DBCollection getCollection() {
-        return mongo.getDB(LinkFields.DATABASE_NAME).getCollection(
-                LinkFields.LINKS_NAME);
+        return mongo.getDB(BookmarkFields.DATABASE_NAME).getCollection(
+                BookmarkFields.LINKS_NAME);
     }
 
-    private Link buildLink(DBObject dbo) {
-        return new Link.Builder().objectId(dbo.get(LinkFields.ID).toString())
-                .url(dbo.get(LinkFields.URL).toString())
-                .title(dbo.get(LinkFields.TITLE).toString())
-                .user(dbo.get(LinkFields.USER).toString())
-                .timestamp(dbo.get(LinkFields.TIMESTAMP).toString()).build();
+    private Bookmark buildLink(DBObject dbo) {
+        return new Bookmark.Builder().objectId(dbo.get(BookmarkFields.ID).toString())
+                .url(dbo.get(BookmarkFields.URL).toString())
+                .title(dbo.get(BookmarkFields.TITLE).toString())
+                .user(dbo.get(BookmarkFields.USER).toString())
+                .timestamp(dbo.get(BookmarkFields.TIMESTAMP).toString()).build();
     }
 }

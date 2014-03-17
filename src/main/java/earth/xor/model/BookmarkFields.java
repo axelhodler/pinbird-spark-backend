@@ -2,7 +2,7 @@ package earth.xor.model;
 
 import org.xorrr.util.EnvironmentVars;
 
-public abstract class LinkFields {
+public abstract class BookmarkFields {
 
     public static String DATABASE_NAME = System.getenv(EnvironmentVars.DB_NAME);
 

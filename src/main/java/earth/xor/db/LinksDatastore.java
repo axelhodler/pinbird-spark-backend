@@ -2,13 +2,13 @@ package earth.xor.db;
 
 import java.util.List;
 
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 
 public interface LinksDatastore {
 
-    void addLink(Link link);
+    void addLink(Bookmark link);
 
-    List<Link> getLinks();
+    List<Bookmark> getLinks();
 
-    Link getLinkById(String id);
+    Bookmark getLinkById(String id);
 }

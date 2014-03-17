@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestDatastoreFacade {
@@ -27,9 +27,9 @@ public class TestDatastoreFacade {
 
     @Test
     public void canAddLink() {
-        facade.addLink(any(Link.class));
+        facade.addLink(any(Bookmark.class));
 
-        verify(ds, times(1)).addLink(any(Link.class));
+        verify(ds, times(1)).addLink(any(Bookmark.class));
     }
 
     @Test

@@ -23,8 +23,8 @@ import org.xorrr.util.LinkObjects;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.model.Link;
-import earth.xor.model.LinkFields;
+import earth.xor.model.Bookmark;
+import earth.xor.model.BookmarkFields;
 import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -48,9 +48,9 @@ public class TestGetAllLinksRoute {
 
     @Test
     public void canGetLink() {
-        List<Link> links = createTestLinks();
+        List<Bookmark> links = createTestLinks();
         JSONObject mainJsonObject = conformToEmberStandards(links);
-        when(transformator.listOfLinksToJson(anyListOf(Link.class)))
+        when(transformator.listOfLinksToJson(anyListOf(Bookmark.class)))
                 .thenReturn(mainJsonObject.toJSONString());
         when(facade.getLinks()).thenReturn(links);
 
@@ -58,7 +58,7 @@ public class TestGetAllLinksRoute {
 
         verify(facade, times(1)).getLinks();
         verify(transformator, times(1))
-                .listOfLinksToJson(anyListOf(Link.class));
+                .listOfLinksToJson(anyListOf(Bookmark.class));
         assertEquals(jsonString, mainJsonObject.toJSONString());
     }
 
@@ -73,28 +73,28 @@ public class TestGetAllLinksRoute {
         verify(resp, times(1)).header(HttpHeaderKeys.ACAOrigin, "*");
     }
 
-    private JSONObject conformToEmberStandards(List<Link> links) {
+    private JSONObject conformToEmberStandards(List<Bookmark> links) {
         JSONObject mainJsonObject = new JSONObject();
         mainJsonObject.put("links", createTestLinksArray(links));
         return mainJsonObject;
     }
 
-    private JSONArray createTestLinksArray(List<Link> links) {
+    private JSONArray createTestLinksArray(List<Bookmark> links) {
         JSONArray linksArray = new JSONArray();
-        for (Link l : links) {
+        for (Bookmark l : links) {
             JSONObject jo = new JSONObject();
-            jo.put(LinkFields.ID, l.getObjectId());
-            jo.put(LinkFields.URL, l.getUrl());
-            jo.put(LinkFields.TITLE, l.getTitle());
-            jo.put(LinkFields.USER, l.getUser());
-            jo.put(LinkFields.TIMESTAMP, l.getTimeStamp());
+            jo.put(BookmarkFields.ID, l.getObjectId());
+            jo.put(BookmarkFields.URL, l.getUrl());
+            jo.put(BookmarkFields.TITLE, l.getTitle());
+            jo.put(BookmarkFields.USER, l.getUser());
+            jo.put(BookmarkFields.TIMESTAMP, l.getTimeStamp());
             linksArray.add(jo);
         }
         return linksArray;
     }
 
-    private List<Link> createTestLinks() {
-        List<Link> links = new ArrayList<>();
+    private List<Bookmark> createTestLinks() {
+        List<Bookmark> links = new ArrayList<>();
         links.add(LinkObjects.testLink1);
         links.add(LinkObjects.testLink2);
         return links;

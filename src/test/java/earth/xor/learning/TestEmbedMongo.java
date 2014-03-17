@@ -17,7 +17,7 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
 import earth.xor.helpers.IntegrationTest;
-import earth.xor.model.LinkFields;
+import earth.xor.model.BookmarkFields;
 
 @Category(IntegrationTest.class)
 public class TestEmbedMongo {
@@ -36,7 +36,7 @@ public class TestEmbedMongo {
 
     @Test
     public void testGettingCount() {
-        DBCollection col = mongo.getDB(LinkFields.DATABASE_NAME)
+        DBCollection col = mongo.getDB(BookmarkFields.DATABASE_NAME)
                 .getCollection("test");
         col.insert(new BasicDBObject("name", "pete"));
 

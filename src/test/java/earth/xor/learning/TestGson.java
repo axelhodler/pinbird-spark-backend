@@ -7,21 +7,21 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 
 public class TestGson {
 
     private String jsonExample = "{\"url\":\"testurl\","
             + "\"title\":\"testtitle\"," + "\"user\":\"testuser\"}";
 
-    private Link urlExample;
+    private Bookmark urlExample;
 
     private Gson gson;
 
     @Before
     public void setUpTests() {
         this.gson = new Gson();
-        this.urlExample = new Link.Builder().url("testurl").title("testtitle")
+        this.urlExample = new Bookmark.Builder().url("testurl").title("testtitle")
                 .user("testuser").build();
     }
 
@@ -35,7 +35,7 @@ public class TestGson {
 
     @Test
     public void testJsonToJavaObjectConversion() {
-        Link url = gson.fromJson(jsonExample, Link.class);
+        Bookmark url = gson.fromJson(jsonExample, Bookmark.class);
 
         assertEquals(urlExample.getTitle(), url.getTitle());
         assertEquals(urlExample.getUrl(), url.getUrl());

@@ -22,7 +22,7 @@ import spark.AbstractRoute;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(PowerMockRunner.class)
@@ -37,7 +37,7 @@ public class TestPostLinkRoute {
     @Mock
     JSONTransformator transformator;
     @Mock
-    Link testLink;
+    Bookmark testLink;
 
     private PostLinkRoute route;
 
