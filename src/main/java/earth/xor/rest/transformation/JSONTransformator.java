@@ -24,12 +24,12 @@ public class JSONTransformator {
 
     public String linkToJson(Bookmark testlink1) {
         JSONObject main = new JSONObject();
-        main.put("link", transformLinkToJson(testlink1));
+        main.put(BookmarkFields.BOOKMARK, transformLinkToJson(testlink1));
         return main.toJSONString();
     }
 
     private Bookmark createLink(JSONObject json) {
-        return buildLink((JSONObject) json.get("link"));
+        return buildLink((JSONObject) json.get(BookmarkFields.BOOKMARK));
     }
 
 
