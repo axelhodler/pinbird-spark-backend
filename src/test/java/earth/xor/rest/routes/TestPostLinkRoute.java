@@ -15,6 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.HttpResponseErrorMessages;
+import org.xorrr.util.JsonAccessor;
 import org.xorrr.util.LinkObjects;
 
 import spark.AbstractRoute;
@@ -39,8 +40,6 @@ public class TestPostLinkRoute {
     Link testLink;
 
     private PostLinkRoute route;
-    private String jsonExample = "{\"link\":{ \"url\":\"http://www.foo.org\", "
-            + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
 
     @Before
     public void setUp() {
@@ -52,17 +51,18 @@ public class TestPostLinkRoute {
 
     @Test
     public void linkCanBePosted() {
+        String json = JsonAccessor.getPostRequestBody();
         when(req.headers(HttpHeaderKeys.Authorization)).thenReturn(
                 System.getenv(EnvironmentVars.PW));
-        when(req.body()).thenReturn(jsonExample);
-        when(transformator.jsonToLink(jsonExample)).thenReturn(testLink);
+        when(req.body()).thenReturn(json);
+        when(transformator.jsonToLink(json)).thenReturn(testLink);
 
         Object returned = route.handle(req, resp);
 
         verify(req, times(1)).headers("Authorization");
         verify(facade, times(1)).addLink(testLink);
         verify(req, times(3)).body();
-        assertEquals(jsonExample, returned.toString());
+        assertEquals(json, returned.toString());
     }
 
     @Test
