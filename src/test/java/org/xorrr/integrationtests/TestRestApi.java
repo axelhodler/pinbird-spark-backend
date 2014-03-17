@@ -101,7 +101,7 @@ public class TestRestApi {
     public void canPostBookmark() {
         addBookmarkViaRestApi();
 
-        DBObject foundEntry = getSavedLinkFromDb();
+        DBObject foundEntry = getSavedBookmarkFromDb();
 
         assertEquals("http://www.foo.org", foundEntry.get(BookmarkFields.URL));
         assertEquals("foo", foundEntry.get(BookmarkFields.TITLE));
@@ -112,7 +112,7 @@ public class TestRestApi {
     public void canGetListOfAllSavedBookmarks() {
         bookmarksData.addBookmark(BookmarkObjects.testBookmark1);
         bookmarksData.addBookmark(BookmarkObjects.testBookmark2);
-        bookmarksData.addBookmark(BookmarkObjects.testLink3);
+        bookmarksData.addBookmark(BookmarkObjects.testBookmark3);
 
         expect().header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
                 .get(Routes.GET_ALL_BOOKMARKS);
@@ -163,7 +163,7 @@ public class TestRestApi {
         assertEquals("test", bookmark.get(BookmarkFields.USER).toString());
     }
 
-    private DBObject getSavedLinkFromDb() {
+    private DBObject getSavedBookmarkFromDb() {
         DB urlsDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
         DBCollection col = urlsDb.getCollection(BookmarkFields.BOOKMARKS);
 

@@ -37,7 +37,7 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
 
         DBCursor curs = getCollection().find();
         for (DBObject dbo : curs)
-            bookmarks.add(buildLink(dbo));
+            bookmarks.add(buildBookmark(dbo));
 
         return bookmarks;
     }
@@ -46,7 +46,7 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
         DBObject foundBookmark = getCollection().findOne(
                 new BasicDBObject(BookmarkFields.ID, new ObjectId(id)));
 
-        return buildLink(foundBookmark);
+        return buildBookmark(foundBookmark);
     }
 
     private DBCollection getCollection() {
@@ -54,7 +54,7 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
                 BookmarkFields.BOOKMARKS);
     }
 
-    private Bookmark buildLink(DBObject dbo) {
+    private Bookmark buildBookmark(DBObject dbo) {
         return new Bookmark.Builder().objectId(dbo.get(BookmarkFields.ID).toString())
                 .url(dbo.get(BookmarkFields.URL).toString())
                 .title(dbo.get(BookmarkFields.TITLE).toString())

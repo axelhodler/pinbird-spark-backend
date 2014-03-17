@@ -11,26 +11,27 @@ import earth.xor.model.BookmarkFields;
 
 @SuppressWarnings("unchecked")
 public class JSONTransformator {
-    public Bookmark jsonToLink(String json) {
+    public Bookmark jsonToBookmark(String json) {
         return createBookmark((JSONObject) JSONValue.parse(json));
     }
 
     public String listOfBookmarksToJson(List<Bookmark> bookmarks) {
         JSONObject mainObject = new JSONObject();
         mainObject.put(BookmarkFields.BOOKMARKS,
-                iterateLinksAndAddToArray(bookmarks));
+                iterateBookmarks(bookmarks));
 
         return mainObject.toJSONString();
     }
 
     public String bookmarkToJson(Bookmark testBookmark1) {
         JSONObject main = new JSONObject();
-        main.put(BookmarkFields.BOOKMARK, transformLinkToJson(testBookmark1));
+        main.put(BookmarkFields.BOOKMARK,
+                transformBookmarkToJson(testBookmark1));
         return main.toJSONString();
     }
 
     private Bookmark createBookmark(JSONObject json) {
-        return buildLink((JSONObject) json.get(BookmarkFields.BOOKMARK));
+        return buildBookmark((JSONObject) json.get(BookmarkFields.BOOKMARK));
     }
 
     private String getUser(JSONObject json) {
@@ -45,7 +46,7 @@ public class JSONTransformator {
         return json.get(BookmarkFields.URL).toString();
     }
 
-    private JSONObject transformLinkToJson(Bookmark bookmark) {
+    private JSONObject transformBookmarkToJson(Bookmark bookmark) {
         JSONObject jsonObject = new JSONObject();
 
         jsonObject.put(BookmarkFields.ID, bookmark.getObjectId());
@@ -57,14 +58,14 @@ public class JSONTransformator {
         return jsonObject;
     }
 
-    private JSONArray iterateLinksAndAddToArray(List<Bookmark> bookmarks) {
+    private JSONArray iterateBookmarks(List<Bookmark> bookmarks) {
         JSONArray bookmarksArray = new JSONArray();
         for (Bookmark b : bookmarks)
-            bookmarksArray.add(transformLinkToJson(b));
+            bookmarksArray.add(transformBookmarkToJson(b));
         return bookmarksArray;
     }
 
-    private Bookmark buildLink(JSONObject json) {
+    private Bookmark buildBookmark(JSONObject json) {
         return new Bookmark.Builder().url(getUrl(json)).title(getTitle(json))
                 .user(getUser(json)).build();
     }

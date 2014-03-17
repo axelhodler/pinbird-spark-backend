@@ -30,7 +30,7 @@ public class TestTransformator {
 
     @Test
     public void canTransformStringToBookmark() {
-        Bookmark b = trans.jsonToLink(jsonExample);
+        Bookmark b = trans.jsonToBookmark(jsonExample);
 
         assertEquals("http://www.foo.org", b.getUrl());
         assertEquals("foo", b.getTitle());

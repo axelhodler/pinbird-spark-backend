@@ -90,7 +90,7 @@ public class TestMongoBookmarksDatastore {
     }
 
     @Test
-    public void canGetLinkViaId() {
+    public void canGetBookmarkViaId() {
         when(col.findOne(any(DBObject.class))).thenReturn(dbo);
         mockDBObjectBehaviour();
 

@@ -43,21 +43,21 @@ public class TestSparkRestApi {
     }
 
     @Test
-    public void postLinkRouteIsSet() {
+    public void postBookmarkRouteIsSet() {
         restApi.createPOSTbookmarksRoute(postBookmarkRoute);
 
         verify(sparkFacade, times(1)).setPostRoute(postBookmarkRoute);
     }
 
     @Test
-    public void getLinkByIdRouteIsSet() {
+    public void getBookmarkByIdRouteIsSet() {
         restApi.createGETbookmarkByIdRoute(getBookmarkByIdRoute);
 
         verify(sparkFacade, times(1)).setGetRoute(getBookmarkByIdRoute);
     }
 
     @Test
-    public void getLinksRouteIsSet() {
+    public void getBookmarksRouteIsSet() {
         restApi.createGETbookmarksRoute(getAllBookmarksRoute);
 
         verify(sparkFacade, times(1)).setGetRoute(getAllBookmarksRoute);

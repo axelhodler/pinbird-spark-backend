@@ -55,7 +55,7 @@ public class TestPostBookmarkRoute {
         when(req.headers(HttpHeaderKeys.Authorization)).thenReturn(
                 System.getenv(EnvironmentVars.PW));
         when(req.body()).thenReturn(json);
-        when(transformator.jsonToLink(json)).thenReturn(testBookmark);
+        when(transformator.jsonToBookmark(json)).thenReturn(testBookmark);
 
         Object returned = route.handle(req, resp);
 
