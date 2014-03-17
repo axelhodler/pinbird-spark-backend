@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.xorrr.util.HttpHeaderKeys;
 
 import spark.Request;
 import spark.Response;
@@ -33,7 +34,7 @@ public class TestOptionsRoute {
 
         route.handle(req, resp);
 
-        verify(resp, times(1)).header("Access-Control-Allow-Methods",
+        verify(resp, times(1)).header(HttpHeaderKeys.ACAMethods,
                 "GET, POST");
     }
 
@@ -43,7 +44,7 @@ public class TestOptionsRoute {
 
         route.handle(req, resp);
 
-        verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
+        verify(resp, times(1)).header(HttpHeaderKeys.ACAOrigin, "*");
     }
 
     @Test
@@ -52,7 +53,11 @@ public class TestOptionsRoute {
 
         route.handle(req, resp);
 
-        verify(resp, times(1)).header("Access-Control-Allow-Headers",
-                "Origin, X-Requested-With, Content-Type, Accept");
+        verify(resp, times(1)).header(
+                HttpHeaderKeys.ACAHeaders,
+                "Origin, X-Requested-With, " +
+                "Content-Type, " +
+                "Accept, " +
+                "Authorization");
     }
 }

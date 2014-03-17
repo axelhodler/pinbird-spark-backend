@@ -13,6 +13,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.xorrr.util.EnvironmentVars;
+import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.HttpResponseErrorMessages;
 import org.xorrr.util.LinkObjects;
 
@@ -51,14 +52,14 @@ public class TestPostLinkRoute {
 
     @Test
     public void linkCanBePosted() {
-        when(req.queryParams("pw")).thenReturn(
+        when(req.headers(HttpHeaderKeys.Authorization)).thenReturn(
                 System.getenv(EnvironmentVars.PW));
         when(req.body()).thenReturn(jsonExample);
         when(transformator.jsonToLink(jsonExample)).thenReturn(testLink);
 
         Object returned = route.handle(req, resp);
 
-        verify(req, times(1)).queryParams("pw");
+        verify(req, times(1)).headers("Authorization");
         verify(facade, times(1)).addLink(testLink);
         verify(req, times(3)).body();
         assertEquals(jsonExample, returned.toString());
@@ -66,7 +67,7 @@ public class TestPostLinkRoute {
 
     @Test
     public void failRequestWithNoPassword() throws Exception {
-        when(req.queryParams("pw")).thenReturn(null);
+        when(req.headers(HttpHeaderKeys.Authorization)).thenReturn(null);
         when(req.body()).thenReturn("");
 
         route.handle(req, resp);
@@ -77,7 +78,7 @@ public class TestPostLinkRoute {
 
     @Test
     public void dontAuthWithWrongPassword() throws Exception {
-        when(req.queryParams("pw")).thenReturn("wrong");
+        when(req.headers(HttpHeaderKeys.Authorization)).thenReturn("wrong");
         when(req.body()).thenReturn("");
 
         route.handle(req, resp);
@@ -88,7 +89,7 @@ public class TestPostLinkRoute {
 
     @Test
     public void haltIfPayloadMissing() throws Exception {
-        when(req.queryParams("pw")).thenReturn(
+        when(req.headers(HttpHeaderKeys.Authorization)).thenReturn(
                 System.getenv(EnvironmentVars.PW));
         when(req.body()).thenReturn("");
 
@@ -100,12 +101,12 @@ public class TestPostLinkRoute {
 
     @Test
     public void accessControlAllowOriginHeaderUsed() {
-        when(req.queryParams("pw")).thenReturn(
+        when(req.headers(HttpHeaderKeys.Authorization)).thenReturn(
                 System.getenv(EnvironmentVars.PW));
         when(req.body()).thenReturn("something");
 
         route.handle(req, resp);
 
-        verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
+        verify(resp, times(1)).header(HttpHeaderKeys.ACAOrigin, "*");
     }
 }

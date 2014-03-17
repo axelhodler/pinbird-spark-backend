@@ -1,5 +1,7 @@
 package earth.xor.rest.routes;
 
+import org.xorrr.util.HttpHeaderKeys;
+
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -19,7 +21,7 @@ public class GetLinkByIdRoute extends Route{
 
     @Override
     public Object handle(Request request, Response response) {
-        response.header("Access-Control-Allow-Origin", "*");
+        response.header(HttpHeaderKeys.ACAOrigin, "*");
 
         return transformator.linkToJson(facade.getLinkById(request.params(":id")));
     }

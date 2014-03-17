@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xorrr.util.EnvironmentVars;
+import org.xorrr.util.HttpHeaderKeys;
 
 import spark.Request;
 import spark.Response;
@@ -62,6 +63,6 @@ public class TestGetLinkByIdRoute {
 
         route.handle(req, resp);
 
-        verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
+        verify(resp, times(1)).header(HttpHeaderKeys.ACAOrigin, "*");
     }
 }

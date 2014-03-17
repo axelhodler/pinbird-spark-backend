@@ -1,6 +1,7 @@
 package earth.xor.rest.routes;
 
 import org.xorrr.util.EnvironmentVars;
+import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.HttpResponseErrorMessages;
 
 import spark.Request;
@@ -10,7 +11,7 @@ import earth.xor.db.DatastoreFacade;
 import earth.xor.model.LinkFields;
 import earth.xor.rest.transformation.JSONTransformator;
 
-public class PostLinkRoute extends Route{
+public class PostLinkRoute extends Route {
 
     private DatastoreFacade facade;
     private JSONTransformator transformator;
@@ -28,13 +29,13 @@ public class PostLinkRoute extends Route{
 
         facade.addLink(transformator.jsonToLink(request.body()));
 
-        response.header("Access-Control-Allow-Origin", "*");
+        response.header(HttpHeaderKeys.ACAOrigin, "*");
 
         return request.body();
     }
 
     private void checkIfPayloadMissing(Request request) {
-        if (payloadMissing(request)) 
+        if (payloadMissing(request))
             halt(400, HttpResponseErrorMessages.MISSING_PAYLOAD);
     }
 
@@ -43,7 +44,7 @@ public class PostLinkRoute extends Route{
     }
 
     private void checkPassword(Request request) {
-        String pw = request.queryParams("pw");
+        String pw = request.headers(HttpHeaderKeys.Authorization);
         if (pw == null)
             halt(400, HttpResponseErrorMessages.MISSING_PW);
         else if (passwardIncorrect(pw))
