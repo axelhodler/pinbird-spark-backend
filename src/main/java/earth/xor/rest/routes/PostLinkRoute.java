@@ -44,7 +44,7 @@ public class PostLinkRoute extends Route{
     }
 
     private void checkPassword(Request request) {
-        String pw = request.queryParams("pw");
+        String pw = request.headers("Authorization");
         if (pw == null)
             halt(400, HttpResponseErrorMessages.MISSING_PW);
         else if (passwardIncorrect(pw))
