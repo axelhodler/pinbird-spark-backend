@@ -44,7 +44,7 @@ public class TestTransformator {
         links.add(LinkObjects.testLink2);
 
         String json = trans.listOfLinksToJson(links);
-        assertEquals(json, JsonAccessor.getExampleLinks());
+        assertEquals(json, JsonAccessor.getExampleBookmarks());
     }
 
     @Test

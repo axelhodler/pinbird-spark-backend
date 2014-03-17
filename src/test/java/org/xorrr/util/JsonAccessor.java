@@ -9,52 +9,52 @@ import earth.xor.model.BookmarkFields;
 public class JsonAccessor {
 
     public static String getPostRequestBody() {
-        JSONObject link = new JSONObject();
-        link.put(BookmarkFields.URL, "http://www.foo.org");
-        link.put(BookmarkFields.TITLE, "foo");
-        link.put(BookmarkFields.USER, "test");
+        JSONObject bookmark = new JSONObject();
+        bookmark.put(BookmarkFields.URL, "http://www.foo.org");
+        bookmark.put(BookmarkFields.TITLE, "foo");
+        bookmark.put(BookmarkFields.USER, "test");
 
         JSONObject main = new JSONObject();
-        main.put("link", link);
+        main.put(BookmarkFields.BOOKMARK, bookmark);
 
         return main.toJSONString();
     }
 
-    public static String getExampleLink() {
-        JSONObject link = new JSONObject();
-        link.put(BookmarkFields.URL, "http://www.foo.org");
-        link.put(BookmarkFields.TITLE, "foo");
-        link.put(BookmarkFields.USER, "user1");
-        link.put(BookmarkFields.TIMESTAMP, null);
-        link.put(BookmarkFields.ID, null);
+    public static String getExampleBookmark() {
+        JSONObject bookmark = new JSONObject();
+        bookmark.put(BookmarkFields.URL, "http://www.foo.org");
+        bookmark.put(BookmarkFields.TITLE, "foo");
+        bookmark.put(BookmarkFields.USER, "user1");
+        bookmark.put(BookmarkFields.TIMESTAMP, null);
+        bookmark.put(BookmarkFields.ID, null);
 
         JSONObject main = new JSONObject();
-        main.put(BookmarkFields.BOOKMARK, link);
+        main.put(BookmarkFields.BOOKMARKS, bookmark);
 
         return main.toJSONString();
     }
 
-    public static String getExampleLinks() {
-        JSONObject link1 = new JSONObject();
-        link1.put(BookmarkFields.URL, "http://www.foo.org");
-        link1.put(BookmarkFields.TITLE, "foo");
-        link1.put(BookmarkFields.USER, "user1");
-        link1.put(BookmarkFields.TIMESTAMP, null);
-        link1.put(BookmarkFields.ID, null);
+    public static String getExampleBookmarks() {
+        JSONObject bookmark = new JSONObject();
+        bookmark.put(BookmarkFields.URL, "http://www.foo.org");
+        bookmark.put(BookmarkFields.TITLE, "foo");
+        bookmark.put(BookmarkFields.USER, "user1");
+        bookmark.put(BookmarkFields.TIMESTAMP, null);
+        bookmark.put(BookmarkFields.ID, null);
 
-        JSONObject link2 = new JSONObject();
-        link2.put(BookmarkFields.URL, "http://www.bar.org");
-        link2.put(BookmarkFields.TITLE, "bar");
-        link2.put(BookmarkFields.USER, "user2");
-        link2.put(BookmarkFields.TIMESTAMP, null);
-        link2.put(BookmarkFields.ID, null);
+        JSONObject bookmark2 = new JSONObject();
+        bookmark2.put(BookmarkFields.URL, "http://www.bar.org");
+        bookmark2.put(BookmarkFields.TITLE, "bar");
+        bookmark2.put(BookmarkFields.USER, "user2");
+        bookmark2.put(BookmarkFields.TIMESTAMP, null);
+        bookmark2.put(BookmarkFields.ID, null);
 
-        JSONArray linksArray = new JSONArray();
-        linksArray.add(link1);
-        linksArray.add(link2);
+        JSONArray bookmarksArray = new JSONArray();
+        bookmarksArray.add(bookmark);
+        bookmarksArray.add(bookmark2);
 
         JSONObject main = new JSONObject();
-        main.put(BookmarkFields.BOOKMARKS, linksArray);
+        main.put(BookmarkFields.BOOKMARKS, bookmarksArray);
 
         return main.toJSONString();
     }
