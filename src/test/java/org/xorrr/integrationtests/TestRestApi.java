@@ -155,9 +155,10 @@ public class TestRestApi {
                 .post(Routes.BASE).asString();
 
         JSONObject mainObj = (JSONObject) JSONValue.parse(jsonString);
-        JSONObject link = (JSONObject) mainObj.get("link");
+        JSONObject link = (JSONObject) mainObj.get(BookmarkFields.BOOKMARK);
 
-        assertEquals("http://www.foo.org", link.get(BookmarkFields.URL).toString());
+        assertEquals("http://www.foo.org", link.get(BookmarkFields.URL)
+                .toString());
         assertEquals("foo", link.get(BookmarkFields.TITLE).toString());
         assertEquals("test", link.get(BookmarkFields.USER).toString());
     }
@@ -209,7 +210,8 @@ public class TestRestApi {
 
     private void checkIfItsTheCorrectlink(
             Map<String, Bookmark> returnedUrlRepresentation) {
-        Bookmark foundLink = returnedUrlRepresentation.get("link");
+        Bookmark foundLink = returnedUrlRepresentation
+                .get(BookmarkFields.BOOKMARK);
 
         assertEquals("http://www.foo.org", foundLink.getUrl());
         assertEquals("foo", foundLink.getTitle());
