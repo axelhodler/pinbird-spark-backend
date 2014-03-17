@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
-import org.xorrr.util.LinkObjects;
+import org.xorrr.util.BookmarkObjects;
 
 import spark.Request;
 import spark.Response;
@@ -29,7 +29,7 @@ import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("unchecked")
-public class TestGetAllLinksRoute {
+public class TestGetAllBookmarksRoute {
     @Mock
     Request req;
     @Mock
@@ -39,11 +39,11 @@ public class TestGetAllLinksRoute {
     @Mock
     JSONTransformator transformator;
 
-    private GetAllLinksRoute route;
+    private GetAllBookmarksRoute route;
 
     @Before
     public void setUp() {
-        route = new GetAllLinksRoute(facade, transformator);
+        route = new GetAllBookmarksRoute(facade, transformator);
     }
 
     @Test
@@ -96,8 +96,8 @@ public class TestGetAllLinksRoute {
 
     private List<Bookmark> createTestLinks() {
         List<Bookmark> links = new ArrayList<>();
-        links.add(LinkObjects.testLink1);
-        links.add(LinkObjects.testLink2);
+        links.add(BookmarkObjects.testLink1);
+        links.add(BookmarkObjects.testLink2);
         return links;
     }
 }

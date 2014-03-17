@@ -16,7 +16,7 @@ import earth.xor.model.Bookmark;
 @RunWith(MockitoJUnitRunner.class)
 public class TestDatastoreFacade {
     @Mock
-    LinksDatastore ds;
+    BookmarkDatastore ds;
 
     private DatastoreFacade facade;
 

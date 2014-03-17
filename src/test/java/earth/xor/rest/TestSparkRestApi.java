@@ -11,21 +11,21 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xorrr.util.EnvironmentVars;
 
-import earth.xor.rest.routes.GetAllLinksRoute;
-import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.GetAllBookmarksRoute;
+import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
-import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.routes.PostBookmarkRoute;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestSparkRestApi {
     @Mock
     SparkFacade sparkFacade;
     @Mock
-    PostLinkRoute postLinkRoute;
+    PostBookmarkRoute postLinkRoute;
     @Mock
-    GetLinkByIdRoute getLinkByIdRoute;
+    GetBookmarkByIdRoute getLinkByIdRoute;
     @Mock
-    GetAllLinksRoute getAllLinksRoute;
+    GetAllBookmarksRoute getAllLinksRoute;
     @Mock
     OptionsRoute optionsRoute;
 

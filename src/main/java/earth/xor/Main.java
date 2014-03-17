@@ -8,15 +8,15 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 import earth.xor.db.DatastoreFacade;
-import earth.xor.db.LinksDatastore;
-import earth.xor.db.MongoLinksDatastore;
+import earth.xor.db.BookmarkDatastore;
+import earth.xor.db.MongoBookmarkDatastore;
 import earth.xor.rest.RestApi;
 import earth.xor.rest.SparkFacade;
 import earth.xor.rest.SparkRestApi;
-import earth.xor.rest.routes.GetAllLinksRoute;
-import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.GetAllBookmarksRoute;
+import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
-import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.routes.PostBookmarkRoute;
 import earth.xor.rest.transformation.JSONTransformator;
 
 public class Main {
@@ -26,15 +26,15 @@ public class Main {
                 System.getenv(EnvironmentVars.URI));
         MongoClient client = new MongoClient(mongoUri);
 
-        LinksDatastore ds = new MongoLinksDatastore(client);
+        BookmarkDatastore ds = new MongoBookmarkDatastore(client);
         DatastoreFacade facade = new DatastoreFacade(ds);
         JSONTransformator transformator = new JSONTransformator();
 
         RestApi rest = new SparkRestApi(new SparkFacade());
         rest.setPort(Integer.valueOf(System.getenv(EnvironmentVars.PORT)));
-        rest.createPOSTlinksRoute(new PostLinkRoute(facade, transformator));
-        rest.createGETlinkByIdRoute(new GetLinkByIdRoute(facade, transformator));
-        rest.createGETlinksRoute(new GetAllLinksRoute(facade, transformator));
+        rest.createPOSTlinksRoute(new PostBookmarkRoute(facade, transformator));
+        rest.createGETlinkByIdRoute(new GetBookmarkByIdRoute(facade, transformator));
+        rest.createGETlinksRoute(new GetAllBookmarksRoute(facade, transformator));
         rest.createOPTIONSlinksRoute(new OptionsRoute());
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import earth.xor.model.Bookmark;
 
-public interface LinksDatastore {
+public interface BookmarkDatastore {
 
     void addLink(Bookmark link);
 

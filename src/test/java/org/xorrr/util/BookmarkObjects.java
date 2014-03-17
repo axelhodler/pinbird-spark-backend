@@ -2,7 +2,7 @@ package org.xorrr.util;
 
 import earth.xor.model.Bookmark;
 
-public class LinkObjects {
+public class BookmarkObjects {
 
     public static final Bookmark testLink1 = new Bookmark.Builder()
             .url("http://www.foo.org").title("foo").user("user1").build();

@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.xorrr.util.LinkObjects;
+import org.xorrr.util.BookmarkObjects;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -31,7 +31,7 @@ import earth.xor.model.Bookmark;
 import earth.xor.model.BookmarkFields;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestMongoLinksDatastore {
+public class TestMongoBookmarksDatastore {
     @Mock
     private MongoClient mongoClient;
     @Mock
@@ -45,7 +45,7 @@ public class TestMongoLinksDatastore {
     @Mock
     private DBObject dbo;
 
-    private MongoLinksDatastore linksData;
+    private MongoBookmarkDatastore linksData;
 
     private void mockDBObjectBehaviour() {
         when(dbo.get(BookmarkFields.ID)).thenReturn("i");
@@ -58,7 +58,7 @@ public class TestMongoLinksDatastore {
     @Before
     public void setUpTests() throws UnknownHostException {
         this.mongoClient = mock(MongoClient.class);
-        this.linksData = new MongoLinksDatastore(mongoClient);
+        this.linksData = new MongoBookmarkDatastore(mongoClient);
 
         when(mongoClient.getDB(anyString())).thenReturn(db);
         when(db.getCollection(anyString())).thenReturn(col);
@@ -66,7 +66,7 @@ public class TestMongoLinksDatastore {
 
     @Test
     public void linkCanBeAdded() {
-        linksData.addLink(LinkObjects.testLink1);
+        linksData.addLink(BookmarkObjects.testLink1);
 
         verify(col, times(1)).insert(any(BasicDBObject.class));
     }

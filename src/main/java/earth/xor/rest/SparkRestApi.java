@@ -1,9 +1,9 @@
 package earth.xor.rest;
 
-import earth.xor.rest.routes.GetAllLinksRoute;
-import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.GetAllBookmarksRoute;
+import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
-import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.routes.PostBookmarkRoute;
 
 public class SparkRestApi implements RestApi {
     private SparkFacade sparkFacade;
@@ -16,15 +16,15 @@ public class SparkRestApi implements RestApi {
         sparkFacade.setPort(port);
     }
 
-    public void createPOSTlinksRoute(PostLinkRoute route) {
+    public void createPOSTlinksRoute(PostBookmarkRoute route) {
         sparkFacade.setPostRoute(route);
     }
 
-    public void createGETlinksRoute(GetAllLinksRoute route) {
+    public void createGETlinksRoute(GetAllBookmarksRoute route) {
         sparkFacade.setGetRoute(route);
     }
 
-    public void createGETlinkByIdRoute(GetLinkByIdRoute route) {
+    public void createGETlinkByIdRoute(GetBookmarkByIdRoute route) {
         sparkFacade.setGetRoute(route);
     }
 

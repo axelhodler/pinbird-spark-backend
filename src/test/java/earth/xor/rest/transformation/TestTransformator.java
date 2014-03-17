@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.xorrr.util.JsonAccessor;
-import org.xorrr.util.LinkObjects;
+import org.xorrr.util.BookmarkObjects;
 
 import earth.xor.model.Bookmark;
 
@@ -40,8 +40,8 @@ public class TestTransformator {
     @Test
     public void canTransformListOfLinksToJson() {
         links = new ArrayList<>();
-        links.add(LinkObjects.testLink1);
-        links.add(LinkObjects.testLink2);
+        links.add(BookmarkObjects.testLink1);
+        links.add(BookmarkObjects.testLink2);
 
         String json = trans.listOfLinksToJson(links);
         assertEquals(json, JsonAccessor.getExampleBookmarks());
@@ -49,7 +49,7 @@ public class TestTransformator {
 
     @Test
     public void canTransformLinkToJson() {
-        String json = trans.linkToJson(LinkObjects.testLink1);
+        String json = trans.linkToJson(BookmarkObjects.testLink1);
 
         assertEquals(json, linkInJson);
     }

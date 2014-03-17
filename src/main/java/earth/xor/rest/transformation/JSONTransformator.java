@@ -17,7 +17,8 @@ public class JSONTransformator {
 
     public String listOfLinksToJson(List<Bookmark> links) {
         JSONObject mainObject = new JSONObject();
-        mainObject.put(BookmarkFields.BOOKMARKS, iterateLinksAndAddToArray(links));
+        mainObject.put(BookmarkFields.BOOKMARKS,
+                iterateLinksAndAddToArray(links));
 
         return mainObject.toJSONString();
     }
@@ -31,7 +32,6 @@ public class JSONTransformator {
     private Bookmark createLink(JSONObject json) {
         return buildLink((JSONObject) json.get(BookmarkFields.BOOKMARK));
     }
-
 
     private String getUser(JSONObject json) {
         return json.get(BookmarkFields.USER).toString();

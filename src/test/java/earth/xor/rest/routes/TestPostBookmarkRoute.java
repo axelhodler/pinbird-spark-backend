@@ -16,7 +16,7 @@ import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.HttpResponseErrorMessages;
 import org.xorrr.util.JsonAccessor;
-import org.xorrr.util.LinkObjects;
+import org.xorrr.util.BookmarkObjects;
 
 import spark.AbstractRoute;
 import spark.Request;
@@ -27,7 +27,7 @@ import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ AbstractRoute.class })
-public class TestPostLinkRoute {
+public class TestPostBookmarkRoute {
     @Mock
     Request req;
     @Mock
@@ -39,14 +39,14 @@ public class TestPostLinkRoute {
     @Mock
     Bookmark testLink;
 
-    private PostLinkRoute route;
+    private PostBookmarkRoute route;
 
     @Before
     public void setUp() {
         PowerMockito.mockStatic(AbstractRoute.class);
-        route = new PostLinkRoute(facade, transformator);
+        route = new PostBookmarkRoute(facade, transformator);
 
-        testLink = LinkObjects.testLink1;
+        testLink = BookmarkObjects.testLink1;
     }
 
     @Test

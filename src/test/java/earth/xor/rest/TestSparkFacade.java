@@ -11,17 +11,17 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import spark.Spark;
-import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
-import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.routes.PostBookmarkRoute;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Spark.class })
 public class TestSparkFacade {
     @Mock
-    GetLinkByIdRoute getLinkByIdRoute;
+    GetBookmarkByIdRoute getLinkByIdRoute;
     @Mock
-    PostLinkRoute postLinkRoute;
+    PostBookmarkRoute postLinkRoute;
     @Mock
     OptionsRoute optionsRoute;
 

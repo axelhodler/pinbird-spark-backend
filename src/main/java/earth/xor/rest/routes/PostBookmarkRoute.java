@@ -10,12 +10,12 @@ import spark.Route;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.rest.transformation.JSONTransformator;
 
-public class PostLinkRoute extends Route {
+public class PostBookmarkRoute extends Route {
 
     private DatastoreFacade facade;
     private JSONTransformator transformator;
 
-    public PostLinkRoute(DatastoreFacade facade, JSONTransformator transformator) {
+    public PostBookmarkRoute(DatastoreFacade facade, JSONTransformator transformator) {
         super(Routes.POST_BOOKMARK);
         this.facade = facade;
         this.transformator = transformator;

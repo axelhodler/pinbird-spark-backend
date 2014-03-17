@@ -7,9 +7,9 @@ import earth.xor.model.Bookmark;
 
 public class DatastoreFacade {
 
-    private LinksDatastore ds;
+    private BookmarkDatastore ds;
 
-    public DatastoreFacade(LinksDatastore ds) {
+    public DatastoreFacade(BookmarkDatastore ds) {
         this.ds = ds;
     }
 

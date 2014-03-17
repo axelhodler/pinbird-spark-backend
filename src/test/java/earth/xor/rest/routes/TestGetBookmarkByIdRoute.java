@@ -23,7 +23,7 @@ import earth.xor.model.Bookmark;
 import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestGetLinkByIdRoute {
+public class TestGetBookmarkByIdRoute {
     @Mock
     Request req;
     @Mock
@@ -33,12 +33,12 @@ public class TestGetLinkByIdRoute {
     @Mock
     JSONTransformator transformator;
 
-    private GetLinkByIdRoute route;
+    private GetBookmarkByIdRoute route;
     private final String id = "12345";
 
     @Before
     public void setUp() {
-        route = new GetLinkByIdRoute(facade, transformator);
+        route = new GetBookmarkByIdRoute(facade, transformator);
     }
 
     @Test

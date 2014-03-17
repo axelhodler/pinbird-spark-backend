@@ -24,7 +24,7 @@ import org.junit.experimental.categories.Category;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.JsonAccessor;
-import org.xorrr.util.LinkObjects;
+import org.xorrr.util.BookmarkObjects;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,16 +38,16 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.db.LinksDatastore;
-import earth.xor.db.MongoLinksDatastore;
+import earth.xor.db.BookmarkDatastore;
+import earth.xor.db.MongoBookmarkDatastore;
 import earth.xor.helpers.IntegrationTest;
 import earth.xor.model.Bookmark;
 import earth.xor.model.BookmarkFields;
 import earth.xor.rest.SparkFacade;
 import earth.xor.rest.SparkRestApi;
-import earth.xor.rest.routes.GetAllLinksRoute;
-import earth.xor.rest.routes.GetLinkByIdRoute;
-import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.routes.GetAllBookmarksRoute;
+import earth.xor.rest.routes.GetBookmarkByIdRoute;
+import earth.xor.rest.routes.PostBookmarkRoute;
 import earth.xor.rest.routes.Routes;
 import earth.xor.rest.transformation.JSONTransformator;
 
@@ -55,7 +55,7 @@ import earth.xor.rest.transformation.JSONTransformator;
 public class TestRestApi {
     private static Gson gson;
     private static MongoClient mongoClient;
-    private static LinksDatastore linksData;
+    private static BookmarkDatastore linksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -64,7 +64,7 @@ public class TestRestApi {
 
         gson = new Gson();
         mongoClient = new MongoClient("localhost", EmbedMongoProperties.PORT);
-        linksData = new MongoLinksDatastore(mongoClient);
+        linksData = new MongoBookmarkDatastore(mongoClient);
 
         RestAssured.port = Integer
                 .parseInt(System.getenv(EnvironmentVars.PORT));
@@ -74,9 +74,9 @@ public class TestRestApi {
 
         SparkRestApi rest = new SparkRestApi(new SparkFacade());
         rest.setPort(Integer.valueOf(System.getenv(EnvironmentVars.PORT)));
-        rest.createGETlinkByIdRoute(new GetLinkByIdRoute(facade, transformator));
-        rest.createPOSTlinksRoute(new PostLinkRoute(facade, transformator));
-        rest.createGETlinksRoute(new GetAllLinksRoute(facade, transformator));
+        rest.createGETlinkByIdRoute(new GetBookmarkByIdRoute(facade, transformator));
+        rest.createPOSTlinksRoute(new PostBookmarkRoute(facade, transformator));
+        rest.createGETlinksRoute(new GetAllBookmarksRoute(facade, transformator));
     }
 
     @Test
@@ -110,9 +110,9 @@ public class TestRestApi {
 
     @Test
     public void canGetListOfAllSavedLinks() {
-        linksData.addLink(LinkObjects.testLink1);
-        linksData.addLink(LinkObjects.testLink2);
-        linksData.addLink(LinkObjects.testLink3);
+        linksData.addLink(BookmarkObjects.testLink1);
+        linksData.addLink(BookmarkObjects.testLink2);
+        linksData.addLink(BookmarkObjects.testLink3);
 
         expect().header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
                 .get(Routes.GET_ALL_BOOKMARKS);
@@ -197,7 +197,7 @@ public class TestRestApi {
     }
 
     private String addLinkAndGetItsId() {
-        linksData.addLink(LinkObjects.testLink1);
+        linksData.addLink(BookmarkObjects.testLink1);
 
         DB linksDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
         DBCollection col = linksDb.getCollection(BookmarkFields.BOOKMARKS);

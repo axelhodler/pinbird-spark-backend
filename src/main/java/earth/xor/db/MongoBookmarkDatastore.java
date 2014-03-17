@@ -15,11 +15,11 @@ import com.mongodb.MongoClient;
 import earth.xor.model.Bookmark;
 import earth.xor.model.BookmarkFields;
 
-public class MongoLinksDatastore implements LinksDatastore {
+public class MongoBookmarkDatastore implements BookmarkDatastore {
 
     private MongoClient mongo;
 
-    public MongoLinksDatastore(MongoClient mongo) {
+    public MongoBookmarkDatastore(MongoClient mongo) {
         this.mongo = mongo;
     }
 

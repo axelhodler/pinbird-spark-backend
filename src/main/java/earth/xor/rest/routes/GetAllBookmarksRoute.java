@@ -8,13 +8,13 @@ import spark.Route;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.rest.transformation.JSONTransformator;
 
-public class GetLinkByIdRoute extends Route{
+public class GetAllBookmarksRoute extends Route {
 
     private DatastoreFacade facade;
     private JSONTransformator transformator;
 
-    public GetLinkByIdRoute(DatastoreFacade facade, JSONTransformator transformator) {
-        super(Routes.GET_BOOKMARKS_BY_ID);
+    public GetAllBookmarksRoute(DatastoreFacade facade, JSONTransformator transformator) {
+        super(Routes.GET_ALL_BOOKMARKS);
         this.facade = facade;
         this.transformator = transformator;
     }
@@ -23,7 +23,7 @@ public class GetLinkByIdRoute extends Route{
     public Object handle(Request request, Response response) {
         response.header(HttpHeaderKeys.ACAOrigin, "*");
 
-        return transformator.linkToJson(facade.getLinkById(request.params(":id")));
+        return transformator.listOfLinksToJson(facade.getLinks());
     }
 
 }
