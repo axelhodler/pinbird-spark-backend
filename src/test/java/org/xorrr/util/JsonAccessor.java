@@ -1,33 +1,35 @@
 package org.xorrr.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import org.json.simple.JSONObject;
 
-import org.apache.commons.io.IOUtils;
-import org.xorrr.integrationtests.TestRestApi;
+import earth.xor.model.LinkFields;
 
+@SuppressWarnings("unchecked")
 public class JsonAccessor {
 
     public static String getPostRequestBody() {
-        return fileToString("linksPost.JSON");
+        JSONObject link = new JSONObject();
+        link.put(LinkFields.URL, "http://www.foo.org");
+        link.put(LinkFields.TITLE, "foo");
+        link.put(LinkFields.USER, "test");
+
+        JSONObject main = new JSONObject();
+        main.put("link", link);
+
+        return main.toJSONString();
     }
 
     public static String getExampleLink() {
-        return fileToString("link.json");
-    }
+        JSONObject link = new JSONObject();
+        link.put(LinkFields.URL, "http://www.foo.org");
+        link.put(LinkFields.TITLE, "foo");
+        link.put(LinkFields.USER, "user1");
+        link.put(LinkFields.TIMESTAMP, null);
+        link.put(LinkFields.ID, null);
 
-    private static String fileToString(String filename) {
-        String jsonString = null;
+        JSONObject main = new JSONObject();
+        main.put(LinkFields.LINK, link);
 
-        try {
-            File testFile = new File(TestRestApi.class.getResource(
-                    "/" + filename).toURI());
-            jsonString = IOUtils.toString(new FileInputStream(testFile));
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return jsonString;
+        return main.toJSONString();
     }
 }
