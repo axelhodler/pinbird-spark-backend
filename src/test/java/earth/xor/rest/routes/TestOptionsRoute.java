@@ -52,7 +52,11 @@ public class TestOptionsRoute {
 
         route.handle(req, resp);
 
-        verify(resp, times(1)).header("Access-Control-Allow-Headers",
-                "Origin, X-Requested-With, Content-Type, Accept");
+        verify(resp, times(1)).header(
+                "Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, " +
+                "Content-Type, " +
+                "Accept, " +
+                "Authorization");
     }
 }
