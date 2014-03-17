@@ -15,11 +15,11 @@ import earth.xor.model.Bookmark;
 public class TestTransformator {
 
     private JSONTransformator trans;
-    private String jsonExample = "{\"link\":{\"url\":\"http://www.foo.org\", "
+    private String jsonExample = "{\"bookmark\":{\"url\":\"http://www.foo.org\", "
             + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
     private List<Bookmark> links;
 
-    private String linkInJson = "{\"link\":{\"timestamp\":null,"
+    private String linkInJson = "{\"bookmark\":{\"timestamp\":null,"
             + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
             + ":\"http:\\/\\/www.foo.org\"}}";
 
