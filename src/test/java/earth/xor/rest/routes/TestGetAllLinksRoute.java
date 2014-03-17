@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xorrr.util.EnvironmentVars;
+import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.LinkObjects;
 
 import spark.Request;
@@ -69,7 +70,7 @@ public class TestGetAllLinksRoute {
 
         route.handle(req, resp);
 
-        verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
+        verify(resp, times(1)).header(HttpHeaderKeys.ACAOrigin, "*");
     }
 
     private JSONObject conformToEmberStandards(List<Link> links) {

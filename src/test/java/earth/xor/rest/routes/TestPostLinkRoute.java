@@ -13,6 +13,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.xorrr.util.EnvironmentVars;
+import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.HttpResponseErrorMessages;
 import org.xorrr.util.LinkObjects;
 
@@ -106,6 +107,6 @@ public class TestPostLinkRoute {
 
         route.handle(req, resp);
 
-        verify(resp, times(1)).header("Access-Control-Allow-Origin", "*");
+        verify(resp, times(1)).header(HttpHeaderKeys.ACAOrigin, "*");
     }
 }

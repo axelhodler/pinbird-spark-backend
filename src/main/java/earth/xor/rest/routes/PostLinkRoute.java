@@ -1,6 +1,7 @@
 package earth.xor.rest.routes;
 
 import org.xorrr.util.EnvironmentVars;
+import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.HttpResponseErrorMessages;
 
 import spark.Request;
@@ -28,7 +29,7 @@ public class PostLinkRoute extends Route{
 
         facade.addLink(transformator.jsonToLink(request.body()));
 
-        response.header("Access-Control-Allow-Origin", "*");
+        response.header(HttpHeaderKeys.ACAOrigin, "*");
 
         return request.body();
     }

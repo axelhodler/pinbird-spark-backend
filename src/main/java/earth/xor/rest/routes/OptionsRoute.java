@@ -1,5 +1,7 @@
 package earth.xor.rest.routes;
 
+import org.xorrr.util.HttpHeaderKeys;
+
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -12,9 +14,9 @@ public class OptionsRoute extends Route {
 
     @Override
     public Object handle(Request request, Response response) {
-        response.header("Access-Control-Allow-Methods", "GET, POST");
-        response.header("Access-Control-Allow-Origin", "*");
-        response.header("Access-Control-Allow-Headers",
+        response.header(HttpHeaderKeys.ACAMethods, "GET, POST");
+        response.header(HttpHeaderKeys.ACAOrigin, "*");
+        response.header(HttpHeaderKeys.ACAHeaders,
                 "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
         return request.body();
