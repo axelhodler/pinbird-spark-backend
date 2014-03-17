@@ -7,18 +7,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.junit.After;
@@ -27,6 +23,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
+import org.xorrr.util.JsonAccessor;
 import org.xorrr.util.LinkObjects;
 
 import com.google.gson.Gson;
@@ -151,7 +148,7 @@ public class TestRestApi {
 
     private void addAlinkViaRestApi() {
         String jsonString = given()
-                .body(tryGetLinkToPOSTinJson())
+                .body(JsonAccessor.getPostRequestBody())
                 .header(HttpHeaderKeys.Authorization,
                         System.getenv(EnvironmentVars.PW)).expect()
                 .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
@@ -171,20 +168,6 @@ public class TestRestApi {
 
         return col.findOne(new BasicDBObject(LinkFields.URL,
                 "http://www.foo.org"));
-    }
-
-    private String tryGetLinkToPOSTinJson() {
-        String jsonString = null;
-
-        try {
-            File testFile = new File(TestRestApi.class.getResource(
-                    "/linksPost.JSON").toURI());
-            jsonString = IOUtils.toString(new FileInputStream(testFile));
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        return jsonString;
     }
 
     private void checkIfPreviouslyAddedLinksAreShown(
