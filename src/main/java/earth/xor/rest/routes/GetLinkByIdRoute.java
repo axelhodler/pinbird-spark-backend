@@ -14,7 +14,7 @@ public class GetLinkByIdRoute extends Route{
     private JSONTransformator transformator;
 
     public GetLinkByIdRoute(DatastoreFacade facade, JSONTransformator transformator) {
-        super(Routes.GET_LINK_BY_ID);
+        super(Routes.GET_BOOKMARKS_BY_ID);
         this.facade = facade;
         this.transformator = transformator;
     }

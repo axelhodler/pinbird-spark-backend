@@ -81,20 +81,20 @@ public class TestRestApi {
 
     @Test
     public void authenticationNecessary() {
-        expect().statusCode(400).when().post(Routes.POST_LINK);
+        expect().statusCode(400).when().post(Routes.POST_BOOKMARK);
     }
 
     @Test
     public void dealsWithIncorrectAuth() {
         given().header(HttpHeaderKeys.Authorization, "wrong").expect()
-                .statusCode(401).when().post(Routes.POST_LINK);
+                .statusCode(401).when().post(Routes.POST_BOOKMARK);
     }
 
     @Test
     public void dealWithMissingPayload() {
         given().header(HttpHeaderKeys.Authorization,
                 System.getenv(EnvironmentVars.PW)).expect().statusCode(400)
-                .when().post(Routes.POST_LINK);
+                .when().post(Routes.POST_BOOKMARK);
     }
 
     @Test
@@ -115,8 +115,8 @@ public class TestRestApi {
         linksData.addLink(LinkObjects.testLink3);
 
         expect().header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
-                .get(Routes.GET_ALL_LINKS);
-        String jsonResponse = expect().when().get(Routes.GET_ALL_LINKS)
+                .get(Routes.GET_ALL_BOOKMARKS);
+        String jsonResponse = expect().when().get(Routes.GET_ALL_BOOKMARKS)
                 .asString();
 
         Type type = new TypeToken<Map<String, List<Bookmark>>>() {
@@ -132,7 +132,7 @@ public class TestRestApi {
 
         String jsonString = expect()
                 .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
-                .get("/links/" + id).asString();
+                .get(Routes.BASE + "/" + id).asString();
 
         assertTrue(isIdSurroundedWithDoubleQuotes(id, jsonString));
         Type type = new TypeToken<Map<String, Bookmark>>() {
@@ -152,7 +152,7 @@ public class TestRestApi {
                 .header(HttpHeaderKeys.Authorization,
                         System.getenv(EnvironmentVars.PW)).expect()
                 .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
-                .post("/links").asString();
+                .post(Routes.BASE).asString();
 
         JSONObject mainObj = (JSONObject) JSONValue.parse(jsonString);
         JSONObject link = (JSONObject) mainObj.get("link");
@@ -164,7 +164,7 @@ public class TestRestApi {
 
     private DBObject getSavedLinkFromDb() {
         DB urlsDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
-        DBCollection col = urlsDb.getCollection(BookmarkFields.LINKS_NAME);
+        DBCollection col = urlsDb.getCollection(BookmarkFields.BOOKMARKS);
 
         return col.findOne(new BasicDBObject(BookmarkFields.URL,
                 "http://www.foo.org"));
@@ -174,7 +174,7 @@ public class TestRestApi {
             Map<String, List<Bookmark>> returnedUrls) {
 
         ArrayList<Bookmark> allUrls = (ArrayList<Bookmark>) returnedUrls
-                .get(BookmarkFields.LINKS_NAME);
+                .get(BookmarkFields.BOOKMARKS);
 
         assertEquals("http://www.foo.org", allUrls.get(0).getUrl());
         assertEquals("foo", allUrls.get(0).getTitle());
@@ -199,7 +199,7 @@ public class TestRestApi {
         linksData.addLink(LinkObjects.testLink1);
 
         DB linksDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
-        DBCollection col = linksDb.getCollection(BookmarkFields.LINKS_NAME);
+        DBCollection col = linksDb.getCollection(BookmarkFields.BOOKMARKS);
 
         DBObject foundEntry = col.findOne(new BasicDBObject(BookmarkFields.URL,
                 "http://www.foo.org"));
@@ -219,6 +219,6 @@ public class TestRestApi {
     @After
     public void dropCollection() {
         mongoClient.getDB(BookmarkFields.DATABASE_NAME)
-                .getCollection(BookmarkFields.LINKS_NAME).drop();
+                .getCollection(BookmarkFields.BOOKMARKS).drop();
     }
 }

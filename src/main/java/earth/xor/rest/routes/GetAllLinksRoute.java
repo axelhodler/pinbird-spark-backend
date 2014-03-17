@@ -14,7 +14,7 @@ public class GetAllLinksRoute extends Route {
     private JSONTransformator transformator;
 
     public GetAllLinksRoute(DatastoreFacade facade, JSONTransformator transformator) {
-        super(Routes.GET_ALL_LINKS);
+        super(Routes.GET_ALL_BOOKMARKS);
         this.facade = facade;
         this.transformator = transformator;
     }

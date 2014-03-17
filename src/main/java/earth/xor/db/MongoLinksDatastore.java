@@ -51,7 +51,7 @@ public class MongoLinksDatastore implements LinksDatastore {
 
     private DBCollection getCollection() {
         return mongo.getDB(BookmarkFields.DATABASE_NAME).getCollection(
-                BookmarkFields.LINKS_NAME);
+                BookmarkFields.BOOKMARKS);
     }
 
     private Bookmark buildLink(DBObject dbo) {

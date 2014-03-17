@@ -9,7 +9,7 @@ import spark.Route;
 public class OptionsRoute extends Route {
 
     public OptionsRoute() {
-        super(Routes.OPTIONS_LINKS);
+        super(Routes.OPTIONS_BOOKMARKS);
     }
 
     @Override

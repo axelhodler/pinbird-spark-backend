@@ -17,7 +17,7 @@ public class JSONTransformator {
 
     public String listOfLinksToJson(List<Bookmark> links) {
         JSONObject mainObject = new JSONObject();
-        mainObject.put(BookmarkFields.LINKS_NAME, iterateLinksAndAddToArray(links));
+        mainObject.put(BookmarkFields.BOOKMARKS, iterateLinksAndAddToArray(links));
 
         return mainObject.toJSONString();
     }

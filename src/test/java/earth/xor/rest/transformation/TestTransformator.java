@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.xorrr.util.JsonAccessor;
 import org.xorrr.util.LinkObjects;
 
 import earth.xor.model.Bookmark;
@@ -17,12 +18,6 @@ public class TestTransformator {
     private String jsonExample = "{\"link\":{\"url\":\"http://www.foo.org\", "
             + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
     private List<Bookmark> links;
-
-    private String linksInJson = "{\"links\":[{\"timestamp\":null,"
-            + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
-            + ":\"http:\\/\\/www.foo.org\"},{\"timestamp\":null,\"title\""
-            + ":\"bar\",\"_id\":null,\"user\":\"user2\",\"url\""
-            + ":\"http:\\/\\/www.bar.org\"}]}";
 
     private String linkInJson = "{\"link\":{\"timestamp\":null,"
             + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
@@ -49,7 +44,7 @@ public class TestTransformator {
         links.add(LinkObjects.testLink2);
 
         String json = trans.listOfLinksToJson(links);
-        assertEquals(json, linksInJson);
+        assertEquals(json, JsonAccessor.getExampleLinks());
     }
 
     @Test
