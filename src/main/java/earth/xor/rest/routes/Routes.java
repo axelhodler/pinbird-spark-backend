@@ -1,8 +1,10 @@
 package earth.xor.rest.routes;
 
 public abstract class Routes {
-    public final static String POST_LINK = "/links";
-    public final static String GET_ALL_LINKS = "/links";
-    public final static String GET_LINK_BY_ID = "/links/:id";
-    public static final String OPTIONS_LINKS = "/links";
+    public static final String BASE = "/bookmarks";
+
+    public static final String POST_BOOKMARK = BASE;
+    public static final String GET_ALL_BOOKMARKS = BASE;
+    public static final String GET_BOOKMARKS_BY_ID = BASE + ":id";
+    public static final String OPTIONS_BOOKMARKS = BASE;
 }
