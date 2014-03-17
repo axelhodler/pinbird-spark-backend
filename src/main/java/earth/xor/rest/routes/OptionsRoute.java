@@ -17,7 +17,8 @@ public class OptionsRoute extends Route {
         response.header(HttpHeaderKeys.ACAMethods, "GET, POST");
         response.header(HttpHeaderKeys.ACAOrigin, "*");
         response.header(HttpHeaderKeys.ACAHeaders,
-                "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+                "Origin, X-Requested-With, Content-Type, Accept, "
+                        + HttpHeaderKeys.Authorization);
 
         return request.body();
     }
