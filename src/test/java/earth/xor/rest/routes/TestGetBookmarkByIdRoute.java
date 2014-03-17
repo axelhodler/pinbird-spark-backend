@@ -44,13 +44,13 @@ public class TestGetBookmarkByIdRoute {
     @Test
     public void canGetLinkById() {
         when(req.params(":id")).thenReturn(id);
-        when(transformator.linkToJson(any(Bookmark.class))).thenReturn(
+        when(transformator.bookmarkToJson(any(Bookmark.class))).thenReturn(
                 JsonAccessor.getExampleBookmark());
 
         Object json = route.handle(req, resp);
 
-        verify(facade, times(1)).getLinkById(anyString());
-        verify(transformator, times(1)).linkToJson(any(Bookmark.class));
+        verify(facade, times(1)).getBookmarkById(anyString());
+        verify(transformator, times(1)).bookmarkToJson(any(Bookmark.class));
         assertEquals(json, JsonAccessor.getExampleBookmark());
     }
 

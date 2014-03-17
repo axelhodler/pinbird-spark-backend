@@ -8,8 +8,8 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 import earth.xor.db.DatastoreFacade;
-import earth.xor.db.BookmarkDatastore;
-import earth.xor.db.MongoBookmarkDatastore;
+import earth.xor.db.BookmarksDatastore;
+import earth.xor.db.MongoBookmarksDatastore;
 import earth.xor.rest.RestApi;
 import earth.xor.rest.SparkFacade;
 import earth.xor.rest.SparkRestApi;
@@ -26,15 +26,15 @@ public class Main {
                 System.getenv(EnvironmentVars.URI));
         MongoClient client = new MongoClient(mongoUri);
 
-        BookmarkDatastore ds = new MongoBookmarkDatastore(client);
+        BookmarksDatastore ds = new MongoBookmarksDatastore(client);
         DatastoreFacade facade = new DatastoreFacade(ds);
         JSONTransformator transformator = new JSONTransformator();
 
         RestApi rest = new SparkRestApi(new SparkFacade());
         rest.setPort(Integer.valueOf(System.getenv(EnvironmentVars.PORT)));
-        rest.createPOSTlinksRoute(new PostBookmarkRoute(facade, transformator));
-        rest.createGETlinkByIdRoute(new GetBookmarkByIdRoute(facade, transformator));
-        rest.createGETlinksRoute(new GetAllBookmarksRoute(facade, transformator));
-        rest.createOPTIONSlinksRoute(new OptionsRoute());
+        rest.createPOSTbookmarksRoute(new PostBookmarkRoute(facade, transformator));
+        rest.createGETbookmarkByIdRoute(new GetBookmarkByIdRoute(facade, transformator));
+        rest.createGETbookmarksRoute(new GetAllBookmarksRoute(facade, transformator));
+        rest.createOPTIONSbookmarksRoute(new OptionsRoute());
     }
 }

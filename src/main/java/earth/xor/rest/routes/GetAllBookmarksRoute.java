@@ -23,7 +23,7 @@ public class GetAllBookmarksRoute extends Route {
     public Object handle(Request request, Response response) {
         response.header(HttpHeaderKeys.ACAOrigin, "*");
 
-        return transformator.listOfLinksToJson(facade.getLinks());
+        return transformator.listOfBookmarksToJson(facade.getBookmarks());
     }
 
 }

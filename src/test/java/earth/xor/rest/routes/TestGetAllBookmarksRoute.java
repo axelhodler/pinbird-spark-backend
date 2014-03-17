@@ -47,17 +47,17 @@ public class TestGetAllBookmarksRoute {
     }
 
     @Test
-    public void canGetLink() {
-        List<Bookmark> links = createTestLinks();
-        JSONObject mainJsonObject = conformToEmberStandards(links);
-        when(transformator.listOfLinksToJson(anyListOf(Bookmark.class)))
+    public void canGetBookmarks() {
+        List<Bookmark> bookmarks = createTestLinks();
+        JSONObject mainJsonObject = conformToEmberStandards(bookmarks);
+        when(transformator.listOfBookmarksToJson(anyListOf(Bookmark.class)))
                 .thenReturn(mainJsonObject.toJSONString());
-        when(facade.getLinks()).thenReturn(links);
+        when(facade.getBookmarks()).thenReturn(bookmarks);
 
         Object jsonString = route.handle(req, resp);
 
-        verify(facade, times(1)).getLinks();
-        verify(transformator, times(1)).listOfLinksToJson(
+        verify(facade, times(1)).getBookmarks();
+        verify(transformator, times(1)).listOfBookmarksToJson(
                 anyListOf(Bookmark.class));
         assertEquals(jsonString, mainJsonObject.toJSONString());
     }
@@ -73,31 +73,31 @@ public class TestGetAllBookmarksRoute {
         verify(resp, times(1)).header(HttpHeaderKeys.ACAOrigin, "*");
     }
 
-    private JSONObject conformToEmberStandards(List<Bookmark> links) {
+    private JSONObject conformToEmberStandards(List<Bookmark> bookmarks) {
         JSONObject mainJsonObject = new JSONObject();
         mainJsonObject.put(BookmarkFields.BOOKMARKS,
-                createTestLinksArray(links));
+                createTestBookmarksArray(bookmarks));
         return mainJsonObject;
     }
 
-    private JSONArray createTestLinksArray(List<Bookmark> links) {
-        JSONArray linksArray = new JSONArray();
-        for (Bookmark l : links) {
+    private JSONArray createTestBookmarksArray(List<Bookmark> bookmarks) {
+        JSONArray bookmarksArray = new JSONArray();
+        for (Bookmark b : bookmarks) {
             JSONObject jo = new JSONObject();
-            jo.put(BookmarkFields.ID, l.getObjectId());
-            jo.put(BookmarkFields.URL, l.getUrl());
-            jo.put(BookmarkFields.TITLE, l.getTitle());
-            jo.put(BookmarkFields.USER, l.getUser());
-            jo.put(BookmarkFields.TIMESTAMP, l.getTimeStamp());
-            linksArray.add(jo);
+            jo.put(BookmarkFields.ID, b.getObjectId());
+            jo.put(BookmarkFields.URL, b.getUrl());
+            jo.put(BookmarkFields.TITLE, b.getTitle());
+            jo.put(BookmarkFields.USER, b.getUser());
+            jo.put(BookmarkFields.TIMESTAMP, b.getTimeStamp());
+            bookmarksArray.add(jo);
         }
-        return linksArray;
+        return bookmarksArray;
     }
 
     private List<Bookmark> createTestLinks() {
-        List<Bookmark> links = new ArrayList<>();
-        links.add(BookmarkObjects.testLink1);
-        links.add(BookmarkObjects.testLink2);
-        return links;
+        List<Bookmark> bookmarks = new ArrayList<>();
+        bookmarks.add(BookmarkObjects.testBookmark1);
+        bookmarks.add(BookmarkObjects.testBookmark2);
+        return bookmarks;
     }
 }

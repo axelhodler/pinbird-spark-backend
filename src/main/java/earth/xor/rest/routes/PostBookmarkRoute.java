@@ -26,7 +26,7 @@ public class PostBookmarkRoute extends Route {
         checkPassword(request);
         checkIfPayloadMissing(request);
 
-        facade.addLink(transformator.jsonToLink(request.body()));
+        facade.addBookmark(transformator.jsonToLink(request.body()));
 
         response.header(HttpHeaderKeys.ACAOrigin, "*");
 

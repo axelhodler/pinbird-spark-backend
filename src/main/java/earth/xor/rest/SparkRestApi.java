@@ -16,20 +16,20 @@ public class SparkRestApi implements RestApi {
         sparkFacade.setPort(port);
     }
 
-    public void createPOSTlinksRoute(PostBookmarkRoute route) {
+    public void createPOSTbookmarksRoute(PostBookmarkRoute route) {
         sparkFacade.setPostRoute(route);
     }
 
-    public void createGETlinksRoute(GetAllBookmarksRoute route) {
+    public void createGETbookmarksRoute(GetAllBookmarksRoute route) {
         sparkFacade.setGetRoute(route);
     }
 
-    public void createGETlinkByIdRoute(GetBookmarkByIdRoute route) {
+    public void createGETbookmarkByIdRoute(GetBookmarkByIdRoute route) {
         sparkFacade.setGetRoute(route);
     }
 
     @Override
-    public void createOPTIONSlinksRoute(OptionsRoute route) {
+    public void createOPTIONSbookmarksRoute(OptionsRoute route) {
         sparkFacade.setOptionsRoute(route);
     }
 }

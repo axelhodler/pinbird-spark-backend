@@ -19,9 +19,9 @@ import earth.xor.rest.routes.PostBookmarkRoute;
 @PrepareForTest({ Spark.class })
 public class TestSparkFacade {
     @Mock
-    GetBookmarkByIdRoute getLinkByIdRoute;
+    GetBookmarkByIdRoute getBookmarkByIdRoute;
     @Mock
-    PostBookmarkRoute postLinkRoute;
+    PostBookmarkRoute postBookmarkRoute;
     @Mock
     OptionsRoute optionsRoute;
 
@@ -43,16 +43,16 @@ public class TestSparkFacade {
 
     @Test
     public void canSetGetRoute() {
-        facade.setGetRoute(getLinkByIdRoute);
+        facade.setGetRoute(getBookmarkByIdRoute);
         PowerMockito.verifyStatic();
-        Spark.get(getLinkByIdRoute);
+        Spark.get(getBookmarkByIdRoute);
     }
 
     @Test
     public void canSetPostRoute() {
-        facade.setGetRoute(postLinkRoute);
+        facade.setGetRoute(postBookmarkRoute);
         PowerMockito.verifyStatic();
-        Spark.get(postLinkRoute);
+        Spark.get(postBookmarkRoute);
     }
 
     @Test

@@ -8,11 +8,11 @@ import earth.xor.rest.routes.PostBookmarkRoute;
 public interface RestApi {
     void setPort(int port);
 
-    void createPOSTlinksRoute(PostBookmarkRoute route);
+    void createPOSTbookmarksRoute(PostBookmarkRoute route);
 
-    void createGETlinksRoute(GetAllBookmarksRoute route);
+    void createGETbookmarksRoute(GetAllBookmarksRoute route);
 
-    void createGETlinkByIdRoute(GetBookmarkByIdRoute route);
+    void createGETbookmarkByIdRoute(GetBookmarkByIdRoute route);
 
-    void createOPTIONSlinksRoute(OptionsRoute route);
+    void createOPTIONSbookmarksRoute(OptionsRoute route);
 }

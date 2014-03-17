@@ -45,7 +45,7 @@ public class TestMongoBookmarksDatastore {
     @Mock
     private DBObject dbo;
 
-    private MongoBookmarkDatastore linksData;
+    private MongoBookmarksDatastore bookmarksDs;
 
     private void mockDBObjectBehaviour() {
         when(dbo.get(BookmarkFields.ID)).thenReturn("i");
@@ -58,35 +58,35 @@ public class TestMongoBookmarksDatastore {
     @Before
     public void setUpTests() throws UnknownHostException {
         this.mongoClient = mock(MongoClient.class);
-        this.linksData = new MongoBookmarkDatastore(mongoClient);
+        this.bookmarksDs = new MongoBookmarksDatastore(mongoClient);
 
         when(mongoClient.getDB(anyString())).thenReturn(db);
         when(db.getCollection(anyString())).thenReturn(col);
     }
 
     @Test
-    public void linkCanBeAdded() {
-        linksData.addLink(BookmarkObjects.testLink1);
+    public void bookmarkCanBeAdded() {
+        bookmarksDs.addBookmark(BookmarkObjects.testBookmark1);
 
         verify(col, times(1)).insert(any(BasicDBObject.class));
     }
 
     @Test
-    public void canGetAllLinks() {
+    public void canGetAllBookmarks() {
         when(col.find()).thenReturn(curs);
         when(curs.iterator()).thenReturn(dbos);
         when(dbos.hasNext()).thenReturn(true, false);
         when(dbos.next()).thenReturn(dbo);
         mockDBObjectBehaviour();
         
-        List<Bookmark> links = linksData.getLinks();
+        List<Bookmark> bookmarks = bookmarksDs.getBookmarks();
 
         verify(col, times(1)).find();
-        assertEquals("i", links.get(0).getObjectId());
-        assertEquals("u", links.get(0).getUrl());
-        assertEquals("t", links.get(0).getTitle());
-        assertEquals("us", links.get(0).getUser());
-        assertEquals("ts", links.get(0).getTimeStamp());
+        assertEquals("i", bookmarks.get(0).getObjectId());
+        assertEquals("u", bookmarks.get(0).getUrl());
+        assertEquals("t", bookmarks.get(0).getTitle());
+        assertEquals("us", bookmarks.get(0).getUser());
+        assertEquals("ts", bookmarks.get(0).getTimeStamp());
     }
 
     @Test
@@ -94,12 +94,12 @@ public class TestMongoBookmarksDatastore {
         when(col.findOne(any(DBObject.class))).thenReturn(dbo);
         mockDBObjectBehaviour();
 
-        Bookmark l = linksData.getLinkById(new ObjectId().toString());
+        Bookmark b = bookmarksDs.getBookmarkById(new ObjectId().toString());
 
         verify(col, times(1)).findOne(any(BasicDBObject.class));
-        assertEquals("u", l.getUrl());
-        assertEquals("t", l.getTitle());
-        assertEquals("us", l.getUser());
-        assertEquals("ts", l.getTimeStamp());
+        assertEquals("u", b.getUrl());
+        assertEquals("t", b.getTitle());
+        assertEquals("us", b.getUser());
+        assertEquals("ts", b.getTimeStamp());
     }
 }

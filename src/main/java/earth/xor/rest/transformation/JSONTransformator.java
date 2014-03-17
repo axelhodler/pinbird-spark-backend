@@ -12,24 +12,24 @@ import earth.xor.model.BookmarkFields;
 @SuppressWarnings("unchecked")
 public class JSONTransformator {
     public Bookmark jsonToLink(String json) {
-        return createLink((JSONObject) JSONValue.parse(json));
+        return createBookmark((JSONObject) JSONValue.parse(json));
     }
 
-    public String listOfLinksToJson(List<Bookmark> links) {
+    public String listOfBookmarksToJson(List<Bookmark> bookmarks) {
         JSONObject mainObject = new JSONObject();
         mainObject.put(BookmarkFields.BOOKMARKS,
-                iterateLinksAndAddToArray(links));
+                iterateLinksAndAddToArray(bookmarks));
 
         return mainObject.toJSONString();
     }
 
-    public String linkToJson(Bookmark testlink1) {
+    public String bookmarkToJson(Bookmark testBookmark1) {
         JSONObject main = new JSONObject();
-        main.put(BookmarkFields.BOOKMARK, transformLinkToJson(testlink1));
+        main.put(BookmarkFields.BOOKMARK, transformLinkToJson(testBookmark1));
         return main.toJSONString();
     }
 
-    private Bookmark createLink(JSONObject json) {
+    private Bookmark createBookmark(JSONObject json) {
         return buildLink((JSONObject) json.get(BookmarkFields.BOOKMARK));
     }
 
@@ -45,23 +45,23 @@ public class JSONTransformator {
         return json.get(BookmarkFields.URL).toString();
     }
 
-    private JSONObject transformLinkToJson(Bookmark link) {
+    private JSONObject transformLinkToJson(Bookmark bookmark) {
         JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put(BookmarkFields.ID, link.getObjectId());
-        jsonObject.put(BookmarkFields.URL, link.getUrl());
-        jsonObject.put(BookmarkFields.TITLE, link.getTitle());
-        jsonObject.put(BookmarkFields.USER, link.getUser());
-        jsonObject.put(BookmarkFields.TIMESTAMP, link.getTimeStamp());
+        jsonObject.put(BookmarkFields.ID, bookmark.getObjectId());
+        jsonObject.put(BookmarkFields.URL, bookmark.getUrl());
+        jsonObject.put(BookmarkFields.TITLE, bookmark.getTitle());
+        jsonObject.put(BookmarkFields.USER, bookmark.getUser());
+        jsonObject.put(BookmarkFields.TIMESTAMP, bookmark.getTimeStamp());
 
         return jsonObject;
     }
 
-    private JSONArray iterateLinksAndAddToArray(List<Bookmark> links) {
-        JSONArray linksArray = new JSONArray();
-        for (Bookmark l : links)
-            linksArray.add(transformLinkToJson(l));
-        return linksArray;
+    private JSONArray iterateLinksAndAddToArray(List<Bookmark> bookmarks) {
+        JSONArray bookmarksArray = new JSONArray();
+        for (Bookmark b : bookmarks)
+            bookmarksArray.add(transformLinkToJson(b));
+        return bookmarksArray;
     }
 
     private Bookmark buildLink(JSONObject json) {

@@ -23,7 +23,7 @@ public class GetBookmarkByIdRoute extends Route{
     public Object handle(Request request, Response response) {
         response.header(HttpHeaderKeys.ACAOrigin, "*");
 
-        return transformator.linkToJson(facade.getLinkById(request.params(":id")));
+        return transformator.bookmarkToJson(facade.getBookmarkById(request.params(":id")));
     }
 
 }

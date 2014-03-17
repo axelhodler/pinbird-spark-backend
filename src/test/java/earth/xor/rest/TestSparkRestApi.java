@@ -21,11 +21,11 @@ public class TestSparkRestApi {
     @Mock
     SparkFacade sparkFacade;
     @Mock
-    PostBookmarkRoute postLinkRoute;
+    PostBookmarkRoute postBookmarkRoute;
     @Mock
-    GetBookmarkByIdRoute getLinkByIdRoute;
+    GetBookmarkByIdRoute getBookmarkByIdRoute;
     @Mock
-    GetAllBookmarksRoute getAllLinksRoute;
+    GetAllBookmarksRoute getAllBookmarksRoute;
     @Mock
     OptionsRoute optionsRoute;
 
@@ -44,28 +44,28 @@ public class TestSparkRestApi {
 
     @Test
     public void postLinkRouteIsSet() {
-        restApi.createPOSTlinksRoute(postLinkRoute);
+        restApi.createPOSTbookmarksRoute(postBookmarkRoute);
 
-        verify(sparkFacade, times(1)).setPostRoute(postLinkRoute);
+        verify(sparkFacade, times(1)).setPostRoute(postBookmarkRoute);
     }
 
     @Test
     public void getLinkByIdRouteIsSet() {
-        restApi.createGETlinkByIdRoute(getLinkByIdRoute);
+        restApi.createGETbookmarkByIdRoute(getBookmarkByIdRoute);
 
-        verify(sparkFacade, times(1)).setGetRoute(getLinkByIdRoute);
+        verify(sparkFacade, times(1)).setGetRoute(getBookmarkByIdRoute);
     }
 
     @Test
     public void getLinksRouteIsSet() {
-        restApi.createGETlinksRoute(getAllLinksRoute);
+        restApi.createGETbookmarksRoute(getAllBookmarksRoute);
 
-        verify(sparkFacade, times(1)).setGetRoute(getAllLinksRoute);
+        verify(sparkFacade, times(1)).setGetRoute(getAllBookmarksRoute);
     }
 
     @Test
     public void optionsRouteIsSet() {
-        restApi.createOPTIONSlinksRoute(optionsRoute);
+        restApi.createOPTIONSbookmarksRoute(optionsRoute);
 
         verify(sparkFacade, times(1)).setOptionsRoute(optionsRoute);
     }

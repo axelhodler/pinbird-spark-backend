@@ -38,8 +38,8 @@ import com.mongodb.MongoClient;
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.db.BookmarkDatastore;
-import earth.xor.db.MongoBookmarkDatastore;
+import earth.xor.db.BookmarksDatastore;
+import earth.xor.db.MongoBookmarksDatastore;
 import earth.xor.helpers.IntegrationTest;
 import earth.xor.model.Bookmark;
 import earth.xor.model.BookmarkFields;
@@ -55,7 +55,7 @@ import earth.xor.rest.transformation.JSONTransformator;
 public class TestRestApi {
     private static Gson gson;
     private static MongoClient mongoClient;
-    private static BookmarkDatastore linksData;
+    private static BookmarksDatastore bookmarksData;
 
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
@@ -64,19 +64,19 @@ public class TestRestApi {
 
         gson = new Gson();
         mongoClient = new MongoClient("localhost", EmbedMongoProperties.PORT);
-        linksData = new MongoBookmarkDatastore(mongoClient);
+        bookmarksData = new MongoBookmarksDatastore(mongoClient);
 
         RestAssured.port = Integer
                 .parseInt(System.getenv(EnvironmentVars.PORT));
 
-        DatastoreFacade facade = new DatastoreFacade(linksData);
+        DatastoreFacade facade = new DatastoreFacade(bookmarksData);
         JSONTransformator transformator = new JSONTransformator();
 
         SparkRestApi rest = new SparkRestApi(new SparkFacade());
         rest.setPort(Integer.valueOf(System.getenv(EnvironmentVars.PORT)));
-        rest.createGETlinkByIdRoute(new GetBookmarkByIdRoute(facade, transformator));
-        rest.createPOSTlinksRoute(new PostBookmarkRoute(facade, transformator));
-        rest.createGETlinksRoute(new GetAllBookmarksRoute(facade, transformator));
+        rest.createGETbookmarkByIdRoute(new GetBookmarkByIdRoute(facade, transformator));
+        rest.createPOSTbookmarksRoute(new PostBookmarkRoute(facade, transformator));
+        rest.createGETbookmarksRoute(new GetAllBookmarksRoute(facade, transformator));
     }
 
     @Test
@@ -98,8 +98,8 @@ public class TestRestApi {
     }
 
     @Test
-    public void canPostLink() {
-        addAlinkViaRestApi();
+    public void canPostBookmark() {
+        addBookmarkViaRestApi();
 
         DBObject foundEntry = getSavedLinkFromDb();
 
@@ -109,10 +109,10 @@ public class TestRestApi {
     }
 
     @Test
-    public void canGetListOfAllSavedLinks() {
-        linksData.addLink(BookmarkObjects.testLink1);
-        linksData.addLink(BookmarkObjects.testLink2);
-        linksData.addLink(BookmarkObjects.testLink3);
+    public void canGetListOfAllSavedBookmarks() {
+        bookmarksData.addBookmark(BookmarkObjects.testBookmark1);
+        bookmarksData.addBookmark(BookmarkObjects.testBookmark2);
+        bookmarksData.addBookmark(BookmarkObjects.testLink3);
 
         expect().header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
                 .get(Routes.GET_ALL_BOOKMARKS);
@@ -123,12 +123,12 @@ public class TestRestApi {
         }.getType();
         Map<String, List<Bookmark>> returnedUrls = new HashMap<String, List<Bookmark>>();
         returnedUrls = gson.fromJson(jsonResponse, type);
-        checkIfPreviouslyAddedLinksAreShown(returnedUrls);
+        checkIfPreviouslyAddedBookmarksAreShown(returnedUrls);
     }
 
     @Test
-    public void canGetSavedLinkById() {
-        String id = addLinkAndGetItsId();
+    public void canGetSavedBookmarkById() {
+        String id = addBookmarkAndGetItsId();
 
         String jsonString = expect()
                 .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
@@ -139,14 +139,14 @@ public class TestRestApi {
         }.getType();
         Map<String, Bookmark> returnedUrlRepresentation = new HashMap<String, Bookmark>();
         returnedUrlRepresentation = gson.fromJson(jsonString, type);
-        checkIfItsTheCorrectlink(returnedUrlRepresentation);
+        checkIfItsTheCorrectBookmark(returnedUrlRepresentation);
     }
 
     private boolean isIdSurroundedWithDoubleQuotes(String id, String jsonString) {
         return jsonString.contains("\"" + id + "\"");
     }
 
-    private void addAlinkViaRestApi() {
+    private void addBookmarkViaRestApi() {
         String jsonString = given()
                 .body(JsonAccessor.getPostRequestBody())
                 .header(HttpHeaderKeys.Authorization,
@@ -155,12 +155,12 @@ public class TestRestApi {
                 .post(Routes.BASE).asString();
 
         JSONObject mainObj = (JSONObject) JSONValue.parse(jsonString);
-        JSONObject link = (JSONObject) mainObj.get(BookmarkFields.BOOKMARK);
+        JSONObject bookmark = (JSONObject) mainObj.get(BookmarkFields.BOOKMARK);
 
-        assertEquals("http://www.foo.org", link.get(BookmarkFields.URL)
+        assertEquals("http://www.foo.org", bookmark.get(BookmarkFields.URL)
                 .toString());
-        assertEquals("foo", link.get(BookmarkFields.TITLE).toString());
-        assertEquals("test", link.get(BookmarkFields.USER).toString());
+        assertEquals("foo", bookmark.get(BookmarkFields.TITLE).toString());
+        assertEquals("test", bookmark.get(BookmarkFields.USER).toString());
     }
 
     private DBObject getSavedLinkFromDb() {
@@ -171,7 +171,7 @@ public class TestRestApi {
                 "http://www.foo.org"));
     }
 
-    private void checkIfPreviouslyAddedLinksAreShown(
+    private void checkIfPreviouslyAddedBookmarksAreShown(
             Map<String, List<Bookmark>> returnedUrls) {
 
         ArrayList<Bookmark> allUrls = (ArrayList<Bookmark>) returnedUrls
@@ -196,11 +196,11 @@ public class TestRestApi {
         assertNotNull(allUrls.get(2).getTimeStamp());
     }
 
-    private String addLinkAndGetItsId() {
-        linksData.addLink(BookmarkObjects.testLink1);
+    private String addBookmarkAndGetItsId() {
+        bookmarksData.addBookmark(BookmarkObjects.testBookmark1);
 
-        DB linksDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
-        DBCollection col = linksDb.getCollection(BookmarkFields.BOOKMARKS);
+        DB bookmarksDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
+        DBCollection col = bookmarksDb.getCollection(BookmarkFields.BOOKMARKS);
 
         DBObject foundEntry = col.findOne(new BasicDBObject(BookmarkFields.URL,
                 "http://www.foo.org"));
@@ -208,14 +208,14 @@ public class TestRestApi {
         return foundEntry.get(BookmarkFields.ID).toString();
     }
 
-    private void checkIfItsTheCorrectlink(
+    private void checkIfItsTheCorrectBookmark(
             Map<String, Bookmark> returnedUrlRepresentation) {
-        Bookmark foundLink = returnedUrlRepresentation
+        Bookmark foundBookmark = returnedUrlRepresentation
                 .get(BookmarkFields.BOOKMARK);
 
-        assertEquals("http://www.foo.org", foundLink.getUrl());
-        assertEquals("foo", foundLink.getTitle());
-        assertEquals("user1", foundLink.getUser());
+        assertEquals("http://www.foo.org", foundBookmark.getUrl());
+        assertEquals("foo", foundBookmark.getTitle());
+        assertEquals("user1", foundBookmark.getUser());
     }
 
     @After

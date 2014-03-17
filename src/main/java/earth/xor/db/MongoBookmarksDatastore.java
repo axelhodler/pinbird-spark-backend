@@ -15,38 +15,38 @@ import com.mongodb.MongoClient;
 import earth.xor.model.Bookmark;
 import earth.xor.model.BookmarkFields;
 
-public class MongoBookmarkDatastore implements BookmarkDatastore {
+public class MongoBookmarksDatastore implements BookmarksDatastore {
 
     private MongoClient mongo;
 
-    public MongoBookmarkDatastore(MongoClient mongo) {
+    public MongoBookmarksDatastore(MongoClient mongo) {
         this.mongo = mongo;
     }
 
-    public void addLink(Bookmark link) {
+    public void addBookmark(Bookmark bm) {
         DBCollection col = getCollection();
 
-        col.insert(new BasicDBObject(BookmarkFields.URL, link.getUrl())
-                .append(BookmarkFields.TITLE, link.getTitle())
-                .append(BookmarkFields.USER, link.getUser())
+        col.insert(new BasicDBObject(BookmarkFields.URL, bm.getUrl())
+                .append(BookmarkFields.TITLE, bm.getTitle())
+                .append(BookmarkFields.USER, bm.getUser())
                 .append(BookmarkFields.TIMESTAMP, new Date()));
     }
 
-    public List<Bookmark> getLinks() {
-        List<Bookmark> links = new ArrayList<>();
+    public List<Bookmark> getBookmarks() {
+        List<Bookmark> bookmarks = new ArrayList<>();
 
         DBCursor curs = getCollection().find();
         for (DBObject dbo : curs)
-            links.add(buildLink(dbo));
+            bookmarks.add(buildLink(dbo));
 
-        return links;
+        return bookmarks;
     }
 
-    public Bookmark getLinkById(String id) {
-        DBObject foundLink = getCollection().findOne(
+    public Bookmark getBookmarkById(String id) {
+        DBObject foundBookmark = getCollection().findOne(
                 new BasicDBObject(BookmarkFields.ID, new ObjectId(id)));
 
-        return buildLink(foundLink);
+        return buildLink(foundBookmark);
     }
 
     private DBCollection getCollection() {

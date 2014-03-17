@@ -17,9 +17,9 @@ public class TestTransformator {
     private JSONTransformator trans;
     private String jsonExample = "{\"bookmark\":{\"url\":\"http://www.foo.org\", "
             + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
-    private List<Bookmark> links;
+    private List<Bookmark> bookmarks;
 
-    private String linkInJson = "{\"bookmark\":{\"timestamp\":null,"
+    private String bookmarkInJson = "{\"bookmark\":{\"timestamp\":null,"
             + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
             + ":\"http:\\/\\/www.foo.org\"}}";
 
@@ -29,28 +29,28 @@ public class TestTransformator {
     }
 
     @Test
-    public void canTransformStringToLink() {
-        Bookmark l = trans.jsonToLink(jsonExample);
+    public void canTransformStringToBookmark() {
+        Bookmark b = trans.jsonToLink(jsonExample);
 
-        assertEquals("http://www.foo.org", l.getUrl());
-        assertEquals("foo", l.getTitle());
-        assertEquals("user", l.getUser());
+        assertEquals("http://www.foo.org", b.getUrl());
+        assertEquals("foo", b.getTitle());
+        assertEquals("user", b.getUser());
     }
 
     @Test
-    public void canTransformListOfLinksToJson() {
-        links = new ArrayList<>();
-        links.add(BookmarkObjects.testLink1);
-        links.add(BookmarkObjects.testLink2);
+    public void canTransformListOfBookmarkssToJson() {
+        bookmarks = new ArrayList<>();
+        bookmarks.add(BookmarkObjects.testBookmark1);
+        bookmarks.add(BookmarkObjects.testBookmark2);
 
-        String json = trans.listOfLinksToJson(links);
+        String json = trans.listOfBookmarksToJson(bookmarks);
         assertEquals(json, JsonAccessor.getExampleBookmarks());
     }
 
     @Test
-    public void canTransformLinkToJson() {
-        String json = trans.linkToJson(BookmarkObjects.testLink1);
+    public void canTransformBookmarkToJson() {
+        String json = trans.bookmarkToJson(BookmarkObjects.testBookmark1);
 
-        assertEquals(json, linkInJson);
+        assertEquals(json, bookmarkInJson);
     }
 }
