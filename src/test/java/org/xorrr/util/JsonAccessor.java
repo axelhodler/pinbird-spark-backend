@@ -23,4 +23,18 @@ public class JsonAccessor {
 
         return jsonString;
     }
+
+    public static String getExampleLink() {
+        String jsonString = null;
+
+        try {
+            File testFile = new File(TestRestApi.class.getResource(
+                    "/link.json").toURI());
+            jsonString = IOUtils.toString(new FileInputStream(testFile));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return jsonString;
+    }
 }
