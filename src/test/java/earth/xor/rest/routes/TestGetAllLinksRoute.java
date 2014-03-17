@@ -57,8 +57,8 @@ public class TestGetAllLinksRoute {
         Object jsonString = route.handle(req, resp);
 
         verify(facade, times(1)).getLinks();
-        verify(transformator, times(1))
-                .listOfLinksToJson(anyListOf(Bookmark.class));
+        verify(transformator, times(1)).listOfLinksToJson(
+                anyListOf(Bookmark.class));
         assertEquals(jsonString, mainJsonObject.toJSONString());
     }
 
@@ -75,7 +75,8 @@ public class TestGetAllLinksRoute {
 
     private JSONObject conformToEmberStandards(List<Bookmark> links) {
         JSONObject mainJsonObject = new JSONObject();
-        mainJsonObject.put("links", createTestLinksArray(links));
+        mainJsonObject.put(BookmarkFields.BOOKMARKS,
+                createTestLinksArray(links));
         return mainJsonObject;
     }
 
