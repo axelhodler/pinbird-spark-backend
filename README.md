@@ -9,7 +9,7 @@ The run script will start the server at [http://localhost:5000](http://localhost
     ./bin/run.sh
 
 # Usage
-For POST requests you need to add the "Authorizaton" header with the set pw to the request. This is subject to change
+For POST requests you need to add the "Authorizaton" header with the set pw to the request (Basic access authentication without encoding). Later on a token based approach will be used.
 
 # Development
 Run unit tests:
