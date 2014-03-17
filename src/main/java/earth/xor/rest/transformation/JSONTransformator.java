@@ -29,7 +29,7 @@ public class JSONTransformator {
     }
 
     private Link createLink(JSONObject json) {
-        return buildLink(json);
+        return buildLink((JSONObject) json.get("link"));
     }
 
 

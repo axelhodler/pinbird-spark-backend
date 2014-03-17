@@ -14,8 +14,8 @@ import earth.xor.model.Link;
 public class TestTransformator {
 
     private JSONTransformator trans;
-    private String jsonExample = "{\"url\":\"http://www.foo.org\", "
-            + "\"title\":\"foo\", " + "\"user\":\"user\"}";
+    private String jsonExample = "{\"link\":{\"url\":\"http://www.foo.org\", "
+            + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
     private List<Link> links;
 
     private String linksInJson = "{\"links\":[{\"timestamp\":null,"

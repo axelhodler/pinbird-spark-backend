@@ -39,8 +39,8 @@ public class TestPostLinkRoute {
     Link testLink;
 
     private PostLinkRoute route;
-    private String jsonExample = "{ \"url\":\"http://www.foo.org\", "
-            + "\"title\":\"foo\", " + "\"user\":\"user\"}";
+    private String jsonExample = "{\"link\":{ \"url\":\"http://www.foo.org\", "
+            + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
 
     @Before
     public void setUp() {

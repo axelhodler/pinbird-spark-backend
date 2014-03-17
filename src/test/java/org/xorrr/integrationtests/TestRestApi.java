@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -155,11 +157,12 @@ public class TestRestApi {
                 .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
                 .post("/links").asString();
 
-        Link savedLink = gson.fromJson(jsonString, Link.class);
+        JSONObject mainObj = (JSONObject) JSONValue.parse(jsonString);
+        JSONObject link = (JSONObject) mainObj.get("link");
 
-        assertEquals("http://www.foo.org", savedLink.getUrl());
-        assertEquals("foo", savedLink.getTitle());
-        assertEquals("test", savedLink.getUser());
+        assertEquals("http://www.foo.org", link.get(LinkFields.URL).toString());
+        assertEquals("foo", link.get(LinkFields.TITLE).toString());
+        assertEquals("test", link.get(LinkFields.USER).toString());
     }
 
     private DBObject getSavedLinkFromDb() {
