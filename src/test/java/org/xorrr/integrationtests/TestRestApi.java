@@ -24,6 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.xorrr.util.EnvironmentVars;
+import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.LinkObjects;
 
 import com.google.gson.Gson;
@@ -86,14 +87,15 @@ public class TestRestApi {
 
     @Test
     public void dealsWithIncorrectAuth() {
-        given().queryParam("pw", "").expect().statusCode(401).when()
-                .post(Routes.POST_LINK);
+        given().header(HttpHeaderKeys.Authorization, "wrong").expect()
+                .statusCode(401).when().post(Routes.POST_LINK);
     }
 
     @Test
     public void dealWithMissingPayload() {
-        given().queryParam("pw", System.getenv(EnvironmentVars.PW)).expect()
-                .statusCode(400).when().post(Routes.POST_LINK);
+        given().header(HttpHeaderKeys.Authorization,
+                System.getenv(EnvironmentVars.PW)).expect().statusCode(400)
+                .when().post(Routes.POST_LINK);
     }
 
     @Test
@@ -101,6 +103,7 @@ public class TestRestApi {
         addAlinkViaRestApi();
 
         DBObject foundEntry = getSavedLinkFromDb();
+
         assertEquals("http://www.foo.org", foundEntry.get(LinkFields.URL));
         assertEquals("foo", foundEntry.get(LinkFields.TITLE));
         assertEquals("test", foundEntry.get(LinkFields.USER));
@@ -112,9 +115,10 @@ public class TestRestApi {
         linksData.addLink(LinkObjects.testLink2);
         linksData.addLink(LinkObjects.testLink3);
 
-        expect().header("Access-Control-Allow-Origin", equalTo("*")).when()
+        expect().header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
                 .get(Routes.GET_ALL_LINKS);
-        String jsonResponse = expect().when().get(Routes.GET_ALL_LINKS).asString();
+        String jsonResponse = expect().when().get(Routes.GET_ALL_LINKS)
+                .asString();
 
         Type type = new TypeToken<Map<String, List<Link>>>() {
         }.getType();
@@ -128,7 +132,7 @@ public class TestRestApi {
         String id = addLinkAndGetItsId();
 
         String jsonString = expect()
-                .header("Access-Control-Allow-Origin", equalTo("*")).when()
+                .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
                 .get("/links/" + id).asString();
 
         assertTrue(isIdSurroundedWithDoubleQuotes(id, jsonString));
@@ -144,9 +148,11 @@ public class TestRestApi {
     }
 
     private void addAlinkViaRestApi() {
-        String jsonString = given().body(tryGetLinkToPOSTinJson())
-                .queryParam("pw", System.getenv(EnvironmentVars.PW)).expect()
-                .header("Access-Control-Allow-Origin", equalTo("*")).when()
+        String jsonString = given()
+                .body(tryGetLinkToPOSTinJson())
+                .header(HttpHeaderKeys.Authorization,
+                        System.getenv(EnvironmentVars.PW)).expect()
+                .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
                 .post("/links").asString();
 
         Link savedLink = gson.fromJson(jsonString, Link.class);
