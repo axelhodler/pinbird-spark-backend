@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
+import org.xorrr.util.JsonAccessor;
 
 import spark.Request;
 import spark.Response;
@@ -34,9 +35,6 @@ public class TestGetLinkByIdRoute {
 
     private GetLinkByIdRoute route;
     private final String id = "12345";
-    private final String linkInJson = "{\"link\":{\"timestamp\":null,"
-            + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
-            + ":\"http:\\/\\/www.foo.org\"}}";
 
     @Before
     public void setUp() {
@@ -46,13 +44,14 @@ public class TestGetLinkByIdRoute {
     @Test
     public void canGetLinkById() {
         when(req.params(":id")).thenReturn(id);
-        when(transformator.linkToJson(any(Link.class))).thenReturn(linkInJson);
+        when(transformator.linkToJson(any(Link.class))).thenReturn(
+                JsonAccessor.getExampleLink());
 
         Object json = route.handle(req, resp);
 
         verify(facade, times(1)).getLinkById(anyString());
         verify(transformator, times(1)).linkToJson(any(Link.class));
-        assertEquals(json, linkInJson);
+        assertEquals(json, JsonAccessor.getExampleLink());
     }
 
     @Test
