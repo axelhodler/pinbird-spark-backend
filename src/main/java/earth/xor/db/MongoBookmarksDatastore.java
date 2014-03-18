@@ -44,18 +44,21 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
     }
 
     public Bookmark getBookmarkById(String id) {
-        DBObject foundBookmark = getCollection().findOne(
-                new BasicDBObject(BookmarkFields.ID, new ObjectId(id)));
+        DBObject foundBookmark = findBookmarkById(id);
 
         return buildBookmark(foundBookmark);
     }
 
     @Override
     public void deleteBookmarkById(String id) {
-        DBObject foundBookmark = getCollection().findOne(
-                new BasicDBObject(BookmarkFields.ID, new ObjectId(id)));
+        DBObject foundBookmark = findBookmarkById(id);
 
         col.remove(foundBookmark);
+    }
+
+    private DBObject findBookmarkById(String id) {
+        return getCollection().findOne(
+                new BasicDBObject(BookmarkFields.ID, new ObjectId(id)));
     }
 
     private DBCollection getCollection() {
