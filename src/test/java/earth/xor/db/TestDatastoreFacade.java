@@ -26,21 +26,21 @@ public class TestDatastoreFacade {
     }
 
     @Test
-    public void canAddLink() {
+    public void canAddBookmark() {
         facade.addBookmark(any(Bookmark.class));
 
         verify(ds, times(1)).addBookmark(any(Bookmark.class));
     }
 
     @Test
-    public void canGetAllLinks() {
+    public void canGetAllBookmarks() {
         facade.getBookmarks();
 
         verify(ds, times(1)).getBookmarks();
     }
 
     @Test
-    public void canGetLinkById() {
+    public void canGetBookmarkById() {
         facade.getBookmarkById(anyString());
 
         verify(ds, times(1)).getBookmarkById(anyString());
