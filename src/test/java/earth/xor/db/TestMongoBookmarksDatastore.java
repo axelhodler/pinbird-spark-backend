@@ -44,7 +44,7 @@ public class TestMongoBookmarksDatastore {
     @Mock
     private DBObject dbo;
 
-    private MongoBookmarksDatastore bookmarksDs;
+    private MongoBookmarksDatastore ds;
 
     private void mockDBObjectBehaviour() {
         when(dbo.get(BookmarkFields.ID)).thenReturn("i");
@@ -59,12 +59,12 @@ public class TestMongoBookmarksDatastore {
         when(mongoClient.getDB(anyString())).thenReturn(db);
         when(db.getCollection(anyString())).thenReturn(col);
 
-        this.bookmarksDs = new MongoBookmarksDatastore(mongoClient);
+        this.ds = new MongoBookmarksDatastore(mongoClient);
     }
 
     @Test
     public void bookmarkCanBeAdded() {
-        bookmarksDs.addBookmark(BookmarkObjects.testBookmark1);
+        ds.addBookmark(BookmarkObjects.testBookmark1);
 
         verify(col, times(1)).insert(any(BasicDBObject.class));
     }
@@ -77,7 +77,7 @@ public class TestMongoBookmarksDatastore {
         when(dbos.next()).thenReturn(dbo);
         mockDBObjectBehaviour();
         
-        List<Bookmark> bookmarks = bookmarksDs.getBookmarks();
+        List<Bookmark> bookmarks = ds.getBookmarks();
 
         verify(col, times(1)).find();
         assertEquals("i", bookmarks.get(0).getObjectId());
@@ -92,7 +92,7 @@ public class TestMongoBookmarksDatastore {
         when(col.findOne(any(DBObject.class))).thenReturn(dbo);
         mockDBObjectBehaviour();
 
-        Bookmark b = bookmarksDs.getBookmarkById(new ObjectId().toString());
+        Bookmark b = ds.getBookmarkById(new ObjectId().toString());
 
         verify(col, times(1)).findOne(any(BasicDBObject.class));
         assertEquals("u", b.getUrl());
@@ -105,7 +105,7 @@ public class TestMongoBookmarksDatastore {
     public void canDeleteBookmarkViaId() {
         when(col.findOne(any(DBObject.class))).thenReturn(dbo);
 
-        bookmarksDs.deleteBookmarkById(new ObjectId().toString());
+        ds.deleteBookmarkById(new ObjectId().toString());
 
         verify(col, times(1)).remove(dbo);
     }
