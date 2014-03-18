@@ -18,14 +18,15 @@ import earth.xor.model.BookmarkFields;
 public class MongoBookmarksDatastore implements BookmarksDatastore {
 
     private MongoClient mongo;
+    private DBCollection col;
 
     public MongoBookmarksDatastore(MongoClient mongo) {
         this.mongo = mongo;
+
+        col = getCollection();
     }
 
     public void addBookmark(Bookmark bm) {
-        DBCollection col = getCollection();
-
         col.insert(new BasicDBObject(BookmarkFields.URL, bm.getUrl())
                 .append(BookmarkFields.TITLE, bm.getTitle())
                 .append(BookmarkFields.USER, bm.getUser())
@@ -51,7 +52,10 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
 
     @Override
     public void deleteBookmarkById(String id) {
+        DBObject foundBookmark = getCollection().findOne(
+                new BasicDBObject(BookmarkFields.ID, new ObjectId(id)));
 
+        col.remove(foundBookmark);
     }
 
     private DBCollection getCollection() {

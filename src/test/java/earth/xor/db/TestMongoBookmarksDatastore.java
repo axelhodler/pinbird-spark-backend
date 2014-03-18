@@ -3,7 +3,6 @@ package earth.xor.db;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,11 +56,10 @@ public class TestMongoBookmarksDatastore {
 
     @Before
     public void setUpTests() throws UnknownHostException {
-        this.mongoClient = mock(MongoClient.class);
-        this.bookmarksDs = new MongoBookmarksDatastore(mongoClient);
-
         when(mongoClient.getDB(anyString())).thenReturn(db);
         when(db.getCollection(anyString())).thenReturn(col);
+
+        this.bookmarksDs = new MongoBookmarksDatastore(mongoClient);
     }
 
     @Test
@@ -101,5 +99,14 @@ public class TestMongoBookmarksDatastore {
         assertEquals("t", b.getTitle());
         assertEquals("us", b.getUser());
         assertEquals("ts", b.getTimeStamp());
+    }
+
+    @Test
+    public void canDeleteBookmarkViaId() {
+        when(col.findOne(any(DBObject.class))).thenReturn(dbo);
+
+        bookmarksDs.deleteBookmarkById(new ObjectId().toString());
+
+        verify(col, times(1)).remove(dbo);
     }
 }
