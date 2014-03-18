@@ -26,6 +26,7 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
         col = getCollection();
     }
 
+    @Override
     public void addBookmark(Bookmark bm) {
         col.insert(new BasicDBObject(BookmarkFields.URL, bm.getUrl())
                 .append(BookmarkFields.TITLE, bm.getTitle())
@@ -33,6 +34,7 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
                 .append(BookmarkFields.TIMESTAMP, new Date()));
     }
 
+    @Override
     public List<Bookmark> getBookmarks() {
         List<Bookmark> bookmarks = new ArrayList<>();
 
@@ -43,6 +45,7 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
         return bookmarks;
     }
 
+    @Override
     public Bookmark getBookmarkById(String id) {
         DBObject foundBookmark = findBookmarkById(id);
 
