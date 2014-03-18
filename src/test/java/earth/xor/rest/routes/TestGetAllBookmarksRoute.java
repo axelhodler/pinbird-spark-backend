@@ -18,18 +18,18 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
-import org.xorrr.util.LinkObjects;
+import org.xorrr.util.BookmarkObjects;
 
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.model.Link;
-import earth.xor.model.LinkFields;
+import earth.xor.model.Bookmark;
+import earth.xor.model.BookmarkFields;
 import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(MockitoJUnitRunner.class)
 @SuppressWarnings("unchecked")
-public class TestGetAllLinksRoute {
+public class TestGetAllBookmarksRoute {
     @Mock
     Request req;
     @Mock
@@ -39,26 +39,26 @@ public class TestGetAllLinksRoute {
     @Mock
     JSONTransformator transformator;
 
-    private GetAllLinksRoute route;
+    private GetAllBookmarksRoute route;
 
     @Before
     public void setUp() {
-        route = new GetAllLinksRoute(facade, transformator);
+        route = new GetAllBookmarksRoute(facade, transformator);
     }
 
     @Test
-    public void canGetLink() {
-        List<Link> links = createTestLinks();
-        JSONObject mainJsonObject = conformToEmberStandards(links);
-        when(transformator.listOfLinksToJson(anyListOf(Link.class)))
+    public void canGetBookmarks() {
+        List<Bookmark> bookmarks = createTestLinks();
+        JSONObject mainJsonObject = conformToEmberStandards(bookmarks);
+        when(transformator.listOfBookmarksToJson(anyListOf(Bookmark.class)))
                 .thenReturn(mainJsonObject.toJSONString());
-        when(facade.getLinks()).thenReturn(links);
+        when(facade.getBookmarks()).thenReturn(bookmarks);
 
         Object jsonString = route.handle(req, resp);
 
-        verify(facade, times(1)).getLinks();
-        verify(transformator, times(1))
-                .listOfLinksToJson(anyListOf(Link.class));
+        verify(facade, times(1)).getBookmarks();
+        verify(transformator, times(1)).listOfBookmarksToJson(
+                anyListOf(Bookmark.class));
         assertEquals(jsonString, mainJsonObject.toJSONString());
     }
 
@@ -73,30 +73,31 @@ public class TestGetAllLinksRoute {
         verify(resp, times(1)).header(HttpHeaderKeys.ACAOrigin, "*");
     }
 
-    private JSONObject conformToEmberStandards(List<Link> links) {
+    private JSONObject conformToEmberStandards(List<Bookmark> bookmarks) {
         JSONObject mainJsonObject = new JSONObject();
-        mainJsonObject.put("links", createTestLinksArray(links));
+        mainJsonObject.put(BookmarkFields.BOOKMARKS,
+                createTestBookmarksArray(bookmarks));
         return mainJsonObject;
     }
 
-    private JSONArray createTestLinksArray(List<Link> links) {
-        JSONArray linksArray = new JSONArray();
-        for (Link l : links) {
+    private JSONArray createTestBookmarksArray(List<Bookmark> bookmarks) {
+        JSONArray bookmarksArray = new JSONArray();
+        for (Bookmark b : bookmarks) {
             JSONObject jo = new JSONObject();
-            jo.put(LinkFields.ID, l.getObjectId());
-            jo.put(LinkFields.URL, l.getUrl());
-            jo.put(LinkFields.TITLE, l.getTitle());
-            jo.put(LinkFields.USER, l.getUser());
-            jo.put(LinkFields.TIMESTAMP, l.getTimeStamp());
-            linksArray.add(jo);
+            jo.put(BookmarkFields.ID, b.getObjectId());
+            jo.put(BookmarkFields.URL, b.getUrl());
+            jo.put(BookmarkFields.TITLE, b.getTitle());
+            jo.put(BookmarkFields.USER, b.getUser());
+            jo.put(BookmarkFields.TIMESTAMP, b.getTimeStamp());
+            bookmarksArray.add(jo);
         }
-        return linksArray;
+        return bookmarksArray;
     }
 
-    private List<Link> createTestLinks() {
-        List<Link> links = new ArrayList<>();
-        links.add(LinkObjects.testLink1);
-        links.add(LinkObjects.testLink2);
-        return links;
+    private List<Bookmark> createTestLinks() {
+        List<Bookmark> bookmarks = new ArrayList<>();
+        bookmarks.add(BookmarkObjects.testBookmark1);
+        bookmarks.add(BookmarkObjects.testBookmark2);
+        return bookmarks;
     }
 }

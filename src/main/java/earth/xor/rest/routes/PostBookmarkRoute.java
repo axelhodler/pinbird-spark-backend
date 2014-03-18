@@ -8,16 +8,15 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.model.LinkFields;
 import earth.xor.rest.transformation.JSONTransformator;
 
-public class PostLinkRoute extends Route {
+public class PostBookmarkRoute extends Route {
 
     private DatastoreFacade facade;
     private JSONTransformator transformator;
 
-    public PostLinkRoute(DatastoreFacade facade, JSONTransformator transformator) {
-        super(LinkFields.LINKS_NAME);
+    public PostBookmarkRoute(DatastoreFacade facade, JSONTransformator transformator) {
+        super(Routes.POST_BOOKMARK);
         this.facade = facade;
         this.transformator = transformator;
     }
@@ -27,7 +26,7 @@ public class PostLinkRoute extends Route {
         checkPassword(request);
         checkIfPayloadMissing(request);
 
-        facade.addLink(transformator.jsonToLink(request.body()));
+        facade.addBookmark(transformator.jsonToBookmark(request.body()));
 
         response.header(HttpHeaderKeys.ACAOrigin, "*");
 

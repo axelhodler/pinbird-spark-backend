@@ -2,7 +2,7 @@ package earth.xor.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Link {
+public class Bookmark {
 
     private String url;
     private String title;
@@ -12,7 +12,7 @@ public class Link {
     @SerializedName(value = "_id")
     private String objectId;
 
-    private Link(Builder builder) {
+    private Bookmark(Builder builder) {
         this.objectId = builder.objectId;
         this.url = builder.url;
         this.title = builder.title;
@@ -72,8 +72,8 @@ public class Link {
             return this;
         }
 
-        public Link build() {
-            return new Link(this);
+        public Bookmark build() {
+            return new Bookmark(this);
         }
     }
 }

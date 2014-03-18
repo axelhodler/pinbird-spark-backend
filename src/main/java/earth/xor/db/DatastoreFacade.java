@@ -2,26 +2,26 @@ package earth.xor.db;
 
 import java.util.List;
 
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 
 
 public class DatastoreFacade {
 
-    private LinksDatastore ds;
+    private BookmarksDatastore ds;
 
-    public DatastoreFacade(LinksDatastore ds) {
+    public DatastoreFacade(BookmarksDatastore ds) {
         this.ds = ds;
     }
 
-    public void addLink(Link link) {
-        this.ds.addLink(link);
+    public void addBookmark(Bookmark bookmark) {
+        this.ds.addBookmark(bookmark);
     }
 
-    public List<Link> getLinks() {
-        return ds.getLinks();
+    public List<Bookmark> getBookmarks() {
+        return ds.getBookmarks();
     }
 
-    public Link getLinkById(String id) {
-        return ds.getLinkById(id);
+    public Bookmark getBookmarkById(String id) {
+        return ds.getBookmarkById(id);
     }
 }

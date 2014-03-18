@@ -11,17 +11,17 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import spark.Spark;
-import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
-import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.routes.PostBookmarkRoute;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Spark.class })
 public class TestSparkFacade {
     @Mock
-    GetLinkByIdRoute getLinkByIdRoute;
+    GetBookmarkByIdRoute getBookmarkByIdRoute;
     @Mock
-    PostLinkRoute postLinkRoute;
+    PostBookmarkRoute postBookmarkRoute;
     @Mock
     OptionsRoute optionsRoute;
 
@@ -43,16 +43,16 @@ public class TestSparkFacade {
 
     @Test
     public void canSetGetRoute() {
-        facade.setGetRoute(getLinkByIdRoute);
+        facade.setGetRoute(getBookmarkByIdRoute);
         PowerMockito.verifyStatic();
-        Spark.get(getLinkByIdRoute);
+        Spark.get(getBookmarkByIdRoute);
     }
 
     @Test
     public void canSetPostRoute() {
-        facade.setGetRoute(postLinkRoute);
+        facade.setGetRoute(postBookmarkRoute);
         PowerMockito.verifyStatic();
-        Spark.get(postLinkRoute);
+        Spark.get(postBookmarkRoute);
     }
 
     @Test

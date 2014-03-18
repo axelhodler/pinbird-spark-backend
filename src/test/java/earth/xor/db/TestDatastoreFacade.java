@@ -11,12 +11,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestDatastoreFacade {
     @Mock
-    LinksDatastore ds;
+    BookmarksDatastore ds;
 
     private DatastoreFacade facade;
 
@@ -27,22 +27,22 @@ public class TestDatastoreFacade {
 
     @Test
     public void canAddLink() {
-        facade.addLink(any(Link.class));
+        facade.addBookmark(any(Bookmark.class));
 
-        verify(ds, times(1)).addLink(any(Link.class));
+        verify(ds, times(1)).addBookmark(any(Bookmark.class));
     }
 
     @Test
     public void canGetAllLinks() {
-        facade.getLinks();
+        facade.getBookmarks();
 
-        verify(ds, times(1)).getLinks();
+        verify(ds, times(1)).getBookmarks();
     }
 
     @Test
     public void canGetLinkById() {
-        facade.getLinkById(anyString());
+        facade.getBookmarkById(anyString());
 
-        verify(ds, times(1)).getLinkById(anyString());
+        verify(ds, times(1)).getBookmarkById(anyString());
     }
 }

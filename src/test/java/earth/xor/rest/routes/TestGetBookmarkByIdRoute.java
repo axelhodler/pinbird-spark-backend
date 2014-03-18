@@ -19,11 +19,11 @@ import org.xorrr.util.JsonAccessor;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestGetLinkByIdRoute {
+public class TestGetBookmarkByIdRoute {
     @Mock
     Request req;
     @Mock
@@ -33,25 +33,25 @@ public class TestGetLinkByIdRoute {
     @Mock
     JSONTransformator transformator;
 
-    private GetLinkByIdRoute route;
+    private GetBookmarkByIdRoute route;
     private final String id = "12345";
 
     @Before
     public void setUp() {
-        route = new GetLinkByIdRoute(facade, transformator);
+        route = new GetBookmarkByIdRoute(facade, transformator);
     }
 
     @Test
     public void canGetLinkById() {
         when(req.params(":id")).thenReturn(id);
-        when(transformator.linkToJson(any(Link.class))).thenReturn(
-                JsonAccessor.getExampleLink());
+        when(transformator.bookmarkToJson(any(Bookmark.class))).thenReturn(
+                JsonAccessor.getExampleBookmark());
 
         Object json = route.handle(req, resp);
 
-        verify(facade, times(1)).getLinkById(anyString());
-        verify(transformator, times(1)).linkToJson(any(Link.class));
-        assertEquals(json, JsonAccessor.getExampleLink());
+        verify(facade, times(1)).getBookmarkById(anyString());
+        verify(transformator, times(1)).bookmarkToJson(any(Bookmark.class));
+        assertEquals(json, JsonAccessor.getExampleBookmark());
     }
 
     @Test

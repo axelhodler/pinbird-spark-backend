@@ -1,18 +1,18 @@
 package earth.xor.rest;
 
-import earth.xor.rest.routes.GetAllLinksRoute;
-import earth.xor.rest.routes.GetLinkByIdRoute;
+import earth.xor.rest.routes.GetAllBookmarksRoute;
+import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
-import earth.xor.rest.routes.PostLinkRoute;
+import earth.xor.rest.routes.PostBookmarkRoute;
 
 public interface RestApi {
     void setPort(int port);
 
-    void createPOSTlinksRoute(PostLinkRoute route);
+    void createPOSTbookmarksRoute(PostBookmarkRoute route);
 
-    void createGETlinksRoute(GetAllLinksRoute route);
+    void createGETbookmarksRoute(GetAllBookmarksRoute route);
 
-    void createGETlinkByIdRoute(GetLinkByIdRoute route);
+    void createGETbookmarkByIdRoute(GetBookmarkByIdRoute route);
 
-    void createOPTIONSlinksRoute(OptionsRoute route);
+    void createOPTIONSbookmarksRoute(OptionsRoute route);
 }

@@ -7,24 +7,19 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xorrr.util.LinkObjects;
+import org.xorrr.util.JsonAccessor;
+import org.xorrr.util.BookmarkObjects;
 
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 
 public class TestTransformator {
 
     private JSONTransformator trans;
-    private String jsonExample = "{\"link\":{\"url\":\"http://www.foo.org\", "
+    private String jsonExample = "{\"bookmark\":{\"url\":\"http://www.foo.org\", "
             + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
-    private List<Link> links;
+    private List<Bookmark> bookmarks;
 
-    private String linksInJson = "{\"links\":[{\"timestamp\":null,"
-            + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
-            + ":\"http:\\/\\/www.foo.org\"},{\"timestamp\":null,\"title\""
-            + ":\"bar\",\"_id\":null,\"user\":\"user2\",\"url\""
-            + ":\"http:\\/\\/www.bar.org\"}]}";
-
-    private String linkInJson = "{\"link\":{\"timestamp\":null,"
+    private String bookmarkInJson = "{\"bookmark\":{\"timestamp\":null,"
             + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
             + ":\"http:\\/\\/www.foo.org\"}}";
 
@@ -34,28 +29,28 @@ public class TestTransformator {
     }
 
     @Test
-    public void canTransformStringToLink() {
-        Link l = trans.jsonToLink(jsonExample);
+    public void canTransformStringToBookmark() {
+        Bookmark b = trans.jsonToBookmark(jsonExample);
 
-        assertEquals("http://www.foo.org", l.getUrl());
-        assertEquals("foo", l.getTitle());
-        assertEquals("user", l.getUser());
+        assertEquals("http://www.foo.org", b.getUrl());
+        assertEquals("foo", b.getTitle());
+        assertEquals("user", b.getUser());
     }
 
     @Test
-    public void canTransformListOfLinksToJson() {
-        links = new ArrayList<>();
-        links.add(LinkObjects.testLink1);
-        links.add(LinkObjects.testLink2);
+    public void canTransformListOfBookmarkssToJson() {
+        bookmarks = new ArrayList<>();
+        bookmarks.add(BookmarkObjects.testBookmark1);
+        bookmarks.add(BookmarkObjects.testBookmark2);
 
-        String json = trans.listOfLinksToJson(links);
-        assertEquals(json, linksInJson);
+        String json = trans.listOfBookmarksToJson(bookmarks);
+        assertEquals(json, JsonAccessor.getExampleBookmarks());
     }
 
     @Test
-    public void canTransformLinkToJson() {
-        String json = trans.linkToJson(LinkObjects.testLink1);
+    public void canTransformBookmarkToJson() {
+        String json = trans.bookmarkToJson(BookmarkObjects.testBookmark1);
 
-        assertEquals(json, linkInJson);
+        assertEquals(json, bookmarkInJson);
     }
 }

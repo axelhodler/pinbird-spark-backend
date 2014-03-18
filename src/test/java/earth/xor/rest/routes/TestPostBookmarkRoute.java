@@ -16,18 +16,18 @@ import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.HttpResponseErrorMessages;
 import org.xorrr.util.JsonAccessor;
-import org.xorrr.util.LinkObjects;
+import org.xorrr.util.BookmarkObjects;
 
 import spark.AbstractRoute;
 import spark.Request;
 import spark.Response;
 import earth.xor.db.DatastoreFacade;
-import earth.xor.model.Link;
+import earth.xor.model.Bookmark;
 import earth.xor.rest.transformation.JSONTransformator;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ AbstractRoute.class })
-public class TestPostLinkRoute {
+public class TestPostBookmarkRoute {
     @Mock
     Request req;
     @Mock
@@ -37,30 +37,30 @@ public class TestPostLinkRoute {
     @Mock
     JSONTransformator transformator;
     @Mock
-    Link testLink;
+    Bookmark testBookmark;
 
-    private PostLinkRoute route;
+    private PostBookmarkRoute route;
 
     @Before
     public void setUp() {
         PowerMockito.mockStatic(AbstractRoute.class);
-        route = new PostLinkRoute(facade, transformator);
+        route = new PostBookmarkRoute(facade, transformator);
 
-        testLink = LinkObjects.testLink1;
+        testBookmark = BookmarkObjects.testBookmark1;
     }
 
     @Test
-    public void linkCanBePosted() {
+    public void bookmarkCanBePosted() {
         String json = JsonAccessor.getPostRequestBody();
         when(req.headers(HttpHeaderKeys.Authorization)).thenReturn(
                 System.getenv(EnvironmentVars.PW));
         when(req.body()).thenReturn(json);
-        when(transformator.jsonToLink(json)).thenReturn(testLink);
+        when(transformator.jsonToBookmark(json)).thenReturn(testBookmark);
 
         Object returned = route.handle(req, resp);
 
         verify(req, times(1)).headers("Authorization");
-        verify(facade, times(1)).addLink(testLink);
+        verify(facade, times(1)).addBookmark(testBookmark);
         verify(req, times(3)).body();
         assertEquals(json, returned.toString());
     }
