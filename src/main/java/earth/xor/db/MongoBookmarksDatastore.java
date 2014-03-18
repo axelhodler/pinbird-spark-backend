@@ -49,6 +49,11 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
         return buildBookmark(foundBookmark);
     }
 
+    @Override
+    public void deleteBookmarkById(String id) {
+
+    }
+
     private DBCollection getCollection() {
         return mongo.getDB(BookmarkFields.DATABASE_NAME).getCollection(
                 BookmarkFields.BOOKMARKS);
@@ -61,4 +66,5 @@ public class MongoBookmarksDatastore implements BookmarksDatastore {
                 .user(dbo.get(BookmarkFields.USER).toString())
                 .timestamp(dbo.get(BookmarkFields.TIMESTAMP).toString()).build();
     }
+
 }

@@ -45,4 +45,11 @@ public class TestDatastoreFacade {
 
         verify(ds, times(1)).getBookmarkById(anyString());
     }
+
+    @Test
+    public void canDeleteBookmarkById() {
+        facade.deleteBookmarkById(anyString());
+
+        verify(ds, times(1)).deleteBookmarkById(anyString());
+    }
 }

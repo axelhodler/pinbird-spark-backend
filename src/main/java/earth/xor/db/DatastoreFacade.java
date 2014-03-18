@@ -24,4 +24,8 @@ public class DatastoreFacade {
     public Bookmark getBookmarkById(String id) {
         return ds.getBookmarkById(id);
     }
+
+    public void deleteBookmarkById(String id) {
+        this.ds.deleteBookmarkById(id);
+    }
 }

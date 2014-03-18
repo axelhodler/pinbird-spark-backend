@@ -11,4 +11,6 @@ public interface BookmarksDatastore {
     List<Bookmark> getBookmarks();
 
     Bookmark getBookmarkById(String id);
+
+    void deleteBookmarkById(String id);
 }
