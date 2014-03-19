@@ -21,10 +21,10 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.xorrr.util.BookmarkObjects;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.JsonAccessor;
-import org.xorrr.util.BookmarkObjects;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -37,8 +37,8 @@ import com.mongodb.MongoClient;
 
 import earth.xor.EmbedMongo;
 import earth.xor.EmbedMongoProperties;
-import earth.xor.db.DatastoreFacade;
 import earth.xor.db.BookmarksDatastore;
+import earth.xor.db.DatastoreFacade;
 import earth.xor.db.MongoBookmarksDatastore;
 import earth.xor.helpers.IntegrationTest;
 import earth.xor.model.Bookmark;
@@ -142,6 +142,12 @@ public class TestRestApi {
         checkIfItsTheCorrectBookmark(returnedUrlRepresentation);
     }
 
+    @After
+    public void dropCollection() {
+        mongoClient.getDB(BookmarkFields.DATABASE_NAME)
+                .getCollection(BookmarkFields.BOOKMARKS).drop();
+    }
+
     private boolean isIdSurroundedWithDoubleQuotes(String id, String jsonString) {
         return jsonString.contains("\"" + id + "\"");
     }
@@ -218,9 +224,4 @@ public class TestRestApi {
         assertEquals("user1", foundBookmark.getUser());
     }
 
-    @After
-    public void dropCollection() {
-        mongoClient.getDB(BookmarkFields.DATABASE_NAME)
-                .getCollection(BookmarkFields.BOOKMARKS).drop();
-    }
 }
