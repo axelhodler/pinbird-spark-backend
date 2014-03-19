@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xorrr.util.EnvironmentVars;
 
+import earth.xor.rest.routes.DeleteBookmarkByIdRoute;
 import earth.xor.rest.routes.GetAllBookmarksRoute;
 import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
@@ -28,6 +29,8 @@ public class TestSparkRestApi {
     GetAllBookmarksRoute getAllBookmarksRoute;
     @Mock
     OptionsRoute optionsRoute;
+    @Mock
+    DeleteBookmarkByIdRoute deleteRoute;
 
     private SparkRestApi restApi;
 
@@ -68,5 +71,12 @@ public class TestSparkRestApi {
         restApi.createOPTIONSbookmarksRoute(optionsRoute);
 
         verify(sparkFacade, times(1)).setOptionsRoute(optionsRoute);
+    }
+
+    @Test
+    public void deleteBookmarkByIdRouteIsSet() {
+        restApi.createDELETEbookmarkByIdRoute(deleteRoute);
+
+        verify(sparkFacade, times(1)).setDeleteRoute(deleteRoute);
     }
 }

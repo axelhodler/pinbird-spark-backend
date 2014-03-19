@@ -11,6 +11,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import spark.Spark;
+import earth.xor.rest.routes.DeleteBookmarkByIdRoute;
 import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
 import earth.xor.rest.routes.PostBookmarkRoute;
@@ -24,6 +25,8 @@ public class TestSparkFacade {
     PostBookmarkRoute postBookmarkRoute;
     @Mock
     OptionsRoute optionsRoute;
+    @Mock
+    DeleteBookmarkByIdRoute deleteRoute;
 
     private SparkFacade facade;
 
@@ -60,5 +63,12 @@ public class TestSparkFacade {
         facade.setOptionsRoute(optionsRoute);
         PowerMockito.verifyStatic();
         Spark.options(optionsRoute);
+    }
+
+    @Test
+    public void canSetDeleteRoute() {
+        facade.setDeleteRoute(deleteRoute);
+        PowerMockito.verifyStatic();
+        Spark.delete(deleteRoute);
     }
 }

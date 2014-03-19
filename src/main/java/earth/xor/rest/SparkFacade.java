@@ -20,4 +20,8 @@ public class SparkFacade {
     public void setOptionsRoute(Route route) {
         Spark.options(route);
     }
+
+    public void setDeleteRoute(Route route) {
+        Spark.delete(route);
+    }
 }
