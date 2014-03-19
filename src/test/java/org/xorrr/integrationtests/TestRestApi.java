@@ -118,10 +118,7 @@ public class TestRestApi {
         bookmarksData.addBookmark(BookmarkObjects.testBookmark2);
         bookmarksData.addBookmark(BookmarkObjects.testBookmark3);
 
-        expect().header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
-                .get(Routes.GET_ALL_BOOKMARKS);
-        String jsonResponse = expect().when().get(Routes.GET_ALL_BOOKMARKS)
-                .asString();
+        String jsonResponse = getListOfSavedBookmarks();
 
         Type type = new TypeToken<Map<String, List<Bookmark>>>() {
         }.getType();
@@ -132,11 +129,10 @@ public class TestRestApi {
 
     @Test
     public void canGetSavedBookmarkById() {
-        String id = addBookmarkAndGetItsId();
+        addTestBookmark();
+        String id = getAddedBookmarkById();
 
-        String jsonString = expect()
-                .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
-                .get(Routes.BASE + "/" + id).asString();
+        String jsonString = getSavedBookmarkViaRest(id);
 
         assertTrue(isIdSurroundedWithDoubleQuotes(id, jsonString));
         Type type = new TypeToken<Map<String, Bookmark>>() {
@@ -148,12 +144,10 @@ public class TestRestApi {
 
     @Test
     public void canDeleteSavedBookmarkById() {
-        String id = addBookmarkAndGetItsId();
+        addTestBookmark();
+        String id = getAddedBookmarkById();
 
-        given().header(HttpHeaderKeys.Authorization,
-                System.getenv(EnvironmentVars.PW)).expect()
-                .header(HttpHeaderKeys.ACAOrigin, "*").when()
-                .delete(Routes.BASE + "/" + id);
+        deleteSavedBookmarkViaRest(id);
 
         DB bookmarksDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
         DBCollection col = bookmarksDb.getCollection(BookmarkFields.BOOKMARKS);
@@ -166,6 +160,23 @@ public class TestRestApi {
     public void dropCollection() {
         mongoClient.getDB(BookmarkFields.DATABASE_NAME)
                 .getCollection(BookmarkFields.BOOKMARKS).drop();
+    }
+
+    private void deleteSavedBookmarkViaRest(String id) {
+        given().header(HttpHeaderKeys.Authorization,
+                System.getenv(EnvironmentVars.PW)).expect()
+                .header(HttpHeaderKeys.ACAOrigin, "*").when()
+                .delete(Routes.BASE + "/" + id);
+    }
+
+    private String getSavedBookmarkViaRest(String id) {
+        return expect().header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
+                .get(Routes.BASE + "/" + id).asString();
+    }
+
+    private String getListOfSavedBookmarks() {
+        return expect().header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
+                .get(Routes.GET_ALL_BOOKMARKS).asString();
     }
 
     private boolean isIdSurroundedWithDoubleQuotes(String id, String jsonString) {
@@ -213,9 +224,11 @@ public class TestRestApi {
         assertNotNull(allUrls.get(2).getTimeStamp());
     }
 
-    private String addBookmarkAndGetItsId() {
+    private void addTestBookmark() {
         bookmarksData.addBookmark(BookmarkObjects.testBookmark1);
+    }
 
+    private String getAddedBookmarkById() {
         DB bookmarksDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
         DBCollection col = bookmarksDb.getCollection(BookmarkFields.BOOKMARKS);
 
