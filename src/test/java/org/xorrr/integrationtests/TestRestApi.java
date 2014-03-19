@@ -5,6 +5,7 @@ import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -45,6 +46,7 @@ import earth.xor.model.Bookmark;
 import earth.xor.model.BookmarkFields;
 import earth.xor.rest.SparkFacade;
 import earth.xor.rest.SparkRestApi;
+import earth.xor.rest.routes.DeleteBookmarkByIdRoute;
 import earth.xor.rest.routes.GetAllBookmarksRoute;
 import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.PostBookmarkRoute;
@@ -74,9 +76,13 @@ public class TestRestApi {
 
         SparkRestApi rest = new SparkRestApi(new SparkFacade());
         rest.setPort(Integer.valueOf(System.getenv(EnvironmentVars.PORT)));
-        rest.createGETbookmarkByIdRoute(new GetBookmarkByIdRoute(facade, transformator));
-        rest.createPOSTbookmarksRoute(new PostBookmarkRoute(facade, transformator));
-        rest.createGETbookmarksRoute(new GetAllBookmarksRoute(facade, transformator));
+        rest.createGETbookmarkByIdRoute(new GetBookmarkByIdRoute(facade,
+                transformator));
+        rest.createPOSTbookmarksRoute(new PostBookmarkRoute(facade,
+                transformator));
+        rest.createGETbookmarksRoute(new GetAllBookmarksRoute(facade,
+                transformator));
+        rest.createDELETEbookmarkByIdRoute(new DeleteBookmarkByIdRoute(facade));
     }
 
     @Test
@@ -140,6 +146,22 @@ public class TestRestApi {
         Map<String, Bookmark> returnedUrlRepresentation = new HashMap<String, Bookmark>();
         returnedUrlRepresentation = gson.fromJson(jsonString, type);
         checkIfItsTheCorrectBookmark(returnedUrlRepresentation);
+    }
+
+    @Test
+    public void canDeleteSavedBookmarkById() {
+        String id = addBookmarkAndGetItsId();
+
+        given().header(HttpHeaderKeys.Authorization,
+                System.getenv(EnvironmentVars.PW)).expect()
+                .header(HttpHeaderKeys.ACAOrigin, "*").when()
+                .delete(Routes.BASE + "/" + id);
+
+        DB bookmarksDb = mongoClient.getDB(BookmarkFields.DATABASE_NAME);
+        DBCollection col = bookmarksDb.getCollection(BookmarkFields.BOOKMARKS);
+
+        assertNull(col.findOne(new BasicDBObject(BookmarkFields.URL,
+                "http://www.foo.org")));
     }
 
     @After
