@@ -7,12 +7,13 @@ import org.xorrr.util.EnvironmentVars;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
-import earth.xor.db.DatastoreFacade;
 import earth.xor.db.BookmarksDatastore;
+import earth.xor.db.DatastoreFacade;
 import earth.xor.db.MongoBookmarksDatastore;
 import earth.xor.rest.RestApi;
 import earth.xor.rest.SparkFacade;
 import earth.xor.rest.SparkRestApi;
+import earth.xor.rest.routes.DeleteBookmarkByIdRoute;
 import earth.xor.rest.routes.GetAllBookmarksRoute;
 import earth.xor.rest.routes.GetBookmarkByIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
@@ -36,5 +37,6 @@ public class Main {
         rest.createGETbookmarkByIdRoute(new GetBookmarkByIdRoute(facade, transformator));
         rest.createGETbookmarksRoute(new GetAllBookmarksRoute(facade, transformator));
         rest.createOPTIONSbookmarksRoute(new OptionsRoute());
+        rest.createDELETEbookmarkByIdRoute(new DeleteBookmarkByIdRoute(facade));
     }
 }
