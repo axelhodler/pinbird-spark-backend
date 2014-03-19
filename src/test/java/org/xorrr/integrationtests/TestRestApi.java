@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -107,11 +105,11 @@ public class TestRestApi {
     public void canPostBookmark() {
         addBookmarkViaRestApi();
 
-        DBObject foundEntry = getSavedBookmarkFromDb();
+        DBObject bookmarkDbo = getSavedBookmarkFromDb();
 
-        assertEquals("http://www.foo.org", foundEntry.get(BookmarkFields.URL));
-        assertEquals("foo", foundEntry.get(BookmarkFields.TITLE));
-        assertEquals("test", foundEntry.get(BookmarkFields.USER));
+        assertEquals("http://www.foo.org", bookmarkDbo.get(BookmarkFields.URL));
+        assertEquals("foo", bookmarkDbo.get(BookmarkFields.TITLE));
+        assertEquals("test", bookmarkDbo.get(BookmarkFields.USER));
     }
 
     @Test
@@ -175,20 +173,11 @@ public class TestRestApi {
     }
 
     private void addBookmarkViaRestApi() {
-        String jsonString = given()
-                .body(JsonAccessor.getPostRequestBody())
+        given().body(JsonAccessor.getPostRequestBody())
                 .header(HttpHeaderKeys.Authorization,
                         System.getenv(EnvironmentVars.PW)).expect()
                 .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()
                 .post(Routes.BASE).asString();
-
-        JSONObject mainObj = (JSONObject) JSONValue.parse(jsonString);
-        JSONObject bookmark = (JSONObject) mainObj.get(BookmarkFields.BOOKMARK);
-
-        assertEquals("http://www.foo.org", bookmark.get(BookmarkFields.URL)
-                .toString());
-        assertEquals("foo", bookmark.get(BookmarkFields.TITLE).toString());
-        assertEquals("test", bookmark.get(BookmarkFields.USER).toString());
     }
 
     private DBObject getSavedBookmarkFromDb() {
