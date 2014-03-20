@@ -47,6 +47,7 @@ import earth.xor.rest.SparkRestApi;
 import earth.xor.rest.routes.DeleteBookmarkByIdRoute;
 import earth.xor.rest.routes.GetAllBookmarksRoute;
 import earth.xor.rest.routes.GetBookmarkByIdRoute;
+import earth.xor.rest.routes.OptionsForIdRoute;
 import earth.xor.rest.routes.PostBookmarkRoute;
 import earth.xor.rest.routes.Routes;
 import earth.xor.rest.transformation.JSONTransformator;
@@ -81,6 +82,7 @@ public class TestRestApi {
         rest.createGETbookmarksRoute(new GetAllBookmarksRoute(facade,
                 transformator));
         rest.createDELETEbookmarkByIdRoute(new DeleteBookmarkByIdRoute(facade));
+        rest.createOPTIONSForBookmarkIdRoute(new OptionsForIdRoute());
     }
 
     @Test
@@ -154,6 +156,16 @@ public class TestRestApi {
 
         assertNull(col.findOne(new BasicDBObject(BookmarkFields.URL,
                 "http://www.foo.org")));
+    }
+
+    @Test
+    public void canGetOptionsForIdRoute() {
+        addTestBookmark();
+        String id = getAddedBookmarkById();
+
+        expect().header(HttpHeaderKeys.ACAOrigin, "*").and()
+                .header(HttpHeaderKeys.ACAMethods, "GET, DELETE").when()
+                .options(Routes.BASE + "/" + id);
     }
 
     @After
