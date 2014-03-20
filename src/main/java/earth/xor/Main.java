@@ -16,6 +16,7 @@ import earth.xor.rest.SparkRestApi;
 import earth.xor.rest.routes.DeleteBookmarkByIdRoute;
 import earth.xor.rest.routes.GetAllBookmarksRoute;
 import earth.xor.rest.routes.GetBookmarkByIdRoute;
+import earth.xor.rest.routes.OptionsForIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
 import earth.xor.rest.routes.PostBookmarkRoute;
 import earth.xor.rest.transformation.JSONTransformator;
@@ -38,5 +39,6 @@ public class Main {
         rest.createGETbookmarksRoute(new GetAllBookmarksRoute(facade, transformator));
         rest.createOPTIONSbookmarksRoute(new OptionsRoute());
         rest.createDELETEbookmarkByIdRoute(new DeleteBookmarkByIdRoute(facade));
+        rest.createOPTIONSForBookmarkIdRoute(new OptionsForIdRoute());
     }
 }
