@@ -24,4 +24,8 @@ public class SparkFacade {
     public void setDeleteRoute(Route route) {
         Spark.delete(route);
     }
+
+    public void setOptionsForIdRoute(Route route) {
+        Spark.options(route);
+    }
 }

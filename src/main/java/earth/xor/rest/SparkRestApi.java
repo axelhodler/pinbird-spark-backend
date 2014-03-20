@@ -3,6 +3,7 @@ package earth.xor.rest;
 import earth.xor.rest.routes.DeleteBookmarkByIdRoute;
 import earth.xor.rest.routes.GetAllBookmarksRoute;
 import earth.xor.rest.routes.GetBookmarkByIdRoute;
+import earth.xor.rest.routes.OptionsForIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
 import earth.xor.rest.routes.PostBookmarkRoute;
 
@@ -41,5 +42,10 @@ public class SparkRestApi implements RestApi {
     @Override
     public void createDELETEbookmarkByIdRoute(DeleteBookmarkByIdRoute route) {
         sparkFacade.setDeleteRoute(route);
+    }
+
+    @Override
+    public void createOPTIONSForBookmarkIdRoute(OptionsForIdRoute route) {
+        sparkFacade.setOptionsForIdRoute(route);
     }
 }

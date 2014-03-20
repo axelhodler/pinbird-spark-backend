@@ -14,6 +14,7 @@ import org.xorrr.util.EnvironmentVars;
 import earth.xor.rest.routes.DeleteBookmarkByIdRoute;
 import earth.xor.rest.routes.GetAllBookmarksRoute;
 import earth.xor.rest.routes.GetBookmarkByIdRoute;
+import earth.xor.rest.routes.OptionsForIdRoute;
 import earth.xor.rest.routes.OptionsRoute;
 import earth.xor.rest.routes.PostBookmarkRoute;
 
@@ -31,6 +32,8 @@ public class TestSparkRestApi {
     OptionsRoute optionsRoute;
     @Mock
     DeleteBookmarkByIdRoute deleteRoute;
+    @Mock
+    OptionsForIdRoute optionsForIdRoute;
 
     private SparkRestApi restApi;
 
@@ -78,5 +81,12 @@ public class TestSparkRestApi {
         restApi.createDELETEbookmarkByIdRoute(deleteRoute);
 
         verify(sparkFacade, times(1)).setDeleteRoute(deleteRoute);
+    }
+
+    @Test
+    public void optionsForIdRouteIsSet() {
+        restApi.createOPTIONSForBookmarkIdRoute(optionsForIdRoute);
+
+        verify(sparkFacade, times(1)).setOptionsForIdRoute(optionsForIdRoute);
     }
 }
