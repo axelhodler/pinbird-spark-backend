@@ -23,10 +23,10 @@ public class JSONTransformator {
         return mainObject.toJSONString();
     }
 
-    public String bookmarkToJson(Bookmark testBookmark1) {
+    public String bookmarkToJson(Bookmark bm) {
         JSONObject main = new JSONObject();
         main.put(BookmarkFields.BOOKMARK,
-                transformBookmarkToJson(testBookmark1));
+                transformBookmarkToJson(bm));
         return main.toJSONString();
     }
 
