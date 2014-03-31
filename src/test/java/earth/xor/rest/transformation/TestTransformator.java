@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xorrr.util.JsonAccessor;
 import org.xorrr.util.BookmarkObjects;
+import org.xorrr.util.JsonAccessor;
 
 import earth.xor.model.Bookmark;
 
@@ -19,9 +19,9 @@ public class TestTransformator {
             + "\"title\":\"foo\", " + "\"user\":\"user\"}}";
     private List<Bookmark> bookmarks;
 
-    private String bookmarkInJson = "{\"bookmark\":{\"timestamp\":null,"
-            + "\"title\":\"foo\",\"_id\":null,\"user\":\"user1\",\"url\""
-            + ":\"http:\\/\\/www.foo.org\"}}";
+    private String bookmarkInJson = "{\"bookmark\":{\"_id\":null,"
+            + "\"title\":\"foo\",\"user\":\"user1\",\"url\""
+            + ":\"http:\\/\\/www.foo.org\",\"timestamp\":null}}";
 
     @Before
     public void setUp() {
