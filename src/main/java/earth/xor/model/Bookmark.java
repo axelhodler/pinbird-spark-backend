@@ -76,4 +76,61 @@ public class Bookmark {
             return new Bookmark(this);
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((objectId == null) ? 0 : objectId.hashCode());
+        result = prime * result
+                + ((timestamp == null) ? 0 : timestamp.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        result = prime * result + ((user == null) ? 0 : user.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Bookmark other = (Bookmark) obj;
+        if (objectId == null) {
+            if (other.objectId != null)
+                return false;
+        } else if (!objectId.equals(other.objectId))
+            return false;
+        if (timestamp == null) {
+            if (other.timestamp != null)
+                return false;
+        } else if (!timestamp.equals(other.timestamp))
+            return false;
+        if (title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!title.equals(other.title))
+            return false;
+        if (url == null) {
+            if (other.url != null)
+                return false;
+        } else if (!url.equals(other.url))
+            return false;
+        if (user == null) {
+            if (other.user != null)
+                return false;
+        } else if (!user.equals(other.user))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Bookmark [url=" + url + ", title=" + title + ", user=" + user
+                + ", timestamp=" + timestamp + ", objectId=" + objectId + "]";
+    }
 }
