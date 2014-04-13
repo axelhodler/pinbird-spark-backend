@@ -1,7 +1,7 @@
-# freezing-octo-hipster
+# pinbird-spark-backend
 playing with the spark java REST framework
 
-[![Build Status](https://travis-ci.org/xorrr/freezing-octo-hipster.png)](https://travis-ci.org/xorrr/freezing-octo-hipster)
+[![Build Status](https://travis-ci.org/xorrr/pinbird-spark-backend.png)](https://travis-ci.org/xorrr/pinbird-spark-backend)
 
 # Run
 The run script will start the server at [http://localhost:5000](http://localhost:5000)
