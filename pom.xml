@@ -31,7 +31,7 @@
         mongodb in unittests -->
       <groupId>de.flapdoodle.embed</groupId>
       <artifactId>de.flapdoodle.embed.mongo</artifactId>
-      <version>1.36</version>
+      <version>1.43</version>
       <scope>test</scope>
     </dependency>
     <dependency>
