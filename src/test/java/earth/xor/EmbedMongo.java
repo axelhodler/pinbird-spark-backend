@@ -38,7 +38,7 @@ public class EmbedMongo {
     private void startEmbeddedMongo(int port) throws UnknownHostException,
             IOException {
         IMongodConfig mongodConfig = new MongodConfigBuilder()
-                .version(Version.V2_4_5)
+                .version(Version.Main.PRODUCTION)
                 .net(new Net(port, Network.localhostIsIPv6())).build();
 
         MongodStarter runtime = MongodStarter.getDefaultInstance();
