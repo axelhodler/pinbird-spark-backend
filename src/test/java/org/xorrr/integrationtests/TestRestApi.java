@@ -35,8 +35,8 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
-import earth.xor.EmbedMongo;
-import earth.xor.EmbedMongoProperties;
+import earth.xor.EmbeddedMongo;
+import earth.xor.EmbeddedMongoProperties;
 import earth.xor.db.BookmarksDatastore;
 import earth.xor.db.DatastoreFacade;
 import earth.xor.db.MongoBookmarksDatastore;
@@ -64,11 +64,11 @@ public class TestRestApi {
     @BeforeClass
     public static void setUpEmbeddedMongo() throws UnknownHostException,
             IOException {
-        mongodExe = EmbedMongo.getEmbeddedMongoExecutable();
+        mongodExe = EmbeddedMongo.getEmbeddedMongoExecutable();
         mongodExe.start();
 
         gson = new Gson();
-        mongoClient = new MongoClient("localhost", EmbedMongoProperties.PORT);
+        mongoClient = new MongoClient("localhost", EmbeddedMongoProperties.PORT);
         bookmarksData = new MongoBookmarksDatastore(mongoClient);
 
         RestAssured.port = Integer
