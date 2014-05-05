@@ -15,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
 import org.xorrr.util.HttpResponseErrorMessages;
-import org.xorrr.util.JsonAccessor;
+import org.xorrr.util.JSONExamples;
 import org.xorrr.util.BookmarkObjects;
 
 import spark.AbstractRoute;
@@ -51,7 +51,7 @@ public class TestPostBookmarkRoute {
 
     @Test
     public void bookmarkCanBePosted() {
-        String json = JsonAccessor.getPostRequestBody();
+        String json = JSONExamples.getPostRequestBody();
         when(req.headers(HttpHeaderKeys.Authorization)).thenReturn(
                 System.getenv(EnvironmentVars.PW));
         when(req.body()).thenReturn(json);

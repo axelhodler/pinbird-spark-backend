@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.xorrr.util.BookmarkObjects;
-import org.xorrr.util.JsonAccessor;
+import org.xorrr.util.JSONExamples;
 
 import earth.xor.model.Bookmark;
 
@@ -44,7 +44,7 @@ public class TestTransformator {
         bookmarks.add(BookmarkObjects.testBookmark2);
 
         String json = trans.listOfBookmarksToJson(bookmarks);
-        assertEquals(json, JsonAccessor.getExampleBookmarks());
+        assertEquals(json, JSONExamples.getExampleBookmarks());
     }
 
     @Test

@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
-import org.xorrr.util.JsonAccessor;
+import org.xorrr.util.JSONExamples;
 
 import spark.Request;
 import spark.Response;
@@ -45,13 +45,13 @@ public class TestGetBookmarkByIdRoute {
     public void canGetLinkById() {
         when(req.params(":id")).thenReturn(id);
         when(transformator.bookmarkToJson(any(Bookmark.class))).thenReturn(
-                JsonAccessor.getExampleBookmark());
+                JSONExamples.getExampleBookmark());
 
         Object json = route.handle(req, resp);
 
         verify(facade, times(1)).getBookmarkById(anyString());
         verify(transformator, times(1)).bookmarkToJson(any(Bookmark.class));
-        assertEquals(json, JsonAccessor.getExampleBookmark());
+        assertEquals(json, JSONExamples.getExampleBookmark());
     }
 
     @Test

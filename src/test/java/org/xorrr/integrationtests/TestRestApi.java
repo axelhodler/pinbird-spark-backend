@@ -23,7 +23,7 @@ import org.junit.experimental.categories.Category;
 import org.xorrr.util.BookmarkObjects;
 import org.xorrr.util.EnvironmentVars;
 import org.xorrr.util.HttpHeaderKeys;
-import org.xorrr.util.JsonAccessor;
+import org.xorrr.util.JSONExamples;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -208,7 +208,7 @@ public class TestRestApi {
     }
 
     private void addBookmarkViaRestApi() {
-        given().body(JsonAccessor.getPostRequestBody())
+        given().body(JSONExamples.getPostRequestBody())
                 .header(HttpHeaderKeys.Authorization,
                         System.getenv(EnvironmentVars.PW)).expect()
                 .header(HttpHeaderKeys.ACAOrigin, equalTo("*")).when()

@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 import earth.xor.model.BookmarkFields;
 
 @SuppressWarnings("unchecked")
-public class JsonAccessor {
+public class JSONExamples {
 
     public static String getPostRequestBody() {
         JSONObject bookmark = new JSONObject();
