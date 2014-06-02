@@ -1,7 +1,6 @@
-# pinbird-spark-backend
-playing with the spark java REST framework
+# pinbird-spark-backend [![Build Status](https://travis-ci.org/xorrr/pinbird-spark-backend.svg)](https://travis-ci.org/xorrr/pinbird-spark-backend)
 
-[![Build Status](https://travis-ci.org/xorrr/pinbird-spark-backend.png)](https://travis-ci.org/xorrr/pinbird-spark-backend)
+playing with the spark java REST framework
 
 # Run
 The run script will start the server at [http://localhost:5000](http://localhost:5000)
