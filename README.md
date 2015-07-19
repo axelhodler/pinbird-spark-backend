@@ -1,4 +1,4 @@
-# pinbird-spark-backend [![Build Status](https://travis-ci.org/xorrr/pinbird-spark-backend.svg)](https://travis-ci.org/xorrr/pinbird-spark-backend)
+# pinbird-spark-backend [![Build Status](https://travis-ci.org/axelhodler/pinbird-spark-backend.svg)](https://travis-ci.org/axelhodler/pinbird-spark-backend)
 
 playing with the spark java REST framework
 
